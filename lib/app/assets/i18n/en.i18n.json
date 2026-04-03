@@ -1,0 +1,161 @@
+{
+  "app": {
+    "name": "Harvest",
+    "tagline": "Fresh from the farm. Direct to your community."
+  },
+  "general": {
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "noResults": "No results found",
+    "seeAll": "See all",
+    "done": "Done",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "search": "Search",
+    "close": "Close",
+    "or": "or"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Place Your Order",
+      "description": "Browse fresh produce from local farms and add your favorites to the cart."
+    },
+    "step2": {
+      "title": "Farmers Harvest",
+      "description": "Your order is sent to local farmers who harvest fresh produce just for you."
+    },
+    "step3": {
+      "title": "Direct to You",
+      "description": "Get truly fresh food delivered directly from the farm to your doorstep."
+    },
+    "getStarted": "Get Started"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "emailHint": "Enter your email",
+    "passwordHint": "Enter your password",
+    "nameHint": "Enter your full name",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInWithGoogle": "Sign in with Google",
+    "welcomeBack": "Welcome back!",
+    "createAccount": "Create your account",
+    "signInSubtitle": "Sign in to get fresh produce delivered to your door.",
+    "signUpSubtitle": "Join Harvest and start eating fresh today."
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "cart": "Cart",
+    "orders": "Orders",
+    "profile": "Profile"
+  },
+  "home": {
+    "greeting": "Hello, $name!",
+    "subtitle": "What fresh produce do you need today?",
+    "categories": "Categories",
+    "featured": "Featured Products",
+    "popular": "Popular Now",
+    "organic": "Organic",
+    "allProducts": "All Products"
+  },
+  "search": {
+    "title": "Search",
+    "hint": "Search fruits, vegetables...",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "priceRange": "Price Range",
+    "category": "Category",
+    "organicOnly": "Organic only",
+    "applyFilters": "Apply Filters",
+    "clearFilters": "Clear Filters",
+    "resultsFor": "Results for \"$query\""
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "added": "Added to cart!",
+    "description": "Description",
+    "nutritionFacts": "Nutrition Facts",
+    "farm": "Farm",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "perUnit": "per $unit",
+    "organic": "Organic",
+    "calories": "Calories",
+    "protein": "Protein",
+    "fiber": "Fiber",
+    "vitamins": "Vitamins"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "emptySubtitle": "Start adding fresh products to your cart!",
+    "browseProducts": "Browse Products",
+    "subtotal": "Subtotal",
+    "deliveryFee": "Delivery Fee",
+    "total": "Total",
+    "free": "Free",
+    "checkout": "Proceed to Checkout",
+    "itemCount": "$count item(s)",
+    "removeItem": "Remove item?"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliveryAddress": "Delivery Address",
+    "street": "Street Address",
+    "city": "City",
+    "zipCode": "ZIP Code",
+    "paymentMethod": "Payment Method",
+    "creditCard": "Credit Card",
+    "applePay": "Apple Pay",
+    "googlePay": "Google Pay",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "confirmation": {
+      "title": "Order Confirmed!",
+      "subtitle": "Your order has been placed successfully.",
+      "description": "Local farmers are now preparing your fresh produce. You'll receive updates on your order status.",
+      "orderNumber": "Order #$number",
+      "backToHome": "Back to Home",
+      "viewOrders": "View My Orders"
+    }
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "No orders yet",
+    "emptySubtitle": "Your order history will appear here.",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "harvesting": "Harvesting",
+      "delivering": "On the way",
+      "delivered": "Delivered"
+    },
+    "orderNumber": "Order #$number",
+    "items": "$count item(s)",
+    "placedOn": "Placed on $date"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "myOrders": "My Orders",
+    "deliveryAddresses": "Delivery Addresses",
+    "paymentMethods": "Payment Methods",
+    "notifications": "Notifications",
+    "helpCenter": "Help Center",
+    "about": "About Harvest",
+    "version": "Version $version"
+  }
+}
