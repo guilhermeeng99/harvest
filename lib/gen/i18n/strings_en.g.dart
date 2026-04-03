@@ -52,6 +52,8 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsCheckoutEn checkout = TranslationsCheckoutEn._(_root);
 	late final TranslationsOrdersEn orders = TranslationsOrdersEn._(_root);
 	late final TranslationsProfileEn profile = TranslationsProfileEn._(_root);
+	late final TranslationsAddressEn address = TranslationsAddressEn._(_root);
+	late final TranslationsNotificationsEn notifications = TranslationsNotificationsEn._(_root);
 }
 
 // Path: app
@@ -493,6 +495,87 @@ class TranslationsProfileEn {
 	String version({required Object version}) => 'Version ${version}';
 }
 
+// Path: address
+class TranslationsAddressEn {
+	TranslationsAddressEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Delivery Addresses'
+	String get title => 'Delivery Addresses';
+
+	/// en: 'Add Address'
+	String get addTitle => 'Add Address';
+
+	/// en: 'No addresses yet'
+	String get empty => 'No addresses yet';
+
+	/// en: 'Add your first delivery address.'
+	String get emptySubtitle => 'Add your first delivery address.';
+
+	/// en: 'Label (optional)'
+	String get label => 'Label (optional)';
+
+	/// en: 'e.g. Home, Work'
+	String get labelHint => 'e.g. Home, Work';
+
+	/// en: 'Street'
+	String get street => 'Street';
+
+	/// en: 'Number'
+	String get number => 'Number';
+
+	/// en: 'Neighborhood'
+	String get neighborhood => 'Neighborhood';
+
+	/// en: 'City'
+	String get city => 'City';
+
+	/// en: 'State'
+	String get state => 'State';
+
+	/// en: 'ZIP Code'
+	String get zipCode => 'ZIP Code';
+
+	/// en: 'Complement'
+	String get complement => 'Complement';
+
+	/// en: 'Set as default address'
+	String get setAsDefault => 'Set as default address';
+
+	/// en: 'This field is required'
+	String get required => 'This field is required';
+
+	/// en: 'Select an address'
+	String get selectAddress => 'Select an address';
+
+	/// en: 'Deliver to'
+	String get deliverTo => 'Deliver to';
+}
+
+// Path: notifications
+class TranslationsNotificationsEn {
+	TranslationsNotificationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Notifications'
+	String get title => 'Notifications';
+
+	/// en: 'No notifications'
+	String get empty => 'No notifications';
+
+	/// en: 'You're all caught up!'
+	String get emptySubtitle => 'You\'re all caught up!';
+
+	/// en: 'Mark all read'
+	String get markAllRead => 'Mark all read';
+}
+
 // Path: onboarding.step1
 class TranslationsOnboardingStep1En {
 	TranslationsOnboardingStep1En._(this._root);
@@ -722,6 +805,27 @@ extension on Translations {
 			'profile.helpCenter' => 'Help Center',
 			'profile.about' => 'About Harvest',
 			'profile.version' => ({required Object version}) => 'Version ${version}',
+			'address.title' => 'Delivery Addresses',
+			'address.addTitle' => 'Add Address',
+			'address.empty' => 'No addresses yet',
+			'address.emptySubtitle' => 'Add your first delivery address.',
+			'address.label' => 'Label (optional)',
+			'address.labelHint' => 'e.g. Home, Work',
+			'address.street' => 'Street',
+			'address.number' => 'Number',
+			'address.neighborhood' => 'Neighborhood',
+			'address.city' => 'City',
+			'address.state' => 'State',
+			'address.zipCode' => 'ZIP Code',
+			'address.complement' => 'Complement',
+			'address.setAsDefault' => 'Set as default address',
+			'address.required' => 'This field is required',
+			'address.selectAddress' => 'Select an address',
+			'address.deliverTo' => 'Deliver to',
+			'notifications.title' => 'Notifications',
+			'notifications.empty' => 'No notifications',
+			'notifications.emptySubtitle' => 'You\'re all caught up!',
+			'notifications.markAllRead' => 'Mark all read',
 			_ => null,
 		};
 	}

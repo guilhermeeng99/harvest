@@ -157,5 +157,30 @@
     "helpCenter": "Help Center",
     "about": "About Harvest",
     "version": "Version $version"
+  },
+  "address": {
+    "title": "Delivery Addresses",
+    "addTitle": "Add Address",
+    "empty": "No addresses yet",
+    "emptySubtitle": "Add your first delivery address.",
+    "label": "Label (optional)",
+    "labelHint": "e.g. Home, Work",
+    "street": "Street",
+    "number": "Number",
+    "neighborhood": "Neighborhood",
+    "city": "City",
+    "state": "State",
+    "zipCode": "ZIP Code",
+    "complement": "Complement",
+    "setAsDefault": "Set as default address",
+    "required": "This field is required",
+    "selectAddress": "Select an address",
+    "deliverTo": "Deliver to"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "emptySubtitle": "You're all caught up!",
+    "markAllRead": "Mark all read"
   }
 }

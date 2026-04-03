@@ -47,7 +47,7 @@ class _ProfileView extends StatelessWidget {
               _MenuItem(
                 icon: Icons.location_on_outlined,
                 label: t.profile.deliveryAddresses,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.addresses),
               ),
               _MenuItem(
                 icon: Icons.payment_outlined,
@@ -57,7 +57,7 @@ class _ProfileView extends StatelessWidget {
               _MenuItem(
                 icon: Icons.notifications_outlined,
                 label: t.profile.notifications,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.notifications),
               ),
               const Divider(height: 32),
               _MenuItem(

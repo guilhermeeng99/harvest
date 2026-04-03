@@ -7,6 +7,7 @@ class HomeState extends Equatable {
     this.status = HomeStatus.initial,
     this.categories = const [],
     this.featuredProducts = const [],
+    this.allProducts = const [],
     this.categoryProducts = const [],
     this.selectedCategoryId,
     this.categoryProductsStatus = HomeStatus.initial,
@@ -16,6 +17,7 @@ class HomeState extends Equatable {
   final HomeStatus status;
   final List<CategoryEntity> categories;
   final List<ProductEntity> featuredProducts;
+  final List<ProductEntity> allProducts;
   final List<ProductEntity> categoryProducts;
   final String? selectedCategoryId;
   final HomeStatus categoryProductsStatus;
@@ -25,6 +27,7 @@ class HomeState extends Equatable {
     HomeStatus? status,
     List<CategoryEntity>? categories,
     List<ProductEntity>? featuredProducts,
+    List<ProductEntity>? allProducts,
     List<ProductEntity>? categoryProducts,
     String? selectedCategoryId,
     HomeStatus? categoryProductsStatus,
@@ -34,6 +37,7 @@ class HomeState extends Equatable {
       status: status ?? this.status,
       categories: categories ?? this.categories,
       featuredProducts: featuredProducts ?? this.featuredProducts,
+      allProducts: allProducts ?? this.allProducts,
       categoryProducts: categoryProducts ?? this.categoryProducts,
       selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
       categoryProductsStatus:
@@ -47,6 +51,7 @@ class HomeState extends Equatable {
     status,
     categories,
     featuredProducts,
+    allProducts,
     categoryProducts,
     selectedCategoryId,
     categoryProductsStatus,

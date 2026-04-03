@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
 import 'package:harvest/features/home/domain/entities/product_entity.dart';
+import 'package:harvest/features/home/domain/usecases/get_all_products_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_categories_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_featured_products_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_products_by_category_usecase.dart';
@@ -11,17 +12,20 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({
+    required GetAllProductsUseCase getAllProductsUseCase,
     required GetCategoriesUseCase getCategoriesUseCase,
     required GetFeaturedProductsUseCase getFeaturedProductsUseCase,
     required GetProductsByCategoryUseCase getProductsByCategoryUseCase,
-  })  : _getCategoriesUseCase = getCategoriesUseCase,
-        _getFeaturedProductsUseCase = getFeaturedProductsUseCase,
-        _getProductsByCategoryUseCase = getProductsByCategoryUseCase,
-        super(const HomeState()) {
+  }) : _getAllProductsUseCase = getAllProductsUseCase,
+       _getCategoriesUseCase = getCategoriesUseCase,
+       _getFeaturedProductsUseCase = getFeaturedProductsUseCase,
+       _getProductsByCategoryUseCase = getProductsByCategoryUseCase,
+       super(const HomeState()) {
     on<HomeLoadRequested>(_onLoadRequested);
     on<HomeCategorySelected>(_onCategorySelected);
   }
 
+  final GetAllProductsUseCase _getAllProductsUseCase;
   final GetCategoriesUseCase _getCategoriesUseCase;
   final GetFeaturedProductsUseCase _getFeaturedProductsUseCase;
   final GetProductsByCategoryUseCase _getProductsByCategoryUseCase;
@@ -34,9 +38,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final categoriesResult = await _getCategoriesUseCase();
     final featuredResult = await _getFeaturedProductsUseCase();
+    final allProductsResult = await _getAllProductsUseCase();
 
     final categories = categoriesResult.getOrElse(() => []);
     final featured = featuredResult.getOrElse(() => []);
+    final allProducts = allProductsResult.getOrElse(() => []);
 
     final hasError = categoriesResult.isLeft() && featuredResult.isLeft();
 
@@ -53,6 +59,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           status: HomeStatus.loaded,
           categories: categories,
           featuredProducts: featured,
+          allProducts: allProducts,
         ),
       );
     }
@@ -62,10 +69,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeCategorySelected event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(
-      selectedCategoryId: event.categoryId,
-      categoryProductsStatus: HomeStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        selectedCategoryId: event.categoryId,
+        categoryProductsStatus: HomeStatus.loading,
+      ),
+    );
 
     final result = await _getProductsByCategoryUseCase(event.categoryId);
 

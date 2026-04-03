@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/widgets/shell_scaffold.dart';
+import 'package:harvest/features/address/presentation/pages/add_address_page.dart';
+import 'package:harvest/features/address/presentation/pages/address_selection_page.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_up_page.dart';
@@ -12,6 +14,7 @@ import 'package:harvest/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:harvest/features/checkout/presentation/pages/checkout_page.dart';
 import 'package:harvest/features/checkout/presentation/pages/order_confirmation_page.dart';
 import 'package:harvest/features/home/presentation/pages/home_page.dart';
+import 'package:harvest/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:harvest/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:harvest/features/orders/presentation/pages/orders_page.dart';
 import 'package:harvest/features/product_details/presentation/pages/product_details_page.dart';
@@ -78,6 +81,18 @@ GoRouter createRouter(AuthBloc authBloc) {
       GoRoute(
         path: AppRoutes.orderConfirmation,
         builder: (_, __) => const OrderConfirmationPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.addresses,
+        builder: (_, __) => const AddressSelectionPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.addressAdd,
+        builder: (_, __) => const AddAddressPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (_, __) => const NotificationsPage(),
       ),
     ],
   );

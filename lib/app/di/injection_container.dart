@@ -1,6 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:harvest/features/address/data/datasources/address_remote_datasource.dart';
+import 'package:harvest/features/address/data/repositories/address_repository_impl.dart';
+import 'package:harvest/features/address/domain/repositories/address_repository.dart';
+import 'package:harvest/features/address/domain/usecases/add_address_usecase.dart';
+import 'package:harvest/features/address/domain/usecases/delete_address_usecase.dart';
+import 'package:harvest/features/address/domain/usecases/get_addresses_usecase.dart';
+import 'package:harvest/features/address/domain/usecases/set_default_address_usecase.dart';
+import 'package:harvest/features/address/presentation/cubit/address_cubit.dart';
 import 'package:harvest/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:harvest/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:harvest/features/auth/domain/repositories/auth_repository.dart';
@@ -17,11 +25,13 @@ import 'package:harvest/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:harvest/features/home/data/datasources/home_remote_datasource.dart';
 import 'package:harvest/features/home/data/repositories/home_repository_impl.dart';
 import 'package:harvest/features/home/domain/repositories/home_repository.dart';
+import 'package:harvest/features/home/domain/usecases/get_all_products_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_categories_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_featured_products_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_product_by_id_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_products_by_category_usecase.dart';
 import 'package:harvest/features/home/presentation/bloc/home_bloc.dart';
+import 'package:harvest/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:harvest/features/orders/data/datasources/orders_remote_datasource.dart';
 import 'package:harvest/features/orders/data/repositories/orders_repository_impl.dart';
 import 'package:harvest/features/orders/domain/repositories/orders_repository.dart';
@@ -45,6 +55,8 @@ void initDependencies() {
   _initCheckout();
   _initOrders();
   _initProfile();
+  _initAddress();
+  _initNotifications();
 }
 
 void _initFirebase() {
@@ -81,12 +93,14 @@ void _initHome() {
       () => HomeRemoteDataSourceImpl(firestore: sl()),
     )
     ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
+    ..registerLazySingleton(() => GetAllProductsUseCase(sl()))
     ..registerLazySingleton(() => GetCategoriesUseCase(sl()))
     ..registerLazySingleton(() => GetFeaturedProductsUseCase(sl()))
     ..registerLazySingleton(() => GetProductsByCategoryUseCase(sl()))
     ..registerLazySingleton(() => GetProductByIdUseCase(sl()))
     ..registerFactory(
       () => HomeBloc(
+        getAllProductsUseCase: sl(),
         getCategoriesUseCase: sl(),
         getFeaturedProductsUseCase: sl(),
         getProductsByCategoryUseCase: sl(),
@@ -129,4 +143,30 @@ void _initOrders() {
 
 void _initProfile() {
   sl.registerFactory(() => ProfileCubit(getCurrentUserUseCase: sl()));
+}
+
+void _initAddress() {
+  sl
+    ..registerLazySingleton<AddressRemoteDataSource>(
+      () => AddressRemoteDataSourceImpl(firebaseAuth: sl(), firestore: sl()),
+    )
+    ..registerLazySingleton<AddressRepository>(
+      () => AddressRepositoryImpl(sl()),
+    )
+    ..registerLazySingleton(() => GetAddressesUseCase(sl()))
+    ..registerLazySingleton(() => AddAddressUseCase(sl()))
+    ..registerLazySingleton(() => DeleteAddressUseCase(sl()))
+    ..registerLazySingleton(() => SetDefaultAddressUseCase(sl()))
+    ..registerFactory(
+      () => AddressCubit(
+        getAddressesUseCase: sl(),
+        addAddressUseCase: sl(),
+        deleteAddressUseCase: sl(),
+        setDefaultAddressUseCase: sl(),
+      ),
+    );
+}
+
+void _initNotifications() {
+  sl.registerFactory(NotificationsCubit.new);
 }
