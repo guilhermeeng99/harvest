@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
+import 'package:harvest/core/constants/admin_constants.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
@@ -15,7 +18,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ProfileCubit>()..loadProfile(),
+      create: (_) {
+        final cubit = sl<ProfileCubit>();
+        unawaited(cubit.loadProfile());
+        return cubit;
+      },
       child: const _ProfileView(),
     );
   }
@@ -71,6 +78,12 @@ class _ProfileView extends StatelessWidget {
                 onTap: () {},
               ),
               const SizedBox(height: 24),
+              if (state.user?.email == AdminConstants.adminEmail)
+                _MenuItem(
+                  icon: Icons.admin_panel_settings_outlined,
+                  label: t.admin.adminPanel,
+                  onTap: () => context.go(AppRoutes.admin),
+                ),
               _MenuItem(
                 icon: Icons.logout,
                 label: t.auth.signOut,

@@ -87,7 +87,7 @@ class _CartContent extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(20),
             itemCount: state.items.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, _) => const SizedBox(height: 12),
             itemBuilder: (_, index) {
               final item = state.items[index];
               return Dismissible(
@@ -121,7 +121,7 @@ class _CartContent extends StatelessWidget {
                           width: 72,
                           height: 72,
                           fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => Container(
+                          errorWidget: (_, _, _) => Container(
                             width: 72,
                             height: 72,
                             color: AppColors.surfaceVariant,

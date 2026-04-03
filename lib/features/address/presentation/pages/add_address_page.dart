@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -60,7 +62,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
       isDefault: _isDefault,
     );
 
-    context.read<AddressCubit>().addAddress(address);
+    unawaited(context.read<AddressCubit>().addAddress(address));
     context.pop();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +34,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _loadProduct();
+    unawaited(_loadProduct());
   }
 
   Future<void> _loadProduct() async {
@@ -69,10 +71,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? ErrorView(message: _error!, onRetry: _loadProduct)
-              : _product != null
-                  ? _ProductContent(product: _product!)
-                  : const SizedBox.shrink(),
+          ? ErrorView(message: _error!, onRetry: _loadProduct)
+          : _product != null
+          ? _ProductContent(product: _product!)
+          : const SizedBox.shrink(),
     );
   }
 }
@@ -96,9 +98,9 @@ class _ProductContent extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: product.imageUrl,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) =>
+                    placeholder: (_, _) =>
                         const LoadingShimmer(height: double.infinity),
-                    errorWidget: (_, __, ___) => const ColoredBox(
+                    errorWidget: (_, _, _) => const ColoredBox(
                       color: AppColors.surfaceVariant,
                       child: Icon(Icons.image, size: 64),
                     ),

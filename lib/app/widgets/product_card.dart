@@ -112,7 +112,7 @@ class _ImageSection extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: imageUrl,
               fit: BoxFit.cover,
-              placeholder: (_, __) => const ColoredBox(
+              placeholder: (_, _) => const ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Center(
                   child: Icon(
@@ -122,7 +122,7 @@ class _ImageSection extends StatelessWidget {
                   ),
                 ),
               ),
-              errorWidget: (_, __, ___) => const ColoredBox(
+              errorWidget: (_, _, _) => const ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Center(
                   child: Icon(

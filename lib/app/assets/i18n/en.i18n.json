@@ -19,7 +19,8 @@
     "skip": "Skip",
     "search": "Search",
     "close": "Close",
-    "or": "or"
+    "or": "or",
+    "required": "This field is required"
   },
   "onboarding": {
     "step1": {
@@ -182,5 +183,38 @@
     "empty": "No notifications",
     "emptySubtitle": "You're all caught up!",
     "markAllRead": "Mark all read"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "products": "Products",
+    "categories": "Categories",
+    "users": "Users",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "confirmDelete": "Confirm Delete",
+    "noProducts": "No products yet",
+    "noCategories": "No categories yet",
+    "noUsers": "No users yet",
+    "productName": "Name",
+    "productDescription": "Description",
+    "productPrice": "Price",
+    "productUnit": "Unit",
+    "productCategory": "Category",
+    "productFarm": "Farm",
+    "productStock": "Stock",
+    "productFeatured": "Featured",
+    "productOrganic": "Organic",
+    "selectCategory": "Please select a category",
+    "categoryName": "Name",
+    "categorySortOrder": "Sort Order",
+    "nutritionFacts": "Nutrition Facts",
+    "calories": "Calories",
+    "protein": "Protein",
+    "fiber": "Fiber",
+    "vitamins": "Vitamins",
+    "save": "Save",
+    "adminPanel": "Admin Panel"
   }
 }

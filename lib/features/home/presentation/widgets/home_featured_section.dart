@@ -30,7 +30,7 @@ class HomeFeaturedSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 scrollDirection: Axis.horizontal,
                 itemCount: state.featuredProducts.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (_, index) {
                   final product = state.featuredProducts[index];
                   return SizedBox(

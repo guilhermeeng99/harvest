@@ -59,7 +59,7 @@ class HomePopularSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 scrollDirection: Axis.horizontal,
                 itemCount: organicProducts.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (_, index) {
                   final product = organicProducts[index];
                   return SizedBox(

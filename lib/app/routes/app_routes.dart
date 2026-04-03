@@ -16,5 +16,18 @@ class AppRoutes {
   static const addressAdd = '/addresses/add';
   static const notifications = '/notifications';
 
+  // Admin
+  static const admin = '/admin';
+  static const adminProducts = '/admin/products';
+  static const adminProductAdd = '/admin/products/add';
+  static const adminProductEdit = '/admin/products/edit/:id';
+  static const adminCategories = '/admin/categories';
+  static const adminCategoryAdd = '/admin/categories/add';
+  static const adminCategoryEdit = '/admin/categories/edit/:id';
+  static const adminUsers = '/admin/users';
+
   static String productDetailsPath(String id) => '/product/$id';
+  static String adminProductEditPath(String id) => '/admin/products/edit/$id';
+  static String adminCategoryEditPath(String id) =>
+      '/admin/categories/edit/$id';
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harvest/features/address/data/datasources/address_remote_datasource.dart';
 import 'package:harvest/features/address/data/repositories/address_repository_impl.dart';
@@ -9,6 +10,12 @@ import 'package:harvest/features/address/domain/usecases/delete_address_usecase.
 import 'package:harvest/features/address/domain/usecases/get_addresses_usecase.dart';
 import 'package:harvest/features/address/domain/usecases/set_default_address_usecase.dart';
 import 'package:harvest/features/address/presentation/cubit/address_cubit.dart';
+import 'package:harvest/features/admin/data/datasources/admin_remote_datasource.dart';
+import 'package:harvest/features/admin/data/repositories/admin_repository_impl.dart';
+import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
+import 'package:harvest/features/admin/presentation/cubit/admin_categories_cubit.dart';
+import 'package:harvest/features/admin/presentation/cubit/admin_products_cubit.dart';
+import 'package:harvest/features/admin/presentation/cubit/admin_users_cubit.dart';
 import 'package:harvest/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:harvest/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:harvest/features/auth/domain/repositories/auth_repository.dart';
@@ -44,7 +51,7 @@ import 'package:harvest/features/search/domain/repositories/search_repository.da
 import 'package:harvest/features/search/domain/usecases/search_products_usecase.dart';
 import 'package:harvest/features/search/presentation/cubit/search_cubit.dart';
 
-final sl = GetIt.instance;
+final GetIt sl = GetIt.instance;
 
 void initDependencies() {
   _initFirebase();
@@ -57,14 +64,14 @@ void initDependencies() {
   _initProfile();
   _initAddress();
   _initNotifications();
+  _initAdmin();
 }
 
 void _initFirebase() {
   sl
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
-    ..registerLazySingleton<FirebaseFirestore>(
-      () => FirebaseFirestore.instance,
-    );
+    ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
+    ..registerLazySingleton<FirebaseStorage>(() => FirebaseStorage.instance);
 }
 
 void _initAuth() {
@@ -169,4 +176,15 @@ void _initAddress() {
 
 void _initNotifications() {
   sl.registerFactory(NotificationsCubit.new);
+}
+
+void _initAdmin() {
+  sl
+    ..registerLazySingleton<AdminRemoteDataSource>(
+      () => AdminRemoteDataSourceImpl(firestore: sl(), storage: sl()),
+    )
+    ..registerLazySingleton<AdminRepository>(() => AdminRepositoryImpl(sl()))
+    ..registerFactory(() => AdminProductsCubit(sl()))
+    ..registerFactory(() => AdminCategoriesCubit(sl()))
+    ..registerFactory(() => AdminUsersCubit(sl()));
 }

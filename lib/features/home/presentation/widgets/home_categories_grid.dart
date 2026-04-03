@@ -30,7 +30,7 @@ class HomeCategoriesGrid extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 scrollDirection: Axis.horizontal,
                 itemCount: state.categories.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 16),
+                separatorBuilder: (_, _) => const SizedBox(width: 16),
                 itemBuilder: (_, index) {
                   final category = state.categories[index];
                   final isSelected = state.selectedCategoryId == category.id;
@@ -85,7 +85,7 @@ class _CategoryItem extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: category.imageUrl,
                   fit: BoxFit.cover,
-                  placeholder: (_, __) => const ColoredBox(
+                  placeholder: (_, _) => const ColoredBox(
                     color: AppColors.surfaceVariant,
                     child: Icon(
                       Icons.eco_rounded,
@@ -93,7 +93,7 @@ class _CategoryItem extends StatelessWidget {
                       size: 28,
                     ),
                   ),
-                  errorWidget: (_, __, ___) => const ColoredBox(
+                  errorWidget: (_, _, _) => const ColoredBox(
                     color: AppColors.surfaceVariant,
                     child: Icon(
                       Icons.eco_rounded,

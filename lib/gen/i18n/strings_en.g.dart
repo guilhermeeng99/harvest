@@ -54,6 +54,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsProfileEn profile = TranslationsProfileEn._(_root);
 	late final TranslationsAddressEn address = TranslationsAddressEn._(_root);
 	late final TranslationsNotificationsEn notifications = TranslationsNotificationsEn._(_root);
+	late final TranslationsAdminEn admin = TranslationsAdminEn._(_root);
 }
 
 // Path: app
@@ -126,6 +127,9 @@ class TranslationsGeneralEn {
 
 	/// en: 'or'
 	String get or => 'or';
+
+	/// en: 'This field is required'
+	String get required => 'This field is required';
 }
 
 // Path: onboarding
@@ -576,6 +580,108 @@ class TranslationsNotificationsEn {
 	String get markAllRead => 'Mark all read';
 }
 
+// Path: admin
+class TranslationsAdminEn {
+	TranslationsAdminEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Admin Panel'
+	String get title => 'Admin Panel';
+
+	/// en: 'Products'
+	String get products => 'Products';
+
+	/// en: 'Categories'
+	String get categories => 'Categories';
+
+	/// en: 'Users'
+	String get users => 'Users';
+
+	/// en: 'Add Product'
+	String get addProduct => 'Add Product';
+
+	/// en: 'Edit Product'
+	String get editProduct => 'Edit Product';
+
+	/// en: 'Add Category'
+	String get addCategory => 'Add Category';
+
+	/// en: 'Edit Category'
+	String get editCategory => 'Edit Category';
+
+	/// en: 'Confirm Delete'
+	String get confirmDelete => 'Confirm Delete';
+
+	/// en: 'No products yet'
+	String get noProducts => 'No products yet';
+
+	/// en: 'No categories yet'
+	String get noCategories => 'No categories yet';
+
+	/// en: 'No users yet'
+	String get noUsers => 'No users yet';
+
+	/// en: 'Name'
+	String get productName => 'Name';
+
+	/// en: 'Description'
+	String get productDescription => 'Description';
+
+	/// en: 'Price'
+	String get productPrice => 'Price';
+
+	/// en: 'Unit'
+	String get productUnit => 'Unit';
+
+	/// en: 'Category'
+	String get productCategory => 'Category';
+
+	/// en: 'Farm'
+	String get productFarm => 'Farm';
+
+	/// en: 'Stock'
+	String get productStock => 'Stock';
+
+	/// en: 'Featured'
+	String get productFeatured => 'Featured';
+
+	/// en: 'Organic'
+	String get productOrganic => 'Organic';
+
+	/// en: 'Please select a category'
+	String get selectCategory => 'Please select a category';
+
+	/// en: 'Name'
+	String get categoryName => 'Name';
+
+	/// en: 'Sort Order'
+	String get categorySortOrder => 'Sort Order';
+
+	/// en: 'Nutrition Facts'
+	String get nutritionFacts => 'Nutrition Facts';
+
+	/// en: 'Calories'
+	String get calories => 'Calories';
+
+	/// en: 'Protein'
+	String get protein => 'Protein';
+
+	/// en: 'Fiber'
+	String get fiber => 'Fiber';
+
+	/// en: 'Vitamins'
+	String get vitamins => 'Vitamins';
+
+	/// en: 'Save'
+	String get save => 'Save';
+
+	/// en: 'Admin Panel'
+	String get adminPanel => 'Admin Panel';
+}
+
 // Path: onboarding.step1
 class TranslationsOnboardingStep1En {
 	TranslationsOnboardingStep1En._(this._root);
@@ -698,6 +804,7 @@ extension on Translations {
 			'general.search' => 'Search',
 			'general.close' => 'Close',
 			'general.or' => 'or',
+			'general.required' => 'This field is required',
 			'onboarding.step1.title' => 'Place Your Order',
 			'onboarding.step1.description' => 'Browse fresh produce from local farms and add your favorites to the cart.',
 			'onboarding.step2.title' => 'Farmers Harvest',
@@ -826,6 +933,37 @@ extension on Translations {
 			'notifications.empty' => 'No notifications',
 			'notifications.emptySubtitle' => 'You\'re all caught up!',
 			'notifications.markAllRead' => 'Mark all read',
+			'admin.title' => 'Admin Panel',
+			'admin.products' => 'Products',
+			'admin.categories' => 'Categories',
+			'admin.users' => 'Users',
+			'admin.addProduct' => 'Add Product',
+			'admin.editProduct' => 'Edit Product',
+			'admin.addCategory' => 'Add Category',
+			'admin.editCategory' => 'Edit Category',
+			'admin.confirmDelete' => 'Confirm Delete',
+			'admin.noProducts' => 'No products yet',
+			'admin.noCategories' => 'No categories yet',
+			'admin.noUsers' => 'No users yet',
+			'admin.productName' => 'Name',
+			'admin.productDescription' => 'Description',
+			'admin.productPrice' => 'Price',
+			'admin.productUnit' => 'Unit',
+			'admin.productCategory' => 'Category',
+			'admin.productFarm' => 'Farm',
+			'admin.productStock' => 'Stock',
+			'admin.productFeatured' => 'Featured',
+			'admin.productOrganic' => 'Organic',
+			'admin.selectCategory' => 'Please select a category',
+			'admin.categoryName' => 'Name',
+			'admin.categorySortOrder' => 'Sort Order',
+			'admin.nutritionFacts' => 'Nutrition Facts',
+			'admin.calories' => 'Calories',
+			'admin.protein' => 'Protein',
+			'admin.fiber' => 'Fiber',
+			'admin.vitamins' => 'Vitamins',
+			'admin.save' => 'Save',
+			'admin.adminPanel' => 'Admin Panel',
 			_ => null,
 		};
 	}

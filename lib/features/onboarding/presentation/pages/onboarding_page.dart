@@ -17,7 +17,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final _controller = PageController();
   int _currentPage = 0;
 
-  static const _icons = [
+  static const List<IconData> _icons = [
     Icons.shopping_basket_outlined,
     Icons.agriculture_outlined,
     Icons.local_shipping_outlined,

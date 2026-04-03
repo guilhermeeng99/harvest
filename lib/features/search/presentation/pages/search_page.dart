@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -63,7 +65,7 @@ class _SearchViewState extends State<_SearchView> {
                         icon: const Icon(Icons.close),
                         onPressed: () {
                           _searchController.clear();
-                          context.read<SearchCubit>().search('');
+                          unawaited(context.read<SearchCubit>().search(''));
                         },
                       );
                     },
@@ -246,7 +248,7 @@ class _LoadingGrid extends StatelessWidget {
         childAspectRatio: 0.72,
       ),
       itemCount: 6,
-      itemBuilder: (_, __) => const ProductCardShimmer(),
+      itemBuilder: (_, _) => const ProductCardShimmer(),
     );
   }
 }

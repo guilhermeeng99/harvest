@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -53,7 +55,7 @@ class AddressSelectionPage extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(20),
             itemCount: state.addresses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, _) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final address = state.addresses[index];
               final isSelected = address.id == state.selectedAddress?.id;
@@ -65,10 +67,14 @@ class AddressSelectionPage extends StatelessWidget {
                     '${address.city}, ${address.state} - ${address.zipCode}',
                 isSelected: isSelected,
                 onTap: () {
-                  context.read<AddressCubit>().setDefault(address.id);
+                  unawaited(
+                    context.read<AddressCubit>().setDefault(address.id),
+                  );
                 },
                 onDelete: () {
-                  context.read<AddressCubit>().deleteAddress(address.id);
+                  unawaited(
+                    context.read<AddressCubit>().deleteAddress(address.id),
+                  );
                 },
               );
             },

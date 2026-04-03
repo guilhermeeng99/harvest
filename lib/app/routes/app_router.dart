@@ -4,8 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/widgets/shell_scaffold.dart';
+import 'package:harvest/core/constants/admin_constants.dart';
 import 'package:harvest/features/address/presentation/pages/add_address_page.dart';
 import 'package:harvest/features/address/presentation/pages/address_selection_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_categories_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_category_form_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_product_form_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_products_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_users_page.dart';
+import 'package:harvest/features/admin/presentation/widgets/admin_scaffold.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_up_page.dart';
@@ -31,36 +38,40 @@ GoRouter createRouter(AuthBloc authBloc) {
           state.matchedLocation == AppRoutes.signIn ||
           state.matchedLocation == AppRoutes.signUp ||
           state.matchedLocation == AppRoutes.onboarding;
+      final isAdminRoute = state.matchedLocation.startsWith(AppRoutes.admin);
 
       if (!isAuth && !isAuthRoute) return AppRoutes.signIn;
       if (isAuth && isAuthRoute) return AppRoutes.home;
+      if (isAdminRoute && authState.user?.email != AdminConstants.adminEmail) {
+        return AppRoutes.home;
+      }
       return null;
     },
     refreshListenable: _AuthNotifier(authBloc),
     routes: [
       GoRoute(
         path: AppRoutes.onboarding,
-        builder: (_, __) => const OnboardingPage(),
+        builder: (_, _) => const OnboardingPage(),
       ),
-      GoRoute(path: AppRoutes.signIn, builder: (_, __) => const SignInPage()),
-      GoRoute(path: AppRoutes.signUp, builder: (_, __) => const SignUpPage()),
+      GoRoute(path: AppRoutes.signIn, builder: (_, _) => const SignInPage()),
+      GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpPage()),
       ShellRoute(
         builder: (_, state, child) =>
             ShellScaffold(currentPath: state.matchedLocation, child: child),
         routes: [
-          GoRoute(path: AppRoutes.home, builder: (_, __) => const HomePage()),
+          GoRoute(path: AppRoutes.home, builder: (_, _) => const HomePage()),
           GoRoute(
             path: AppRoutes.search,
-            builder: (_, __) => const SearchPage(),
+            builder: (_, _) => const SearchPage(),
           ),
-          GoRoute(path: AppRoutes.cart, builder: (_, __) => const CartPage()),
+          GoRoute(path: AppRoutes.cart, builder: (_, _) => const CartPage()),
           GoRoute(
             path: AppRoutes.orders,
-            builder: (_, __) => const OrdersPage(),
+            builder: (_, _) => const OrdersPage(),
           ),
           GoRoute(
             path: AppRoutes.profile,
-            builder: (_, __) => const ProfilePage(),
+            builder: (_, _) => const ProfilePage(),
           ),
         ],
       ),
@@ -73,26 +84,70 @@ GoRouter createRouter(AuthBloc authBloc) {
       ),
       GoRoute(
         path: AppRoutes.checkout,
-        builder: (_, __) => BlocProvider(
+        builder: (_, _) => BlocProvider(
           create: (_) => sl<CheckoutBloc>(),
           child: const CheckoutPage(),
         ),
       ),
       GoRoute(
         path: AppRoutes.orderConfirmation,
-        builder: (_, __) => const OrderConfirmationPage(),
+        builder: (_, _) => const OrderConfirmationPage(),
       ),
       GoRoute(
         path: AppRoutes.addresses,
-        builder: (_, __) => const AddressSelectionPage(),
+        builder: (_, _) => const AddressSelectionPage(),
       ),
       GoRoute(
         path: AppRoutes.addressAdd,
-        builder: (_, __) => const AddAddressPage(),
+        builder: (_, _) => const AddAddressPage(),
       ),
       GoRoute(
         path: AppRoutes.notifications,
-        builder: (_, __) => const NotificationsPage(),
+        builder: (_, _) => const NotificationsPage(),
+      ),
+      ShellRoute(
+        builder: (_, state, child) =>
+            AdminScaffold(currentPath: state.matchedLocation, child: child),
+        routes: [
+          GoRoute(
+            path: AppRoutes.admin,
+            redirect: (_, _) => AppRoutes.adminProducts,
+          ),
+          GoRoute(
+            path: AppRoutes.adminProducts,
+            builder: (_, _) => const AdminProductsPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.adminCategories,
+            builder: (_, _) => const AdminCategoriesPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.adminUsers,
+            builder: (_, _) => const AdminUsersPage(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: AppRoutes.adminProductAdd,
+        builder: (_, _) => const AdminProductFormPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.adminProductEdit,
+        builder: (_, state) {
+          final id = state.pathParameters['id']!;
+          return AdminProductFormPage(productId: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.adminCategoryAdd,
+        builder: (_, _) => const AdminCategoryFormPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.adminCategoryEdit,
+        builder: (_, state) {
+          final id = state.pathParameters['id']!;
+          return AdminCategoryFormPage(categoryId: id);
+        },
       ),
     ],
   );

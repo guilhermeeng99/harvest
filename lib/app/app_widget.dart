@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harvest/app/di/injection_container.dart';
@@ -27,16 +29,17 @@ class _HarvestAppState extends State<HarvestApp> {
     super.initState();
     _authBloc = sl<AuthBloc>()..add(const AuthCheckRequested());
     _cartBloc = sl<CartBloc>();
-    _addressCubit = sl<AddressCubit>()..loadAddresses();
+    _addressCubit = sl<AddressCubit>();
+    unawaited(_addressCubit.loadAddresses());
     _notificationsCubit = sl<NotificationsCubit>()..loadNotifications();
   }
 
   @override
   void dispose() {
-    _authBloc.close();
-    _cartBloc.close();
-    _addressCubit.close();
-    _notificationsCubit.close();
+    unawaited(_authBloc.close());
+    unawaited(_cartBloc.close());
+    unawaited(_addressCubit.close());
+    unawaited(_notificationsCubit.close());
     super.dispose();
   }
 

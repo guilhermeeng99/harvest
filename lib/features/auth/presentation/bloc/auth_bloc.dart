@@ -111,8 +111,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   @override
-  Future<void> close() {
-    _authSubscription?.cancel();
+  Future<void> close() async {
+    await _authSubscription?.cancel();
     return super.close();
   }
 }

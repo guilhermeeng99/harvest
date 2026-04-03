@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harvest/features/home/domain/entities/product_entity.dart';
@@ -56,14 +58,14 @@ class SearchCubit extends Cubit<SearchState> {
     );
 
     if (state.query.isNotEmpty) {
-      search(state.query);
+      unawaited(search(state.query));
     }
   }
 
   void clearFilters() {
     emit(SearchState(query: state.query));
     if (state.query.isNotEmpty) {
-      search(state.query);
+      unawaited(search(state.query));
     }
   }
 }
