@@ -21,51 +21,7 @@ class OrderConfirmationPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: AppColors.success.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const FaIcon(
-                          FontAwesomeIcons.circleCheck,
-                          size: 56,
-                          color: AppColors.success,
-                        ),
-                      ),
-                      Positioned(
-                        right: 4,
-                        bottom: 4,
-                        child: Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.background,
-                              width: 2,
-                            ),
-                          ),
-                          child: const Center(
-                            child: FaIcon(
-                              FontAwesomeIcons.seedling,
-                              size: 14,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const _SeedlingIcon(),
                 const SizedBox(height: 32),
                 Text(
                   t.checkout.confirmation.title,
@@ -105,6 +61,44 @@ class OrderConfirmationPage extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _SeedlingIcon extends StatelessWidget {
+  const _SeedlingIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        color: AppColors.success.withValues(alpha: 0.1),
+        shape: BoxShape.circle,
+      ),
+      child: const Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            top: 0,
+            right: -6,
+            child: FaIcon(
+              FontAwesomeIcons.circleCheck,
+              size: 40,
+              color: AppColors.success,
+            ),
+          ),
+          Center(
+            child: FaIcon(
+              FontAwesomeIcons.seedling,
+              size: 60,
+              color: AppColors.primary,
+            ),
+          ),
+        ],
       ),
     );
   }

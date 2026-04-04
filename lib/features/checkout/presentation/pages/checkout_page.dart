@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +12,9 @@ import 'package:harvest/features/address/presentation/cubit/address_cubit.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
 import 'package:harvest/features/checkout/presentation/bloc/checkout_bloc.dart';
+import 'package:harvest/features/checkout/presentation/widgets/checkout_address_section.dart';
+import 'package:harvest/features/checkout/presentation/widgets/checkout_payment_option.dart';
+import 'package:harvest/features/checkout/presentation/widgets/checkout_summary_row.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -79,11 +82,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 style: AppTypography.titleLarge,
               ),
               const SizedBox(height: 16),
-              const _AddressSection(),
+              const CheckoutAddressSection(),
               const SizedBox(height: 28),
               Text(t.checkout.paymentMethod, style: AppTypography.titleLarge),
               const SizedBox(height: 12),
-              _PaymentOption(
+              CheckoutPaymentOption(
                 label: t.checkout.creditCard,
                 icon: const FaIcon(
                   FontAwesomeIcons.creditCard,
@@ -93,7 +96,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onTap: () => setState(() => _paymentMethod = 'Credit Card'),
               ),
               const SizedBox(height: 8),
-              _PaymentOption(
+              CheckoutPaymentOption(
                 label: t.checkout.applePay,
                 icon: const FaIcon(
                   FontAwesomeIcons.apple,
@@ -103,7 +106,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onTap: () => setState(() => _paymentMethod = 'Apple Pay'),
               ),
               const SizedBox(height: 8),
-              _PaymentOption(
+              CheckoutPaymentOption(
                 label: t.checkout.googlePay,
                 icon: const FaIcon(
                   FontAwesomeIcons.googlePay,
@@ -119,19 +122,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 builder: (context, cartState) {
                   return Column(
                     children: [
-                      _SummaryRow(
+                      CheckoutSummaryRow(
                         label: t.cart.subtotal,
                         value: CurrencyFormatter.format(cartState.subtotal),
                       ),
                       const SizedBox(height: 4),
-                      _SummaryRow(
+                      CheckoutSummaryRow(
                         label: t.cart.deliveryFee,
                         value: cartState.deliveryFee == 0
                             ? t.cart.free
                             : CurrencyFormatter.format(cartState.deliveryFee),
                       ),
                       const Divider(height: 20),
-                      _SummaryRow(
+                      CheckoutSummaryRow(
                         label: t.cart.total,
                         value: CurrencyFormatter.format(cartState.total),
                         isBold: true,
@@ -156,193 +159,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _AddressSection extends StatelessWidget {
-  const _AddressSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AddressCubit, AddressState>(
-      builder: (context, state) {
-        if (state.status == AddressStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final address = state.selectedAddress;
-
-        if (address == null) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.divider),
-            ),
-            child: Column(
-              children: [
-                const FaIcon(
-                  FontAwesomeIcons.locationDot,
-                  size: 32,
-                  color: AppColors.onBackgroundLight,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  t.checkout.noAddress,
-                  style: AppTypography.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  t.checkout.noAddressSubtitle,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.onBackgroundLight,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                HarvestButton(
-                  label: t.checkout.addAddress,
-                  onPressed: () => context.push(AppRoutes.addressAdd),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.divider),
-          ),
-          child: Row(
-            children: [
-              const FaIcon(
-                FontAwesomeIcons.locationDot,
-                size: 20,
-                color: AppColors.primary,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (address.label != null)
-                      Text(
-                        address.label!,
-                        style: AppTypography.titleMedium,
-                      ),
-                    Text(
-                      address.shortAddress,
-                      style: AppTypography.bodyMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      '${address.city}, ${address.state} - ${address.zipCode}',
-                      style: AppTypography.bodySmall.copyWith(
-                        color: AppColors.onBackgroundLight,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                onPressed: () => context.push(AppRoutes.addresses),
-                child: Text(
-                  t.checkout.changeAddress,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _PaymentOption extends StatelessWidget {
-  const _PaymentOption({
-    required this.label,
-    required this.icon,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final Widget icon;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.divider,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            icon,
-            const SizedBox(width: 12),
-            Text(label, style: AppTypography.bodyLarge),
-            const Spacer(),
-            if (isSelected)
-              const FaIcon(
-                FontAwesomeIcons.circleCheck,
-                color: AppColors.primary,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({
-    required this.label,
-    required this.value,
-    this.isBold = false,
-  });
-
-  final String label;
-  final String value;
-  final bool isBold;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: isBold
-              ? AppTypography.titleMedium
-              : AppTypography.bodyMedium.copyWith(
-                  color: AppColors.onBackgroundLight,
-                ),
-        ),
-        Text(
-          value,
-          style: isBold ? AppTypography.priceMedium : AppTypography.bodyMedium,
-        ),
-      ],
     );
   }
 }

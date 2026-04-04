@@ -67,14 +67,6 @@ melos:
       description: Build and deploy Flutter web to GitHub Pages.
       run: powershell -ExecutionPolicy Bypass -File scripts/deploy_web.ps1
 
-    analyze:
-      description: Run static analysis.
-      run: flutter analyze
-
-    format:
-      description: Check formatting.
-      run: dart format --set-exit-if-changed .
-
     gen:i18n:
       description: Generate i18n files with slang.
       run: dart run slang

@@ -26,8 +26,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl({
     required FirebaseAuth firebaseAuth,
     required FirebaseFirestore firestore,
-  })  : _firebaseAuth = firebaseAuth,
-        _firestore = firestore;
+  }) : _firebaseAuth = firebaseAuth,
+       _firestore = firestore;
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
@@ -46,13 +46,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (user == null) throw const AuthException('User not found');
 
       final doc = await _firestore.collection('users').doc(user.uid).get();
-      if (doc.exists) return UserModel.fromFirestore(doc);
+      final adminDoc = await _firestore
+          .collection('admins')
+          .doc(user.uid)
+          .get();
+      final isAdmin = adminDoc.exists;
+
+      if (doc.exists) return UserModel.fromFirestore(doc, isAdmin: isAdmin);
 
       return UserModel(
         id: user.uid,
         email: user.email ?? email,
         name: user.displayName,
         photoUrl: user.photoURL,
+        isAdmin: isAdmin,
       );
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.message ?? 'Authentication failed');
@@ -107,25 +114,34 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (user == null) return null;
 
     final doc = await _firestore.collection('users').doc(user.uid).get();
-    if (doc.exists) return UserModel.fromFirestore(doc);
+    final adminDoc = await _firestore.collection('admins').doc(user.uid).get();
+    final isAdmin = adminDoc.exists;
+
+    if (doc.exists) return UserModel.fromFirestore(doc, isAdmin: isAdmin);
 
     return UserModel(
       id: user.uid,
       email: user.email ?? '',
       name: user.displayName,
       photoUrl: user.photoURL,
+      isAdmin: isAdmin,
     );
   }
 
   @override
   Stream<UserModel?> get authStateChanges {
-    return _firebaseAuth.authStateChanges().map((user) {
+    return _firebaseAuth.authStateChanges().asyncMap((user) async {
       if (user == null) return null;
+      final adminDoc = await _firestore
+          .collection('admins')
+          .doc(user.uid)
+          .get();
       return UserModel(
         id: user.uid,
         email: user.email ?? '',
         name: user.displayName,
         photoUrl: user.photoURL,
+        isAdmin: adminDoc.exists,
       );
     });
   }

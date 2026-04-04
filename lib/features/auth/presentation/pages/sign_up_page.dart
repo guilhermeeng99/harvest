@@ -3,13 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
-import 'package:harvest/app/theme/app_colors.dart';
-import 'package:harvest/app/theme/app_typography.dart';
-import 'package:harvest/app/widgets/harvest_button.dart';
 import 'package:harvest/app/widgets/harvest_text_field.dart';
-import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/core/utils/validators.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:harvest/features/auth/presentation/widgets/auth_layout.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -48,122 +45,52 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state.status == AuthStatus.error && state.errorMessage != null) {
-            context.showErrorSnackBar(state.errorMessage!);
-          }
-        },
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const FaIcon(
-                        FontAwesomeIcons.seedling,
-                        size: 56,
-                        color: AppColors.primary,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        t.auth.createAccount,
-                        style: AppTypography.headlineMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        t.auth.signUpSubtitle,
-                        style: AppTypography.bodyMedium.copyWith(
-                          color: AppColors.onBackgroundLight,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 40),
-                      HarvestTextField(
-                        controller: _nameController,
-                        label: t.auth.name,
-                        hint: t.auth.nameHint,
-                        prefixIcon: const FaIcon(
-                          FontAwesomeIcons.user,
-                        ),
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.name,
-                      ),
-                      const SizedBox(height: 16),
-                      HarvestTextField(
-                        controller: _emailController,
-                        label: t.auth.email,
-                        hint: t.auth.emailHint,
-                        prefixIcon: const FaIcon(
-                          FontAwesomeIcons.envelope,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        validator: Validators.email,
-                      ),
-                      const SizedBox(height: 16),
-                      HarvestTextField(
-                        controller: _passwordController,
-                        label: t.auth.password,
-                        hint: t.auth.passwordHint,
-                        prefixIcon: const FaIcon(
-                          FontAwesomeIcons.lock,
-                        ),
-                        obscureText: _obscurePassword,
-                        textInputAction: TextInputAction.done,
-                        validator: Validators.password,
-                        suffixIcon: IconButton(
-                          icon: FaIcon(
-                            _obscurePassword
-                                ? FontAwesomeIcons.eye
-                                : FontAwesomeIcons.eyeSlash,
-                          ),
-                          onPressed: () => setState(
-                            () => _obscurePassword = !_obscurePassword,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          return HarvestButton(
-                            label: t.auth.signUp,
-                            onPressed: _onSignUp,
-                            isLoading: state.status == AuthStatus.loading,
-                            width: double.infinity,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            t.auth.hasAccount,
-                            style: AppTypography.bodyMedium,
-                          ),
-                          TextButton(
-                            onPressed: () => context.go(AppRoutes.signIn),
-                            child: Text(t.auth.signIn),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+    return AuthLayout(
+      formKey: _formKey,
+      title: t.auth.createAccount,
+      subtitle: t.auth.signUpSubtitle,
+      fields: [
+        HarvestTextField(
+          controller: _nameController,
+          label: t.auth.name,
+          hint: t.auth.nameHint,
+          prefixIcon: const FaIcon(FontAwesomeIcons.user),
+          textInputAction: TextInputAction.next,
+          validator: Validators.name,
+        ),
+        HarvestTextField(
+          controller: _emailController,
+          label: t.auth.email,
+          hint: t.auth.emailHint,
+          prefixIcon: const FaIcon(FontAwesomeIcons.envelope),
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
+          validator: Validators.email,
+        ),
+        HarvestTextField(
+          controller: _passwordController,
+          label: t.auth.password,
+          hint: t.auth.passwordHint,
+          prefixIcon: const FaIcon(FontAwesomeIcons.lock),
+          obscureText: _obscurePassword,
+          textInputAction: TextInputAction.done,
+          validator: Validators.password,
+          suffixIcon: IconButton(
+            icon: FaIcon(
+              _obscurePassword
+                  ? FontAwesomeIcons.eye
+                  : FontAwesomeIcons.eyeSlash,
             ),
+            onPressed: () =>
+                setState(() => _obscurePassword = !_obscurePassword),
           ),
         ),
-      ),
+      ],
+      buttonLabel: t.auth.signUp,
+      onSubmit: _onSignUp,
+      bottomText: t.auth.hasAccount,
+      bottomActionLabel: t.auth.signIn,
+      onBottomAction: () => context.go(AppRoutes.signIn),
     );
   }
 }

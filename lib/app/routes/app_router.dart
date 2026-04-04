@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/widgets/shell_scaffold.dart';
-import 'package:harvest/core/constants/admin_constants.dart';
 import 'package:harvest/features/address/presentation/pages/add_address_page.dart';
 import 'package:harvest/features/address/presentation/pages/address_selection_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_categories_page.dart';
@@ -44,7 +43,7 @@ GoRouter createRouter(AuthBloc authBloc) {
 
       if (!isAuth && !isAuthRoute) return AppRoutes.signIn;
       if (isAuth && isAuthRoute) return AppRoutes.home;
-      if (isAdminRoute && authState.user?.email != AdminConstants.adminEmail) {
+      if (isAdminRoute && authState.user?.isAdmin != true) {
         return AppRoutes.home;
       }
       return null;

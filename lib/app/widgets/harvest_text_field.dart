@@ -44,7 +44,18 @@ class HarvestTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        prefixIcon: prefixIcon,
+        prefixIcon: prefixIcon != null
+            ? Padding(
+                padding: const EdgeInsetsDirectional.only(start: 16, end: 8),
+                child: IconTheme.merge(
+                  data: const IconThemeData(size: 18),
+                  child: prefixIcon!,
+                ),
+              )
+            : null,
+        prefixIconConstraints: prefixIcon != null
+            ? const BoxConstraints()
+            : null,
         suffixIcon: suffixIcon,
       ),
     );

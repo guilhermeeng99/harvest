@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +8,7 @@ import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/features/address/presentation/cubit/address_cubit.dart';
+import 'package:harvest/features/address/presentation/widgets/address_card.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class AddressSelectionPage extends StatelessWidget {
@@ -65,7 +66,7 @@ class AddressSelectionPage extends StatelessWidget {
               final address = state.addresses[index];
               final isSelected = address.id == state.selectedAddress?.id;
 
-              return _AddressCard(
+              return AddressCard(
                 label: address.label,
                 address: address.shortAddress,
                 fullAddress:
@@ -85,85 +86,6 @@ class AddressSelectionPage extends StatelessWidget {
             },
           );
         },
-      ),
-    );
-  }
-}
-
-class _AddressCard extends StatelessWidget {
-  const _AddressCard({
-    required this.address,
-    required this.fullAddress,
-    required this.isSelected,
-    required this.onTap,
-    required this.onDelete,
-    this.label,
-  });
-
-  final String? label;
-  final String address;
-  final String fullAddress;
-  final bool isSelected;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.divider,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            FaIcon(
-              FontAwesomeIcons.locationDot,
-              size: 20,
-              color: isSelected
-                  ? AppColors.primary
-                  : AppColors.onBackgroundLight,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (label != null && label!.isNotEmpty)
-                    Text(
-                      label!,
-                      style: AppTypography.labelLarge.copyWith(
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  Text(address, style: AppTypography.bodyLarge),
-                  const SizedBox(height: 2),
-                  Text(fullAddress, style: AppTypography.bodySmall),
-                ],
-              ),
-            ),
-            if (isSelected)
-              const FaIcon(
-                FontAwesomeIcons.circleCheck,
-                color: AppColors.primary,
-              )
-            else
-              IconButton(
-                icon: const FaIcon(
-                  FontAwesomeIcons.trashCan,
-                  color: AppColors.onBackgroundLight,
-                  size: 18,
-                ),
-                onPressed: onDelete,
-              ),
-          ],
-        ),
       ),
     );
   }

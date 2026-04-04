@@ -3,8 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
-import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/app/widgets/harvest_button.dart';
+import 'package:harvest/features/onboarding/presentation/widgets/onboarding_page_indicator.dart';
+import 'package:harvest/features/onboarding/presentation/widgets/onboarding_step.dart';
+import 'package:harvest/features/onboarding/presentation/widgets/onboarding_step_content.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -36,18 +38,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
     ),
   ];
 
-  List<_OnboardingStep> get _steps => [
-    _OnboardingStep(
+  List<OnboardingStep> get _steps => [
+    OnboardingStep(
       icon: _icons[0],
       title: t.onboarding.step1.title,
       description: t.onboarding.step1.description,
     ),
-    _OnboardingStep(
+    OnboardingStep(
       icon: _icons[1],
       title: t.onboarding.step2.title,
       description: t.onboarding.step2.description,
     ),
-    _OnboardingStep(
+    OnboardingStep(
       icon: _icons[2],
       title: t.onboarding.step3.title,
       description: t.onboarding.step3.description,
@@ -79,13 +81,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 controller: _controller,
                 onPageChanged: (index) => setState(() => _currentPage = index),
                 itemCount: _steps.length,
-                itemBuilder: (_, index) {
-                  final step = _steps[index];
-                  return _StepContent(step: step);
-                },
+                itemBuilder: (_, index) =>
+                    OnboardingStepContent(step: _steps[index]),
               ),
             ),
-            _PageIndicator(
+            OnboardingPageIndicator(
               count: _steps.length,
               current: _currentPage,
             ),
@@ -111,86 +111,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _OnboardingStep {
-  const _OnboardingStep({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-
-  final Widget icon;
-  final String title;
-  final String description;
-}
-
-class _StepContent extends StatelessWidget {
-  const _StepContent({required this.step});
-
-  final _OnboardingStep step;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
-            ),
-            child: step.icon,
-          ),
-          const SizedBox(height: 48),
-          Text(
-            step.title,
-            style: AppTypography.headlineMedium,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            step.description,
-            style: AppTypography.bodyLarge.copyWith(
-              color: AppColors.onBackgroundLight,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PageIndicator extends StatelessWidget {
-  const _PageIndicator({required this.count, required this.current});
-
-  final int count;
-  final int current;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(count, (index) {
-        final isActive = index == current;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: isActive ? 28 : 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: isActive ? AppColors.primary : AppColors.divider,
-            borderRadius: BorderRadius.circular(4),
-          ),
-        );
-      }),
     );
   }
 }
