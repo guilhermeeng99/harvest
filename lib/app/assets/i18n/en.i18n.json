@@ -75,6 +75,7 @@
   "search": {
     "title": "Search",
     "hint": "Search fruits, vegetables...",
+    "browseCategories": "Categories",
     "filters": "Filters",
     "sortBy": "Sort by",
     "priceRange": "Price Range",
@@ -82,7 +83,8 @@
     "organicOnly": "Organic only",
     "applyFilters": "Apply Filters",
     "clearFilters": "Clear Filters",
-    "resultsFor": "Results for \"$query\""
+    "resultsFor": "Results for \"$query\"",
+    "productsIn": "Products in $category"
   },
   "product": {
     "addToCart": "Add to Cart",
@@ -182,7 +184,17 @@
     "title": "Notifications",
     "empty": "No notifications",
     "emptySubtitle": "You're all caught up!",
-    "markAllRead": "Mark all read"
+    "markAllRead": "Mark all read",
+    "welcomeTitle": "Welcome to Harvest!",
+    "welcomeBody": "Start exploring fresh produce from local farms delivered to your door.",
+    "weekendSpecialTitle": "Weekend Special",
+    "weekendSpecialBody": "Get 20% off on all organic fruits this weekend. Use code FRESH20.",
+    "newFarmsTitle": "New Farms Added",
+    "newFarmsBody": "We just partnered with 5 new local farms. Check out their fresh produce!",
+    "freeDeliveryTitle": "Free Delivery",
+    "freeDeliveryBody": "Free delivery on large orders this week. Don't miss out!",
+    "seasonalProduceTitle": "Seasonal Produce",
+    "seasonalProduceBody": "Spring vegetables are now available! Fresh asparagus, peas, and more."
   },
   "admin": {
     "title": "Admin Panel",
@@ -215,6 +227,10 @@
     "fiber": "Fiber",
     "vitamins": "Vitamins",
     "save": "Save",
-    "adminPanel": "Admin Panel"
+    "adminPanel": "Admin Panel",
+    "tapToSelectImage": "Tap to select image",
+    "image": "Image",
+    "sortLabel": "Sort: $order",
+    "stockLabel": "Stock: $count"
   }
 }

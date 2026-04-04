@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -35,11 +36,11 @@ class _SignInPageState extends State<SignInPage> {
     if (!_formKey.currentState!.validate()) return;
 
     context.read<AuthBloc>().add(
-          AuthSignInRequested(
-            email: _emailController.text.trim(),
-            password: _passwordController.text,
-          ),
-        );
+      AuthSignInRequested(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -63,9 +64,9 @@ class _SignInPageState extends State<SignInPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Icon(
-                        Icons.eco,
-                        size: 64,
+                      const FaIcon(
+                        FontAwesomeIcons.seedling,
+                        size: 56,
                         color: AppColors.primary,
                       ),
                       const SizedBox(height: 16),
@@ -87,7 +88,9 @@ class _SignInPageState extends State<SignInPage> {
                         controller: _emailController,
                         label: t.auth.email,
                         hint: t.auth.emailHint,
-                        prefixIcon: Icons.email_outlined,
+                        prefixIcon: const FaIcon(
+                          FontAwesomeIcons.envelope,
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: Validators.email,
@@ -97,15 +100,17 @@ class _SignInPageState extends State<SignInPage> {
                         controller: _passwordController,
                         label: t.auth.password,
                         hint: t.auth.passwordHint,
-                        prefixIcon: Icons.lock_outlined,
+                        prefixIcon: const FaIcon(
+                          FontAwesomeIcons.lock,
+                        ),
                         obscureText: _obscurePassword,
                         textInputAction: TextInputAction.done,
                         validator: Validators.password,
                         suffixIcon: IconButton(
-                          icon: Icon(
+                          icon: FaIcon(
                             _obscurePassword
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? FontAwesomeIcons.eye
+                                : FontAwesomeIcons.eyeSlash,
                           ),
                           onPressed: () => setState(
                             () => _obscurePassword = !_obscurePassword,

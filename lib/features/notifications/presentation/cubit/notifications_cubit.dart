@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:harvest/features/notifications/domain/entities/notification_entity.dart';
+import 'package:harvest/gen/i18n/strings.g.dart';
 
 part 'notifications_state.dart';
 
@@ -14,46 +15,36 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     final mockNotifications = [
       NotificationEntity(
         id: '1',
-        title: 'Welcome to Harvest!',
-        body:
-            'Start exploring fresh produce from local farms '
-            'delivered to your door.',
+        title: t.notifications.welcomeTitle,
+        body: t.notifications.welcomeBody,
         createdAt: now.subtract(const Duration(minutes: 30)),
         isRead: false,
       ),
       NotificationEntity(
         id: '2',
-        title: 'Weekend Special',
-        body:
-            'Get 20% off on all organic fruits this weekend. '
-            'Use code FRESH20.',
+        title: t.notifications.weekendSpecialTitle,
+        body: t.notifications.weekendSpecialBody,
         createdAt: now.subtract(const Duration(hours: 2)),
         isRead: false,
       ),
       NotificationEntity(
         id: '3',
-        title: 'New Farms Added',
-        body:
-            'We just partnered with 5 new local farms. '
-            'Check out their fresh produce!',
+        title: t.notifications.newFarmsTitle,
+        body: t.notifications.newFarmsBody,
         createdAt: now.subtract(const Duration(hours: 8)),
         isRead: true,
       ),
       NotificationEntity(
         id: '4',
-        title: 'Free Delivery',
-        body:
-            r'Orders above $30 get free delivery this week. '
-            "Don't miss out!",
+        title: t.notifications.freeDeliveryTitle,
+        body: t.notifications.freeDeliveryBody,
         createdAt: now.subtract(const Duration(days: 1)),
         isRead: true,
       ),
       NotificationEntity(
         id: '5',
-        title: 'Seasonal Produce',
-        body:
-            'Spring vegetables are now available! '
-            'Fresh asparagus, peas, and more.',
+        title: t.notifications.seasonalProduceTitle,
+        body: t.notifications.seasonalProduceBody,
         createdAt: now.subtract(const Duration(days: 2)),
         isRead: true,
       ),

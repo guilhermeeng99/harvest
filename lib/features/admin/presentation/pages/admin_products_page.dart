@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
@@ -70,19 +71,26 @@ class _AdminProductsView extends StatelessWidget {
                     subtitle: Text(
                       'R\$ ${product.price.toStringAsFixed(2)}'
                       ' · ${product.unit}'
-                      ' · Stock: ${product.stock}',
+                      ' \u00b7 '
+                      '${t.admin.stockLabel(count: product.stock.toString())}',
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit),
+                          icon: const FaIcon(
+                            FontAwesomeIcons.penToSquare,
+                            size: 18,
+                          ),
                           onPressed: () => context.push(
                             AppRoutes.adminProductEditPath(product.id),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline),
+                          icon: const FaIcon(
+                            FontAwesomeIcons.trashCan,
+                            size: 18,
+                          ),
                           onPressed: () =>
                               _confirmDelete(context, product.id, product.name),
                         ),
@@ -97,7 +105,10 @@ class _AdminProductsView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AppRoutes.adminProductAdd),
-        child: const Icon(Icons.add),
+        child: const FaIcon(
+          FontAwesomeIcons.plus,
+          size: 20,
+        ),
       ),
     );
   }

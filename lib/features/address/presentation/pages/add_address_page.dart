@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/widgets/harvest_button.dart';
@@ -80,14 +81,14 @@ class _AddAddressPageState extends State<AddAddressPage> {
               controller: _labelController,
               label: t.address.label,
               hint: t.address.labelHint,
-              prefixIcon: Icons.label_outline,
+              prefixIcon: const FaIcon(FontAwesomeIcons.tag),
               textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 16),
             HarvestTextField(
               controller: _streetController,
               label: t.address.street,
-              prefixIcon: Icons.location_on_outlined,
+              prefixIcon: const FaIcon(FontAwesomeIcons.locationDot),
               textInputAction: TextInputAction.next,
               validator: (v) =>
                   v == null || v.trim().isEmpty ? t.address.required : null,

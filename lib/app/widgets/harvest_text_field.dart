@@ -20,7 +20,7 @@ class HarvestTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? label;
   final String? hint;
-  final IconData? prefixIcon;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
@@ -44,7 +44,7 @@ class HarvestTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),
     );

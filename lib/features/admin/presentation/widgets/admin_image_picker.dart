@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:harvest/gen/i18n/strings.g.dart';
 
 class AdminImagePicker extends StatelessWidget {
   const AdminImagePicker({
@@ -52,13 +54,13 @@ class AdminImagePicker extends StatelessWidget {
   }
 
   Widget _placeholder() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.add_photo_alternate_outlined, size: 48),
-          SizedBox(height: 8),
-          Text('Tap to select image'),
+          const FaIcon(FontAwesomeIcons.camera, size: 40),
+          const SizedBox(height: 8),
+          Text(t.admin.tapToSelectImage),
         ],
       ),
     );

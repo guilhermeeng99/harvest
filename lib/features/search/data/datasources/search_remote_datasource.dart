@@ -29,15 +29,13 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
     try {
       // Firestore doesn't support full-text search natively.
       // We fetch all products and filter client-side for the demo.
-      var ref = _firestore.collection('products').limit(100);
+      var query_ = _firestore.collection('products').limit(100);
 
       if (categoryId != null && categoryId.isNotEmpty) {
-        ref =
-            ref.where('categoryId', isEqualTo: categoryId)
-                as CollectionReference<Map<String, dynamic>>;
+        query_ = query_.where('categoryId', isEqualTo: categoryId);
       }
 
-      final snapshot = await ref.get();
+      final snapshot = await query_.get();
       var products = snapshot.docs.map(ProductModel.fromFirestore).toList();
 
       if (query.isNotEmpty) {

@@ -275,6 +275,9 @@ class TranslationsSearchEn {
 	/// en: 'Search fruits, vegetables...'
 	String get hint => 'Search fruits, vegetables...';
 
+	/// en: 'Categories'
+	String get browseCategories => 'Categories';
+
 	/// en: 'Filters'
 	String get filters => 'Filters';
 
@@ -298,6 +301,9 @@ class TranslationsSearchEn {
 
 	/// en: 'Results for "$query"'
 	String resultsFor({required Object query}) => 'Results for "${query}"';
+
+	/// en: 'Products in $category'
+	String productsIn({required Object category}) => 'Products in ${category}';
 }
 
 // Path: product
@@ -578,6 +584,36 @@ class TranslationsNotificationsEn {
 
 	/// en: 'Mark all read'
 	String get markAllRead => 'Mark all read';
+
+	/// en: 'Welcome to Harvest!'
+	String get welcomeTitle => 'Welcome to Harvest!';
+
+	/// en: 'Start exploring fresh produce from local farms delivered to your door.'
+	String get welcomeBody => 'Start exploring fresh produce from local farms delivered to your door.';
+
+	/// en: 'Weekend Special'
+	String get weekendSpecialTitle => 'Weekend Special';
+
+	/// en: 'Get 20% off on all organic fruits this weekend. Use code FRESH20.'
+	String get weekendSpecialBody => 'Get 20% off on all organic fruits this weekend. Use code FRESH20.';
+
+	/// en: 'New Farms Added'
+	String get newFarmsTitle => 'New Farms Added';
+
+	/// en: 'We just partnered with 5 new local farms. Check out their fresh produce!'
+	String get newFarmsBody => 'We just partnered with 5 new local farms. Check out their fresh produce!';
+
+	/// en: 'Free Delivery'
+	String get freeDeliveryTitle => 'Free Delivery';
+
+	/// en: 'Free delivery on large orders this week. Don't miss out!'
+	String get freeDeliveryBody => 'Free delivery on large orders this week. Don\'t miss out!';
+
+	/// en: 'Seasonal Produce'
+	String get seasonalProduceTitle => 'Seasonal Produce';
+
+	/// en: 'Spring vegetables are now available! Fresh asparagus, peas, and more.'
+	String get seasonalProduceBody => 'Spring vegetables are now available! Fresh asparagus, peas, and more.';
 }
 
 // Path: admin
@@ -680,6 +716,18 @@ class TranslationsAdminEn {
 
 	/// en: 'Admin Panel'
 	String get adminPanel => 'Admin Panel';
+
+	/// en: 'Tap to select image'
+	String get tapToSelectImage => 'Tap to select image';
+
+	/// en: 'Image'
+	String get image => 'Image';
+
+	/// en: 'Sort: $order'
+	String sortLabel({required Object order}) => 'Sort: ${order}';
+
+	/// en: 'Stock: $count'
+	String stockLabel({required Object count}) => 'Stock: ${count}';
 }
 
 // Path: onboarding.step1
@@ -843,6 +891,7 @@ extension on Translations {
 			'home.allProducts' => 'All Products',
 			'search.title' => 'Search',
 			'search.hint' => 'Search fruits, vegetables...',
+			'search.browseCategories' => 'Categories',
 			'search.filters' => 'Filters',
 			'search.sortBy' => 'Sort by',
 			'search.priceRange' => 'Price Range',
@@ -851,6 +900,7 @@ extension on Translations {
 			'search.applyFilters' => 'Apply Filters',
 			'search.clearFilters' => 'Clear Filters',
 			'search.resultsFor' => ({required Object query}) => 'Results for "${query}"',
+			'search.productsIn' => ({required Object category}) => 'Products in ${category}',
 			'product.addToCart' => 'Add to Cart',
 			'product.added' => 'Added to cart!',
 			'product.description' => 'Description',
@@ -933,6 +983,16 @@ extension on Translations {
 			'notifications.empty' => 'No notifications',
 			'notifications.emptySubtitle' => 'You\'re all caught up!',
 			'notifications.markAllRead' => 'Mark all read',
+			'notifications.welcomeTitle' => 'Welcome to Harvest!',
+			'notifications.welcomeBody' => 'Start exploring fresh produce from local farms delivered to your door.',
+			'notifications.weekendSpecialTitle' => 'Weekend Special',
+			'notifications.weekendSpecialBody' => 'Get 20% off on all organic fruits this weekend. Use code FRESH20.',
+			'notifications.newFarmsTitle' => 'New Farms Added',
+			'notifications.newFarmsBody' => 'We just partnered with 5 new local farms. Check out their fresh produce!',
+			'notifications.freeDeliveryTitle' => 'Free Delivery',
+			'notifications.freeDeliveryBody' => 'Free delivery on large orders this week. Don\'t miss out!',
+			'notifications.seasonalProduceTitle' => 'Seasonal Produce',
+			'notifications.seasonalProduceBody' => 'Spring vegetables are now available! Fresh asparagus, peas, and more.',
 			'admin.title' => 'Admin Panel',
 			'admin.products' => 'Products',
 			'admin.categories' => 'Categories',
@@ -964,6 +1024,10 @@ extension on Translations {
 			'admin.vitamins' => 'Vitamins',
 			'admin.save' => 'Save',
 			'admin.adminPanel' => 'Admin Panel',
+			'admin.tapToSelectImage' => 'Tap to select image',
+			'admin.image' => 'Image',
+			'admin.sortLabel' => ({required Object order}) => 'Sort: ${order}',
+			'admin.stockLabel' => ({required Object count}) => 'Stock: ${count}',
 			_ => null,
 		};
 	}

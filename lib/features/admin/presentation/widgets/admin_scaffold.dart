@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
@@ -70,7 +71,7 @@ class _AdminScaffoldState extends State<AdminScaffold>
       appBar: AppBar(
         title: Text(i18n.title),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft, size: 18),
           onPressed: () => context.go(AppRoutes.profile),
         ),
       ),
@@ -91,18 +92,30 @@ class _AdminScaffoldState extends State<AdminScaffold>
             },
             destinations: [
               NavigationRailDestination(
-                icon: const Icon(Icons.inventory_2_outlined),
-                selectedIcon: const Icon(Icons.inventory_2),
+                icon: const FaIcon(
+                  FontAwesomeIcons.boxesStacked,
+                  size: 20,
+                ),
+                selectedIcon: const FaIcon(
+                  FontAwesomeIcons.boxesStacked,
+                  size: 20,
+                ),
                 label: Text(i18n.products),
               ),
               NavigationRailDestination(
-                icon: const Icon(Icons.category_outlined),
-                selectedIcon: const Icon(Icons.category),
+                icon: const FaIcon(FontAwesomeIcons.tags, size: 20),
+                selectedIcon: const FaIcon(
+                  FontAwesomeIcons.tags,
+                  size: 20,
+                ),
                 label: Text(i18n.categories),
               ),
               NavigationRailDestination(
-                icon: const Icon(Icons.people_outlined),
-                selectedIcon: const Icon(Icons.people),
+                icon: const FaIcon(FontAwesomeIcons.users, size: 20),
+                selectedIcon: const FaIcon(
+                  FontAwesomeIcons.users,
+                  size: 20,
+                ),
                 label: Text(i18n.users),
               ),
             ],

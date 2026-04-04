@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -43,9 +44,9 @@ class _EmptyCart extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.shopping_bag_outlined,
-              size: 80,
+            const FaIcon(
+              FontAwesomeIcons.bagShopping,
+              size: 64,
               color: AppColors.onBackgroundLight,
             ),
             const SizedBox(height: 16),
@@ -93,9 +94,9 @@ class _CartContent extends StatelessWidget {
               return Dismissible(
                 key: ValueKey(item.product.id),
                 direction: DismissDirection.endToStart,
-                onDismissed: (_) => context
-                    .read<CartBloc>()
-                    .add(CartItemRemoved(item.product.id)),
+                onDismissed: (_) => context.read<CartBloc>().add(
+                  CartItemRemoved(item.product.id),
+                ),
                 background: Container(
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20),
@@ -103,7 +104,11 @@ class _CartContent extends StatelessWidget {
                     color: AppColors.error,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.delete, color: Colors.white),
+                  child: const FaIcon(
+                    FontAwesomeIcons.trash,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 child: Container(
                   padding: const EdgeInsets.all(12),
@@ -125,7 +130,10 @@ class _CartContent extends StatelessWidget {
                             width: 72,
                             height: 72,
                             color: AppColors.surfaceVariant,
-                            child: const Icon(Icons.image),
+                            child: const FaIcon(
+                              FontAwesomeIcons.image,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ),
@@ -150,18 +158,18 @@ class _CartContent extends StatelessWidget {
                       ),
                       QuantitySelector(
                         quantity: item.quantity,
-                        onIncrement: () => context
-                            .read<CartBloc>()
-                            .add(CartItemQuantityUpdated(
-                              productId: item.product.id,
-                              quantity: item.quantity + 1,
-                            )),
-                        onDecrement: () => context
-                            .read<CartBloc>()
-                            .add(CartItemQuantityUpdated(
-                              productId: item.product.id,
-                              quantity: item.quantity - 1,
-                            )),
+                        onIncrement: () => context.read<CartBloc>().add(
+                          CartItemQuantityUpdated(
+                            productId: item.product.id,
+                            quantity: item.quantity + 1,
+                          ),
+                        ),
+                        onDecrement: () => context.read<CartBloc>().add(
+                          CartItemQuantityUpdated(
+                            productId: item.product.id,
+                            quantity: item.quantity - 1,
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -20,7 +21,11 @@ class AddressSelectionPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AppRoutes.addressAdd),
         backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add, color: AppColors.onPrimary),
+        child: const FaIcon(
+          FontAwesomeIcons.plus,
+          color: AppColors.onPrimary,
+          size: 20,
+        ),
       ),
       body: BlocBuilder<AddressCubit, AddressState>(
         builder: (context, state) {
@@ -33,9 +38,9 @@ class AddressSelectionPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.location_off_outlined,
-                    size: 64,
+                  FaIcon(
+                    FontAwesomeIcons.mapPin,
+                    size: 56,
                     color: AppColors.onBackgroundLight.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 16),
@@ -118,8 +123,9 @@ class _AddressCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              Icons.location_on,
+            FaIcon(
+              FontAwesomeIcons.locationDot,
+              size: 20,
               color: isSelected
                   ? AppColors.primary
                   : AppColors.onBackgroundLight,
@@ -143,13 +149,16 @@ class _AddressCard extends StatelessWidget {
               ),
             ),
             if (isSelected)
-              const Icon(Icons.check_circle, color: AppColors.primary)
+              const FaIcon(
+                FontAwesomeIcons.circleCheck,
+                color: AppColors.primary,
+              )
             else
               IconButton(
-                icon: const Icon(
-                  Icons.delete_outline,
+                icon: const FaIcon(
+                  FontAwesomeIcons.trashCan,
                   color: AppColors.onBackgroundLight,
-                  size: 20,
+                  size: 18,
                 ),
                 onPressed: onDelete,
               ),

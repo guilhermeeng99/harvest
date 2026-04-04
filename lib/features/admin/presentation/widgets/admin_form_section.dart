@@ -8,7 +8,7 @@ class AdminFormSection extends StatelessWidget {
     super.key,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String title;
   final Widget child;
 
@@ -27,11 +27,7 @@ class AdminFormSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  icon,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                icon,
                 const SizedBox(width: 8),
                 Text(
                   title,

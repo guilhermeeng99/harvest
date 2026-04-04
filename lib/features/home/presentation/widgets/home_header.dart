@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -22,10 +23,10 @@ class HomeHeader extends StatelessWidget {
               onTap: () => context.push(AppRoutes.addresses),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.location_on,
+                  const FaIcon(
+                    FontAwesomeIcons.locationDot,
                     color: AppColors.primary,
-                    size: 22,
+                    size: 20,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -53,9 +54,9 @@ class HomeHeader extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 20,
+                                const FaIcon(
+                                  FontAwesomeIcons.chevronDown,
+                                  size: 14,
                                   color: AppColors.onBackground,
                                 ),
                               ],
@@ -80,10 +81,10 @@ class HomeHeader extends StatelessWidget {
                     unread.toString(),
                     style: const TextStyle(fontSize: 10),
                   ),
-                  child: const Icon(
-                    Icons.notifications_outlined,
+                  child: const FaIcon(
+                    FontAwesomeIcons.bell,
                     color: AppColors.onBackground,
-                    size: 26,
+                    size: 22,
                   ),
                 ),
               );

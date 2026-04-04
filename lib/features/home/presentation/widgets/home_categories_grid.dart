@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
@@ -87,18 +88,18 @@ class _CategoryItem extends StatelessWidget {
                   fit: BoxFit.cover,
                   placeholder: (_, _) => const ColoredBox(
                     color: AppColors.surfaceVariant,
-                    child: Icon(
-                      Icons.eco_rounded,
+                    child: FaIcon(
+                      FontAwesomeIcons.leaf,
                       color: AppColors.primaryLight,
-                      size: 28,
+                      size: 24,
                     ),
                   ),
                   errorWidget: (_, _, _) => const ColoredBox(
                     color: AppColors.surfaceVariant,
-                    child: Icon(
-                      Icons.eco_rounded,
+                    child: FaIcon(
+                      FontAwesomeIcons.leaf,
                       color: AppColors.primaryLight,
-                      size: 28,
+                      size: 24,
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_users_cubit.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_users_state.dart';
@@ -56,13 +57,16 @@ class _AdminUsersView extends StatelessWidget {
                           ? NetworkImage(user.photoUrl!)
                           : null,
                       child: user.photoUrl == null
-                          ? const Icon(Icons.person)
+                          ? const FaIcon(FontAwesomeIcons.user)
                           : null,
                     ),
                     title: Text(user.name ?? user.email),
                     subtitle: user.name != null ? Text(user.email) : null,
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.trashCan,
+                        size: 18,
+                      ),
                       onPressed: () => _confirmDelete(
                         context,
                         user.id,

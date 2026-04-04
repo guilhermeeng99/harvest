@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -64,7 +65,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft, size: 18),
           onPressed: () => context.pop(),
         ),
       ),
@@ -102,7 +103,10 @@ class _ProductContent extends StatelessWidget {
                         const LoadingShimmer(height: double.infinity),
                     errorWidget: (_, _, _) => const ColoredBox(
                       color: AppColors.surfaceVariant,
-                      child: Icon(Icons.image, size: 64),
+                      child: FaIcon(
+                        FontAwesomeIcons.image,
+                        size: 56,
+                      ),
                     ),
                   ),
                 ),
@@ -141,9 +145,9 @@ class _ProductContent extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.agriculture,
-                            size: 16,
+                          const FaIcon(
+                            FontAwesomeIcons.tractor,
+                            size: 14,
                             color: AppColors.onBackgroundLight,
                           ),
                           const SizedBox(width: 4),
@@ -235,7 +239,10 @@ class _ProductContent extends StatelessWidget {
           child: SafeArea(
             child: HarvestButton(
               label: t.product.addToCart,
-              icon: Icons.shopping_bag_outlined,
+              icon: const FaIcon(
+                FontAwesomeIcons.bagShopping,
+                size: 18,
+              ),
               onPressed: product.inStock
                   ? () {
                       context.read<CartBloc>().add(CartItemAdded(product));

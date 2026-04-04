@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -34,13 +35,19 @@ class ShellScaffold extends StatelessWidget {
         onTap: (index) => _onItemTapped(context, index),
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined),
-            activeIcon: const Icon(Icons.home),
+            icon: const FaIcon(FontAwesomeIcons.house, size: 22),
+            activeIcon: const FaIcon(FontAwesomeIcons.house, size: 22),
             label: t.nav.home,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.search_outlined),
-            activeIcon: const Icon(Icons.search),
+            icon: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: 22,
+            ),
+            activeIcon: const FaIcon(
+              FontAwesomeIcons.magnifyingGlass,
+              size: 22,
+            ),
             label: t.nav.search,
           ),
           BottomNavigationBarItem(
@@ -50,7 +57,10 @@ class ShellScaffold extends StatelessWidget {
                   isLabelVisible: !state.isEmpty,
                   label: Text('${state.itemCount}'),
                   backgroundColor: AppColors.secondary,
-                  child: const Icon(Icons.shopping_bag_outlined),
+                  child: const FaIcon(
+                    FontAwesomeIcons.bagShopping,
+                    size: 22,
+                  ),
                 );
               },
             ),
@@ -60,20 +70,26 @@ class ShellScaffold extends StatelessWidget {
                   isLabelVisible: !state.isEmpty,
                   label: Text('${state.itemCount}'),
                   backgroundColor: AppColors.secondary,
-                  child: const Icon(Icons.shopping_bag),
+                  child: const FaIcon(
+                    FontAwesomeIcons.bagShopping,
+                    size: 22,
+                  ),
                 );
               },
             ),
             label: t.nav.cart,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.receipt_long_outlined),
-            activeIcon: const Icon(Icons.receipt_long),
+            icon: const FaIcon(FontAwesomeIcons.receipt, size: 22),
+            activeIcon: const FaIcon(
+              FontAwesomeIcons.receipt,
+              size: 22,
+            ),
             label: t.nav.orders,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person_outline),
-            activeIcon: const Icon(Icons.person),
+            icon: const FaIcon(FontAwesomeIcons.user, size: 22),
+            activeIcon: const FaIcon(FontAwesomeIcons.user, size: 22),
             label: t.nav.profile,
           ),
         ],

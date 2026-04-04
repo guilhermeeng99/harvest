@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
@@ -67,18 +68,26 @@ class _AdminCategoriesView extends StatelessWidget {
                           )
                         : const Icon(Icons.category),
                     title: Text(category.name),
-                    subtitle: Text('Sort: ${category.sortOrder}'),
+                    subtitle: Text(
+                      t.admin.sortLabel(order: category.sortOrder.toString()),
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit),
+                          icon: const FaIcon(
+                            FontAwesomeIcons.penToSquare,
+                            size: 18,
+                          ),
                           onPressed: () => context.push(
                             AppRoutes.adminCategoryEditPath(category.id),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline),
+                          icon: const FaIcon(
+                            FontAwesomeIcons.trashCan,
+                            size: 18,
+                          ),
                           onPressed: () => _confirmDelete(
                             context,
                             category.id,
@@ -96,7 +105,10 @@ class _AdminCategoriesView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AppRoutes.adminCategoryAdd),
-        child: const Icon(Icons.add),
+        child: const FaIcon(
+          FontAwesomeIcons.plus,
+          size: 20,
+        ),
       ),
     );
   }

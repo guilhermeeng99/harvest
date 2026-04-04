@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
@@ -47,45 +48,77 @@ class _ProfileView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               _MenuItem(
-                icon: Icons.receipt_long_outlined,
+                icon: const FaIcon(
+                  FontAwesomeIcons.receipt,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.myOrders,
                 onTap: () => context.go(AppRoutes.orders),
               ),
               _MenuItem(
-                icon: Icons.location_on_outlined,
+                icon: const FaIcon(
+                  FontAwesomeIcons.locationDot,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.deliveryAddresses,
                 onTap: () => context.push(AppRoutes.addresses),
               ),
               _MenuItem(
-                icon: Icons.payment_outlined,
+                icon: const FaIcon(
+                  FontAwesomeIcons.wallet,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.paymentMethods,
                 onTap: () {},
               ),
               _MenuItem(
-                icon: Icons.notifications_outlined,
+                icon: const FaIcon(
+                  FontAwesomeIcons.bell,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.notifications,
                 onTap: () => context.push(AppRoutes.notifications),
               ),
               const Divider(height: 32),
               _MenuItem(
-                icon: Icons.help_outline,
+                icon: const FaIcon(
+                  FontAwesomeIcons.circleQuestion,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.helpCenter,
                 onTap: () {},
               ),
               _MenuItem(
-                icon: Icons.info_outline,
+                icon: const FaIcon(
+                  FontAwesomeIcons.circleInfo,
+                  size: 20,
+                  color: AppColors.onBackground,
+                ),
                 label: t.profile.about,
                 onTap: () {},
               ),
               const SizedBox(height: 24),
               if (state.user?.email == AdminConstants.adminEmail)
                 _MenuItem(
-                  icon: Icons.admin_panel_settings_outlined,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.screwdriverWrench,
+                    size: 20,
+                    color: AppColors.onBackground,
+                  ),
                   label: t.admin.adminPanel,
                   onTap: () => context.go(AppRoutes.admin),
                 ),
               _MenuItem(
-                icon: Icons.logout,
+                icon: const FaIcon(
+                  FontAwesomeIcons.rightFromBracket,
+                  size: 20,
+                  color: AppColors.error,
+                ),
                 label: t.auth.signOut,
                 onTap: () =>
                     context.read<AuthBloc>().add(const AuthSignOutRequested()),
@@ -156,7 +189,7 @@ class _MenuItem extends StatelessWidget {
     this.isDestructive = false,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String label;
   final VoidCallback onTap;
   final bool isDestructive;
@@ -165,11 +198,15 @@ class _MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isDestructive ? AppColors.error : AppColors.onBackground;
     return ListTile(
-      leading: Icon(icon, color: color),
+      leading: icon,
       title: Text(label, style: AppTypography.bodyLarge.copyWith(color: color)),
       trailing: isDestructive
           ? null
-          : const Icon(Icons.chevron_right, color: AppColors.onBackgroundLight),
+          : const FaIcon(
+              FontAwesomeIcons.chevronRight,
+              color: AppColors.onBackgroundLight,
+              size: 16,
+            ),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
     );

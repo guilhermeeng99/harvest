@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -17,29 +18,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final _controller = PageController();
   int _currentPage = 0;
 
-  static const List<IconData> _icons = [
-    Icons.shopping_basket_outlined,
-    Icons.agriculture_outlined,
-    Icons.local_shipping_outlined,
+  static const List<Widget> _icons = [
+    FaIcon(
+      FontAwesomeIcons.basketShopping,
+      size: 72,
+      color: AppColors.primary,
+    ),
+    FaIcon(
+      FontAwesomeIcons.tractor,
+      size: 72,
+      color: AppColors.primary,
+    ),
+    FaIcon(
+      FontAwesomeIcons.truckFast,
+      size: 72,
+      color: AppColors.primary,
+    ),
   ];
 
   List<_OnboardingStep> get _steps => [
-        _OnboardingStep(
-          icon: _icons[0],
-          title: t.onboarding.step1.title,
-          description: t.onboarding.step1.description,
-        ),
-        _OnboardingStep(
-          icon: _icons[1],
-          title: t.onboarding.step2.title,
-          description: t.onboarding.step2.description,
-        ),
-        _OnboardingStep(
-          icon: _icons[2],
-          title: t.onboarding.step3.title,
-          description: t.onboarding.step3.description,
-        ),
-      ];
+    _OnboardingStep(
+      icon: _icons[0],
+      title: t.onboarding.step1.title,
+      description: t.onboarding.step1.description,
+    ),
+    _OnboardingStep(
+      icon: _icons[1],
+      title: t.onboarding.step2.title,
+      description: t.onboarding.step2.description,
+    ),
+    _OnboardingStep(
+      icon: _icons[2],
+      title: t.onboarding.step3.title,
+      description: t.onboarding.step3.description,
+    ),
+  ];
 
   @override
   void dispose() {
@@ -64,8 +77,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             Expanded(
               child: PageView.builder(
                 controller: _controller,
-                onPageChanged: (index) =>
-                    setState(() => _currentPage = index),
+                onPageChanged: (index) => setState(() => _currentPage = index),
                 itemCount: _steps.length,
                 itemBuilder: (_, index) {
                   final step = _steps[index];
@@ -110,7 +122,7 @@ class _OnboardingStep {
     required this.description,
   });
 
-  final IconData icon;
+  final Widget icon;
   final String title;
   final String description;
 }
@@ -134,11 +146,7 @@ class _StepContent extends StatelessWidget {
               color: AppColors.primaryLight.withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              step.icon,
-              size: 80,
-              color: AppColors.primary,
-            ),
+            child: step.icon,
           ),
           const SizedBox(height: 48),
           Text(

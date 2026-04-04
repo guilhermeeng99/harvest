@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -61,7 +62,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         title: Text(t.checkout.title),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft, size: 18),
           onPressed: () => context.pop(),
         ),
       ),
@@ -91,7 +92,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 HarvestTextField(
                   controller: _streetController,
                   label: t.checkout.street,
-                  prefixIcon: Icons.location_on_outlined,
+                  prefixIcon: const FaIcon(
+                    FontAwesomeIcons.locationDot,
+                  ),
                   textInputAction: TextInputAction.next,
                   validator: (v) => Validators.required(v, fieldName: 'Street'),
                 ),
@@ -125,21 +128,30 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 const SizedBox(height: 12),
                 _PaymentOption(
                   label: t.checkout.creditCard,
-                  icon: Icons.credit_card,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.creditCard,
+                    color: AppColors.onBackground,
+                  ),
                   isSelected: _paymentMethod == 'Credit Card',
                   onTap: () => setState(() => _paymentMethod = 'Credit Card'),
                 ),
                 const SizedBox(height: 8),
                 _PaymentOption(
                   label: t.checkout.applePay,
-                  icon: Icons.phone_iphone,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.apple,
+                    color: AppColors.onBackground,
+                  ),
                   isSelected: _paymentMethod == 'Apple Pay',
                   onTap: () => setState(() => _paymentMethod = 'Apple Pay'),
                 ),
                 const SizedBox(height: 8),
                 _PaymentOption(
                   label: t.checkout.googlePay,
-                  icon: Icons.g_mobiledata,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.googlePay,
+                    color: AppColors.onBackground,
+                  ),
                   isSelected: _paymentMethod == 'Google Pay',
                   onTap: () => setState(() => _paymentMethod = 'Google Pay'),
                 ),
@@ -201,7 +213,7 @@ class _PaymentOption extends StatelessWidget {
   });
 
   final String label;
-  final IconData icon;
+  final Widget icon;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -221,12 +233,15 @@ class _PaymentOption extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: AppColors.onBackground),
+            icon,
             const SizedBox(width: 12),
             Text(label, style: AppTypography.bodyLarge),
             const Spacer(),
             if (isSelected)
-              const Icon(Icons.check_circle, color: AppColors.primary),
+              const FaIcon(
+                FontAwesomeIcons.circleCheck,
+                color: AppColors.primary,
+              ),
           ],
         ),
       ),

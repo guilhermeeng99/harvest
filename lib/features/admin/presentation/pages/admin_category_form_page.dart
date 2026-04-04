@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/features/admin/presentation/controllers/admin_category_form_controller.dart';
 import 'package:harvest/features/admin/presentation/widgets/admin_form_section.dart';
@@ -57,7 +58,10 @@ class _AdminCategoryFormPageState extends State<AdminCategoryFormPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _ctrl.loading ? null : _onSubmit,
-        icon: Icon(_ctrl.isEditing ? Icons.save : Icons.add),
+        icon: FaIcon(
+          _ctrl.isEditing ? FontAwesomeIcons.floppyDisk : FontAwesomeIcons.plus,
+          size: 20,
+        ),
         label: Text(_ctrl.isEditing ? i18n.save : i18n.addCategory),
       ),
       body: _ctrl.loading
@@ -73,7 +77,11 @@ class _AdminCategoryFormPageState extends State<AdminCategoryFormPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         AdminFormSection(
-                          icon: Icons.category_outlined,
+                          icon: FaIcon(
+                            FontAwesomeIcons.tag,
+                            size: 18,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                           title: i18n.categories,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

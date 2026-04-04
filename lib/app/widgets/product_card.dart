@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
+import 'package:harvest/gen/i18n/strings.g.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -115,20 +117,20 @@ class _ImageSection extends StatelessWidget {
               placeholder: (_, _) => const ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Center(
-                  child: Icon(
-                    Icons.eco_outlined,
+                  child: FaIcon(
+                    FontAwesomeIcons.leaf,
                     color: AppColors.onBackgroundLight,
-                    size: 32,
+                    size: 28,
                   ),
                 ),
               ),
               errorWidget: (_, _, _) => const ColoredBox(
                 color: AppColors.surfaceVariant,
                 child: Center(
-                  child: Icon(
-                    Icons.broken_image_outlined,
+                  child: FaIcon(
+                    FontAwesomeIcons.image,
                     color: AppColors.onBackgroundLight,
-                    size: 32,
+                    size: 28,
                   ),
                 ),
               ),
@@ -146,7 +148,7 @@ class _ImageSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                'Organic',
+                t.product.organic,
                 style: AppTypography.labelSmall.copyWith(
                   color: AppColors.onPrimary,
                 ),
@@ -170,7 +172,7 @@ class _AddButton extends StatelessWidget {
       width: 32,
       child: IconButton.filled(
         onPressed: onPressed,
-        icon: const Icon(Icons.add, size: 16),
+        icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
         style: IconButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,

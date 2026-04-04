@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/features/notifications/domain/entities/notification_entity.dart';
@@ -35,9 +36,9 @@ class NotificationsPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.notifications_off_outlined,
-                    size: 64,
+                  FaIcon(
+                    FontAwesomeIcons.bellSlash,
+                    size: 56,
                     color: AppColors.onBackgroundLight.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 16),
@@ -105,9 +106,9 @@ class _NotificationCard extends StatelessWidget {
                     : AppColors.primaryLight.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.notifications_outlined,
-                size: 20,
+              child: FaIcon(
+                FontAwesomeIcons.bell,
+                size: 18,
                 color: notification.isRead
                     ? AppColors.onBackgroundLight
                     : AppColors.primary,

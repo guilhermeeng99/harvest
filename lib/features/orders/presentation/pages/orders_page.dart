@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
@@ -62,9 +63,9 @@ class _EmptyOrders extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.receipt_long_outlined,
-            size: 80,
+          const FaIcon(
+            FontAwesomeIcons.receipt,
+            size: 64,
             color: AppColors.onBackgroundLight,
           ),
           const SizedBox(height: 16),

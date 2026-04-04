@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -37,12 +38,12 @@ class _SignUpPageState extends State<SignUpPage> {
     if (!_formKey.currentState!.validate()) return;
 
     context.read<AuthBloc>().add(
-          AuthSignUpRequested(
-            name: _nameController.text.trim(),
-            email: _emailController.text.trim(),
-            password: _passwordController.text,
-          ),
-        );
+      AuthSignUpRequested(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -66,9 +67,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Icon(
-                        Icons.eco,
-                        size: 64,
+                      const FaIcon(
+                        FontAwesomeIcons.seedling,
+                        size: 56,
                         color: AppColors.primary,
                       ),
                       const SizedBox(height: 16),
@@ -90,7 +91,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _nameController,
                         label: t.auth.name,
                         hint: t.auth.nameHint,
-                        prefixIcon: Icons.person_outlined,
+                        prefixIcon: const FaIcon(
+                          FontAwesomeIcons.user,
+                        ),
                         textInputAction: TextInputAction.next,
                         validator: Validators.name,
                       ),
@@ -99,7 +102,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _emailController,
                         label: t.auth.email,
                         hint: t.auth.emailHint,
-                        prefixIcon: Icons.email_outlined,
+                        prefixIcon: const FaIcon(
+                          FontAwesomeIcons.envelope,
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: Validators.email,
@@ -109,15 +114,17 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _passwordController,
                         label: t.auth.password,
                         hint: t.auth.passwordHint,
-                        prefixIcon: Icons.lock_outlined,
+                        prefixIcon: const FaIcon(
+                          FontAwesomeIcons.lock,
+                        ),
                         obscureText: _obscurePassword,
                         textInputAction: TextInputAction.done,
                         validator: Validators.password,
                         suffixIcon: IconButton(
-                          icon: Icon(
+                          icon: FaIcon(
                             _obscurePassword
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? FontAwesomeIcons.eye
+                                : FontAwesomeIcons.eyeSlash,
                           ),
                           onPressed: () => setState(
                             () => _obscurePassword = !_obscurePassword,

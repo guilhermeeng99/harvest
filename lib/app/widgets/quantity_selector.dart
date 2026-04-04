@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 
@@ -29,7 +30,7 @@ class QuantitySelector extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _QuantityButton(
-            icon: Icons.remove,
+            icon: const FaIcon(FontAwesomeIcons.minus, size: 14),
             onPressed: quantity > min ? onDecrement : null,
           ),
           SizedBox(
@@ -41,7 +42,7 @@ class QuantitySelector extends StatelessWidget {
             ),
           ),
           _QuantityButton(
-            icon: Icons.add,
+            icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
             onPressed: quantity < max ? onIncrement : null,
           ),
         ],
@@ -56,7 +57,7 @@ class _QuantityButton extends StatelessWidget {
     required this.onPressed,
   });
 
-  final IconData icon;
+  final Widget icon;
   final VoidCallback? onPressed;
 
   @override
@@ -66,7 +67,7 @@ class _QuantityButton extends StatelessWidget {
       width: 36,
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(icon, size: 18),
+        icon: icon,
         padding: EdgeInsets.zero,
         color: onPressed != null
             ? AppColors.primary

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/features/admin/presentation/controllers/admin_product_form_controller.dart';
 import 'package:harvest/features/admin/presentation/widgets/admin_form_section.dart';
@@ -57,7 +58,10 @@ class _AdminProductFormPageState extends State<AdminProductFormPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _ctrl.loading ? null : _onSubmit,
-        icon: Icon(_ctrl.isEditing ? Icons.save : Icons.add),
+        icon: FaIcon(
+          _ctrl.isEditing ? FontAwesomeIcons.floppyDisk : FontAwesomeIcons.plus,
+          size: 20,
+        ),
         label: Text(_ctrl.isEditing ? i18n.save : i18n.addProduct),
       ),
       body: _ctrl.loading
@@ -104,8 +108,12 @@ class _WideLayout extends StatelessWidget {
               child: Column(
                 children: [
                   AdminFormSection(
-                    icon: Icons.image_outlined,
-                    title: 'Image',
+                    icon: FaIcon(
+                      FontAwesomeIcons.image,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: i18n.image,
                     child: AdminImagePicker(
                       imageUrl: ctrl.imageUrl,
                       imageBytes: ctrl.imageBytes,
@@ -114,7 +122,11 @@ class _WideLayout extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   AdminFormSection(
-                    icon: Icons.info_outline,
+                    icon: FaIcon(
+                      FontAwesomeIcons.circleInfo,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     title: i18n.productName,
                     child: _BasicInfoFields(ctrl: ctrl),
                   ),
@@ -127,19 +139,31 @@ class _WideLayout extends StatelessWidget {
               child: Column(
                 children: [
                   AdminFormSection(
-                    icon: Icons.attach_money,
+                    icon: FaIcon(
+                      FontAwesomeIcons.dollarSign,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     title: i18n.productPrice,
                     child: _PricingFields(ctrl: ctrl),
                   ),
                   const SizedBox(height: 16),
                   AdminFormSection(
-                    icon: Icons.category_outlined,
+                    icon: FaIcon(
+                      FontAwesomeIcons.tag,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     title: i18n.productCategory,
                     child: _ClassificationFields(ctrl: ctrl),
                   ),
                   const SizedBox(height: 16),
                   AdminFormSection(
-                    icon: Icons.restaurant_menu,
+                    icon: FaIcon(
+                      FontAwesomeIcons.utensils,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     title: i18n.nutritionFacts,
                     child: _NutritionFields(ctrl: ctrl),
                   ),

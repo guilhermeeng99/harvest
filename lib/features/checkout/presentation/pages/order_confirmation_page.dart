@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
@@ -27,9 +28,9 @@ class OrderConfirmationPage extends StatelessWidget {
                     color: AppColors.success.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.check_circle,
-                    size: 64,
+                  child: const FaIcon(
+                    FontAwesomeIcons.circleCheck,
+                    size: 56,
                     color: AppColors.success,
                   ),
                 ),

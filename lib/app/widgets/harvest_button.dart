@@ -17,7 +17,7 @@ class HarvestButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final bool isOutlined;
-  final IconData? icon;
+  final Widget? icon;
   final double? width;
 
   @override
@@ -34,10 +34,7 @@ class HarvestButton extends StatelessWidget {
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) ...[
-                Icon(icon, size: 20),
-                const SizedBox(width: 8),
-              ],
+              if (icon != null) ...[icon!, const SizedBox(width: 8)],
               Text(label),
             ],
           );

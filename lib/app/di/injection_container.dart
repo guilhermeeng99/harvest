@@ -122,7 +122,12 @@ void _initSearch() {
     )
     ..registerLazySingleton<SearchRepository>(() => SearchRepositoryImpl(sl()))
     ..registerLazySingleton(() => SearchProductsUseCase(sl()))
-    ..registerFactory(() => SearchCubit(searchProductsUseCase: sl()));
+    ..registerFactory(
+      () => SearchCubit(
+        searchProductsUseCase: sl(),
+        getCategoriesUseCase: sl(),
+      ),
+    );
 }
 
 void _initCart() {

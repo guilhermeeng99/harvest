@@ -7,6 +7,7 @@ class SearchState extends Equatable {
     this.status = SearchStatus.initial,
     this.query = '',
     this.results = const [],
+    this.categories = const [],
     this.selectedCategoryId,
     this.organicOnly = false,
     this.minPrice,
@@ -17,11 +18,18 @@ class SearchState extends Equatable {
   final SearchStatus status;
   final String query;
   final List<ProductEntity> results;
+  final List<CategoryEntity> categories;
   final String? selectedCategoryId;
   final bool organicOnly;
   final double? minPrice;
   final double? maxPrice;
   final String? errorMessage;
+
+  String? get selectedCategoryName {
+    if (selectedCategoryId == null) return null;
+    final matches = categories.where((c) => c.id == selectedCategoryId);
+    return matches.isEmpty ? null : matches.first.name;
+  }
 
   bool get hasActiveFilters =>
       selectedCategoryId != null ||
@@ -33,6 +41,7 @@ class SearchState extends Equatable {
     SearchStatus? status,
     String? query,
     List<ProductEntity>? results,
+    List<CategoryEntity>? categories,
     String? selectedCategoryId,
     bool? organicOnly,
     double? minPrice,
@@ -43,6 +52,7 @@ class SearchState extends Equatable {
       status: status ?? this.status,
       query: query ?? this.query,
       results: results ?? this.results,
+      categories: categories ?? this.categories,
       selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
       organicOnly: organicOnly ?? this.organicOnly,
       minPrice: minPrice ?? this.minPrice,
@@ -56,6 +66,7 @@ class SearchState extends Equatable {
     status,
     query,
     results,
+    categories,
     selectedCategoryId,
     organicOnly,
     minPrice,
