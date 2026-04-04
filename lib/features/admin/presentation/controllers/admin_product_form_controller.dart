@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
 import 'package:harvest/features/home/domain/entities/product_entity.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AdminProductFormController extends ChangeNotifier {
   AdminProductFormController({this.productId}) {
@@ -26,12 +24,12 @@ class AdminProductFormController extends ChangeNotifier {
   final proteinCtrl = TextEditingController();
   final fiberCtrl = TextEditingController();
   final vitaminsCtrl = TextEditingController();
+  final imageUrlCtrl = TextEditingController();
 
   String? categoryId;
   bool isFeatured = false;
   bool isOrganic = false;
-  String imageUrl = '';
-  Uint8List? imageBytes;
+  String get imageUrl => imageUrlCtrl.text.trim();
   bool loading = false;
   String? errorMessage;
 
@@ -41,6 +39,8 @@ class AdminProductFormController extends ChangeNotifier {
   AdminRepository get _repo => sl<AdminRepository>();
 
   bool get isEditing => productId != null;
+
+  void refreshPreview() => notifyListeners();
 
   Future<void> _loadData() async {
     loading = true;
@@ -74,23 +74,11 @@ class AdminProductFormController extends ChangeNotifier {
     categoryId = p.categoryId;
     isFeatured = p.isFeatured;
     isOrganic = p.isOrganic;
-    imageUrl = p.imageUrl;
+    imageUrlCtrl.text = p.imageUrl;
     caloriesCtrl.text = p.nutritionFacts?.calories ?? '';
     proteinCtrl.text = p.nutritionFacts?.protein ?? '';
     fiberCtrl.text = p.nutritionFacts?.fiber ?? '';
     vitaminsCtrl.text = p.nutritionFacts?.vitamins ?? '';
-  }
-
-  Future<void> pickImage() async {
-    final picker = ImagePicker();
-    final file = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 800,
-    );
-    if (file == null) return;
-    final bytes = await file.readAsBytes();
-    imageBytes = bytes;
-    notifyListeners();
   }
 
   void setCategoryId(String? value) {
@@ -120,24 +108,7 @@ class AdminProductFormController extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
 
-    var finalImageUrl = imageUrl;
-    if (imageBytes != null) {
-      final fileName = 'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final result = await _repo.uploadImage(imageBytes!, fileName);
-      final failed = result.fold<bool>(
-        (f) {
-          errorMessage = f.message;
-          loading = false;
-          notifyListeners();
-          return true;
-        },
-        (url) {
-          finalImageUrl = url;
-          return false;
-        },
-      );
-      if (failed) return false;
-    }
+    final finalImageUrl = imageUrl;
 
     final hasNutrition =
         caloriesCtrl.text.isNotEmpty ||
@@ -206,6 +177,7 @@ class AdminProductFormController extends ChangeNotifier {
     proteinCtrl.dispose();
     fiberCtrl.dispose();
     vitaminsCtrl.dispose();
+    imageUrlCtrl.dispose();
     super.dispose();
   }
 }

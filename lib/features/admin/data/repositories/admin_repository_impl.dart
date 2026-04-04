@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:dartz/dartz.dart';
 import 'package:harvest/core/errors/failures.dart';
+import 'package:harvest/features/address/domain/entities/address_entity.dart';
 import 'package:harvest/features/admin/data/datasources/admin_remote_datasource.dart';
 import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
 import 'package:harvest/features/auth/domain/entities/user_entity.dart';
@@ -122,21 +121,6 @@ class AdminRepositoryImpl implements AdminRepository {
     }
   }
 
-  // ── Image Upload ──────────────────────────────────────────
-
-  @override
-  Future<Either<Failure, String>> uploadImage(
-    Uint8List bytes,
-    String fileName,
-  ) async {
-    try {
-      final url = await _dataSource.uploadImage(bytes, fileName);
-      return Right(url);
-    } on Exception catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
-
   // ── Helpers ───────────────────────────────────────────────
 
   ProductModel _toProductModel(ProductEntity e) => ProductModel(
@@ -181,6 +165,32 @@ class AdminRepositoryImpl implements AdminRepository {
     try {
       await _dataSource.updateOrderStatus(orderId, status.name);
       return const Right(null);
+    } on Exception catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  // ── User Detail ───────────────────────────────────────────
+
+  @override
+  Future<Either<Failure, List<AddressEntity>>> getUserAddresses(
+    String userId,
+  ) async {
+    try {
+      final addresses = await _dataSource.getUserAddresses(userId);
+      return Right(addresses);
+    } on Exception catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<OrderEntity>>> getUserOrders(
+    String userId,
+  ) async {
+    try {
+      final orders = await _dataSource.getUserOrders(userId);
+      return Right(orders);
     } on Exception catch (e) {
       return Left(ServerFailure(e.toString()));
     }

@@ -100,6 +100,7 @@ class _NotificationCard extends StatelessWidget {
             Container(
               width: 40,
               height: 40,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: notification.isRead
                     ? AppColors.surfaceVariant

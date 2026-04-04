@@ -11,8 +11,10 @@ import 'package:harvest/features/admin/presentation/pages/admin_category_form_pa
 import 'package:harvest/features/admin/presentation/pages/admin_orders_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_product_form_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_products_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_user_detail_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_users_page.dart';
 import 'package:harvest/features/admin/presentation/widgets/admin_scaffold.dart';
+import 'package:harvest/features/auth/domain/entities/user_entity.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:harvest/features/auth/presentation/pages/sign_up_page.dart';
@@ -23,6 +25,7 @@ import 'package:harvest/features/checkout/presentation/pages/order_confirmation_
 import 'package:harvest/features/home/presentation/pages/home_page.dart';
 import 'package:harvest/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:harvest/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:harvest/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:harvest/features/orders/presentation/pages/order_details_page.dart';
 import 'package:harvest/features/orders/presentation/pages/orders_page.dart';
 import 'package:harvest/features/product_details/presentation/pages/product_details_page.dart';
@@ -64,7 +67,10 @@ GoRouter createRouter(AuthBloc authBloc) {
           GoRoute(path: AppRoutes.home, builder: (_, _) => const HomePage()),
           GoRoute(
             path: AppRoutes.search,
-            builder: (_, _) => const SearchPage(),
+            builder: (_, state) {
+              final categoryId = state.uri.queryParameters['categoryId'];
+              return SearchPage(initialCategoryId: categoryId);
+            },
           ),
           GoRoute(path: AppRoutes.cart, builder: (_, _) => const CartPage()),
           GoRoute(
@@ -99,7 +105,10 @@ GoRouter createRouter(AuthBloc authBloc) {
         path: AppRoutes.orderDetails,
         builder: (_, state) {
           final id = state.pathParameters['id']!;
-          return OrderDetailsPage(orderId: id);
+          return BlocProvider(
+            create: (_) => sl<OrdersBloc>()..add(const OrdersLoadRequested()),
+            child: OrderDetailsPage(orderId: id),
+          );
         },
       ),
       GoRoute(
@@ -160,6 +169,13 @@ GoRouter createRouter(AuthBloc authBloc) {
         builder: (_, state) {
           final id = state.pathParameters['id']!;
           return AdminCategoryFormPage(categoryId: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.adminUserDetail,
+        builder: (_, state) {
+          final user = state.extra! as UserEntity;
+          return AdminUserDetailPage(user: user);
         },
       ),
       GoRoute(

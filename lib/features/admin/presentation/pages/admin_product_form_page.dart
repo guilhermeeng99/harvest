@@ -114,10 +114,21 @@ class _WideLayout extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     title: i18n.image,
-                    child: AdminImagePicker(
-                      imageUrl: ctrl.imageUrl,
-                      imageBytes: ctrl.imageBytes,
-                      onTap: ctrl.pickImage,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: ctrl.imageUrlCtrl,
+                          decoration: InputDecoration(
+                            labelText: i18n.image,
+                            hintText: 'https://...',
+                          ),
+                          onChanged: (_) => ctrl.refreshPreview(),
+                        ),
+                        const SizedBox(height: 12),
+                        AdminImagePicker(
+                          imageUrl: ctrl.imageUrl,
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -189,10 +200,17 @@ class _NarrowLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        TextFormField(
+          controller: ctrl.imageUrlCtrl,
+          decoration: InputDecoration(
+            labelText: i18n.image,
+            hintText: 'https://...',
+          ),
+          onChanged: (_) => ctrl.refreshPreview(),
+        ),
+        const SizedBox(height: 12),
         AdminImagePicker(
           imageUrl: ctrl.imageUrl,
-          imageBytes: ctrl.imageBytes,
-          onTap: ctrl.pickImage,
         ),
         const SizedBox(height: 16),
         _BasicInfoFields(ctrl: ctrl),

@@ -26,6 +26,7 @@ class AppRoutes {
   static const adminCategoryAdd = '/admin/categories/add';
   static const adminCategoryEdit = '/admin/categories/edit/:id';
   static const adminUsers = '/admin/users';
+  static const adminUserDetail = '/admin/users/detail';
   static const adminOrders = '/admin/orders';
   static const webView = '/web-view';
 

@@ -15,6 +15,7 @@ class ProductCard extends StatelessWidget {
     required this.onTap,
     this.onAddToCart,
     this.isOrganic = false,
+    this.cartQuantity = 0,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class ProductCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? onAddToCart;
   final bool isOrganic;
+  final int cartQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,10 @@ class ProductCard extends StatelessWidget {
                             ),
                           ),
                           if (onAddToCart != null)
-                            _AddButton(onPressed: onAddToCart!),
+                            _AddButton(
+                              onPressed: onAddToCart!,
+                              cartQuantity: cartQuantity,
+                            ),
                         ],
                       ),
                     ],
@@ -161,24 +166,52 @@ class _ImageSection extends StatelessWidget {
 }
 
 class _AddButton extends StatelessWidget {
-  const _AddButton({required this.onPressed});
+  const _AddButton({required this.onPressed, required this.cartQuantity});
 
   final VoidCallback onPressed;
+  final int cartQuantity;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 32,
-      width: 32,
-      child: IconButton.filled(
-        onPressed: onPressed,
-        icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
-        style: IconButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.onPrimary,
-          padding: EdgeInsets.zero,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        SizedBox(
+          height: 32,
+          width: 32,
+          child: IconButton.filled(
+            onPressed: onPressed,
+            icon: const FaIcon(FontAwesomeIcons.plus, size: 14),
+            style: IconButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.onPrimary,
+              padding: EdgeInsets.zero,
+            ),
+          ),
         ),
-      ),
+        if (cartQuantity > 0)
+          Positioned(
+            top: -6,
+            right: -6,
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: AppColors.success,
+                shape: BoxShape.circle,
+              ),
+              constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+              child: Text(
+                '$cartQuantity',
+                style: AppTypography.labelSmall.copyWith(
+                  color: AppColors.onPrimary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

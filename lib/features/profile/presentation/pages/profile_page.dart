@@ -1,5 +1,6 @@
 ﻿import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/core/constants/site_urls.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:harvest/features/profile/presentation/widgets/edit_profile_dialog.dart';
 import 'package:harvest/features/profile/presentation/widgets/profile_menu_item.dart';
 import 'package:harvest/features/profile/presentation/widgets/profile_user_card.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
@@ -34,6 +36,21 @@ class ProfilePage extends StatelessWidget {
 class _ProfileView extends StatelessWidget {
   const _ProfileView();
 
+  Future<void> _showEditProfile(
+    BuildContext context,
+    ProfileState state,
+  ) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (_) => EditProfileDialog(
+        currentName: state.user?.name ?? '',
+        currentPhotoUrl: state.user?.photoUrl,
+      ),
+    );
+    if (result == null || !context.mounted) return;
+    await context.read<ProfileCubit>().updateProfile(name: result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +64,8 @@ class _ProfileView extends StatelessWidget {
               ProfileUserCard(
                 name: state.user?.name ?? '',
                 email: state.user?.email ?? '',
+                photoUrl: state.user?.photoUrl,
+                onTap: () => _showEditProfile(context, state),
               ),
               const SizedBox(height: 24),
               ProfileMenuItem(
@@ -93,13 +112,26 @@ class _ProfileView extends StatelessWidget {
                   color: AppColors.onBackground,
                 ),
                 label: t.profile.helpCenter,
-                onTap: () => context.push(
-                  AppRoutes.webView,
-                  extra: <String, String>{
-                    'url': SiteUrls.helpCenter,
-                    'title': t.profile.helpCenter,
-                  },
-                ),
+                onTap: () {
+                  if (kIsWeb) {
+                    unawaited(
+                      launchUrl(
+                        Uri.parse(SiteUrls.helpCenter),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                    );
+                  } else {
+                    unawaited(
+                      context.push(
+                        AppRoutes.webView,
+                        extra: <String, String>{
+                          'url': SiteUrls.helpCenter,
+                          'title': t.profile.helpCenter,
+                        },
+                      ),
+                    );
+                  }
+                },
               ),
               ProfileMenuItem(
                 icon: const FaIcon(

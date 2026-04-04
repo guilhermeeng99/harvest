@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:harvest/features/address/data/datasources/address_remote_datasource.dart';
 import 'package:harvest/features/address/data/repositories/address_repository_impl.dart';
@@ -24,6 +23,7 @@ import 'package:harvest/features/auth/domain/usecases/get_current_user_usecase.d
 import 'package:harvest/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_up_usecase.dart';
+import 'package:harvest/features/auth/domain/usecases/update_profile_usecase.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/checkout/data/repositories/checkout_repository_impl.dart';
@@ -72,20 +72,25 @@ void initDependencies() {
 void _initFirebase() {
   sl
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
-    ..registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance)
-    ..registerLazySingleton<FirebaseStorage>(() => FirebaseStorage.instance);
+    ..registerLazySingleton<FirebaseFirestore>(
+      () => FirebaseFirestore.instance,
+    );
 }
 
 void _initAuth() {
   sl
     ..registerLazySingleton<AuthRemoteDataSource>(
-      () => AuthRemoteDataSourceImpl(firebaseAuth: sl(), firestore: sl()),
+      () => AuthRemoteDataSourceImpl(
+        firebaseAuth: sl(),
+        firestore: sl(),
+      ),
     )
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton(() => SignInUseCase(sl()))
     ..registerLazySingleton(() => SignUpUseCase(sl()))
     ..registerLazySingleton(() => SignOutUseCase(sl()))
     ..registerLazySingleton(() => GetCurrentUserUseCase(sl()))
+    ..registerLazySingleton(() => UpdateProfileUseCase(sl()))
     ..registerFactory(
       () => AuthBloc(
         signInUseCase: sl(),
@@ -162,7 +167,12 @@ void _initOrders() {
 }
 
 void _initProfile() {
-  sl.registerFactory(() => ProfileCubit(getCurrentUserUseCase: sl()));
+  sl.registerFactory(
+    () => ProfileCubit(
+      getCurrentUserUseCase: sl(),
+      updateProfileUseCase: sl(),
+    ),
+  );
 }
 
 void _initAddress() {
@@ -194,7 +204,7 @@ void _initNotifications() {
 void _initAdmin() {
   sl
     ..registerLazySingleton<AdminRemoteDataSource>(
-      () => AdminRemoteDataSourceImpl(firestore: sl(), storage: sl()),
+      () => AdminRemoteDataSourceImpl(firestore: sl()),
     )
     ..registerLazySingleton<AdminRepository>(() => AdminRepositoryImpl(sl()))
     ..registerFactory(() => AdminProductsCubit(sl()))

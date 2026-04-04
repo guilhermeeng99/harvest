@@ -18,5 +18,9 @@ abstract class AuthRepository {
 
   Future<Either<Failure, UserEntity?>> getCurrentUser();
 
+  Future<Either<Failure, UserEntity>> updateProfile({
+    required String name,
+  });
+
   Stream<UserEntity?> get authStateChanges;
 }

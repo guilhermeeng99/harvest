@@ -86,10 +86,17 @@ class _AdminCategoryFormPageState extends State<AdminCategoryFormPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              TextFormField(
+                                controller: _ctrl.imageUrlCtrl,
+                                decoration: InputDecoration(
+                                  labelText: i18n.image,
+                                  hintText: 'https://...',
+                                ),
+                                onChanged: (_) => setState(() {}),
+                              ),
+                              const SizedBox(height: 12),
                               AdminImagePicker(
                                 imageUrl: _ctrl.imageUrl,
-                                imageBytes: _ctrl.imageBytes,
-                                onTap: _ctrl.pickImage,
                                 height: 180,
                               ),
                               const SizedBox(height: 16),

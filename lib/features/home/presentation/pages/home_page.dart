@@ -58,23 +58,32 @@ class _LoadedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: HomeHeader()),
-        SliverToBoxAdapter(child: SizedBox(height: 20)),
-        SliverToBoxAdapter(child: PromoBanner()),
-        SliverToBoxAdapter(child: SizedBox(height: 24)),
-        SliverToBoxAdapter(child: HomeCategoriesGrid()),
-        SliverToBoxAdapter(child: SizedBox(height: 24)),
-        SliverToBoxAdapter(child: HomeFeaturedSection()),
-        SliverToBoxAdapter(child: SizedBox(height: 24)),
-        SliverToBoxAdapter(child: HomePopularSection()),
-        SliverToBoxAdapter(child: SizedBox(height: 24)),
-        SliverToBoxAdapter(child: HomeAllProductsHeader()),
-        SliverToBoxAdapter(child: SizedBox(height: 12)),
-        HomeAllProductsGrid(),
-        SliverToBoxAdapter(child: SizedBox(height: 32)),
-      ],
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: () async {
+        context.read<HomeBloc>().add(const HomeLoadRequested());
+        await context.read<HomeBloc>().stream.firstWhere(
+          (state) => state.status != HomeStatus.loading,
+        );
+      },
+      child: const CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: HomeHeader()),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          SliverToBoxAdapter(child: PromoBanner()),
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          SliverToBoxAdapter(child: HomeCategoriesGrid()),
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          SliverToBoxAdapter(child: HomeFeaturedSection()),
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          SliverToBoxAdapter(child: HomePopularSection()),
+          SliverToBoxAdapter(child: SizedBox(height: 24)),
+          SliverToBoxAdapter(child: HomeAllProductsHeader()),
+          SliverToBoxAdapter(child: SizedBox(height: 12)),
+          HomeAllProductsGrid(),
+          SliverToBoxAdapter(child: SizedBox(height: 32)),
+        ],
+      ),
     );
   }
 }

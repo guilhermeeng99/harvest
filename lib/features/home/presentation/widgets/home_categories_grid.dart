@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
@@ -38,8 +40,11 @@ class HomeCategoriesGrid extends StatelessWidget {
                   return _CategoryItem(
                     category: category,
                     isSelected: isSelected,
-                    onTap: () => context.read<HomeBloc>().add(
-                      HomeCategorySelected(category.id),
+                    onTap: () => context.go(
+                      Uri(
+                        path: AppRoutes.search,
+                        queryParameters: {'categoryId': category.id},
+                      ).toString(),
                     ),
                   );
                 },

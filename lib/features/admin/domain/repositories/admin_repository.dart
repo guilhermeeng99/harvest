@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:dartz/dartz.dart';
 import 'package:harvest/core/errors/failures.dart';
+import 'package:harvest/features/address/domain/entities/address_entity.dart';
 import 'package:harvest/features/auth/domain/entities/user_entity.dart';
 import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
@@ -27,5 +26,6 @@ abstract interface class AdminRepository {
     OrderStatus status,
   );
 
-  Future<Either<Failure, String>> uploadImage(Uint8List bytes, String fileName);
+  Future<Either<Failure, List<AddressEntity>>> getUserAddresses(String userId);
+  Future<Either<Failure, List<OrderEntity>>> getUserOrders(String userId);
 }

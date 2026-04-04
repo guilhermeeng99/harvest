@@ -1,7 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:harvest/features/address/data/models/address_model.dart';
 import 'package:harvest/features/auth/data/models/user_model.dart';
 import 'package:harvest/features/home/data/models/category_model.dart';
 import 'package:harvest/features/home/data/models/product_model.dart';
@@ -24,18 +22,22 @@ abstract interface class AdminRemoteDataSource {
   Future<List<OrderModel>> getAllOrders();
   Future<void> updateOrderStatus(String orderId, String status);
 
-  Future<String> uploadImage(Uint8List bytes, String fileName);
+  Future<void> updateUserProfile({
+    required String userId,
+    String? name,
+    String? photoUrl,
+  });
+
+  Future<List<AddressModel>> getUserAddresses(String userId);
+  Future<List<OrderModel>> getUserOrders(String userId);
 }
 
 class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   AdminRemoteDataSourceImpl({
     required FirebaseFirestore firestore,
-    required FirebaseStorage storage,
-  }) : _firestore = firestore,
-       _storage = storage;
+  }) : _firestore = firestore;
 
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
 
   // ── Products ──────────────────────────────────────────────
 
@@ -107,11 +109,20 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
 
   // ── Image Upload ──────────────────────────────────────────
 
+  // ── User Profile ─────────────────────────────────────────
+
   @override
-  Future<String> uploadImage(Uint8List bytes, String fileName) async {
-    final ref = _storage.ref('images/$fileName');
-    await ref.putData(bytes);
-    return ref.getDownloadURL();
+  Future<void> updateUserProfile({
+    required String userId,
+    String? name,
+    String? photoUrl,
+  }) async {
+    final updates = <String, dynamic>{};
+    if (name != null) updates['name'] = name;
+    if (photoUrl != null) updates['photoUrl'] = photoUrl;
+    if (updates.isNotEmpty) {
+      await _firestore.collection('users').doc(userId).update(updates);
+    }
   }
 
   // ── Orders ────────────────────────────────────────────────
@@ -130,5 +141,27 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     await _firestore.collection('orders').doc(orderId).update({
       'status': status,
     });
+  }
+
+  // ── User Detail ──────────────────────────────────────────
+
+  @override
+  Future<List<AddressModel>> getUserAddresses(String userId) async {
+    final snap = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('addresses')
+        .get();
+    return snap.docs.map(AddressModel.fromFirestore).toList();
+  }
+
+  @override
+  Future<List<OrderModel>> getUserOrders(String userId) async {
+    final snap = await _firestore
+        .collection('orders')
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .get();
+    return snap.docs.map(OrderModel.fromFirestore).toList();
   }
 }

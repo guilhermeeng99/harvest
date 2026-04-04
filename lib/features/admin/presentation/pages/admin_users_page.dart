@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
+import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_users_cubit.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_users_state.dart';
 import 'package:harvest/features/admin/presentation/widgets/animated_list_item.dart';
+import 'package:harvest/features/auth/domain/entities/user_entity.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class AdminUsersPage extends StatelessWidget {
@@ -62,6 +65,7 @@ class _AdminUsersView extends StatelessWidget {
                     ),
                     title: Text(user.name ?? user.email),
                     subtitle: user.name != null ? Text(user.email) : null,
+                    onTap: () => _showUserDetails(context, user),
                     trailing: IconButton(
                       icon: const FaIcon(
                         FontAwesomeIcons.trashCan,
@@ -81,6 +85,10 @@ class _AdminUsersView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _showUserDetails(BuildContext context, UserEntity user) {
+    unawaited(context.push(AppRoutes.adminUserDetail, extra: user));
   }
 
   void _confirmDelete(BuildContext context, String id, String name) {

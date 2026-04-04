@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AdminCategoryFormController extends ChangeNotifier {
   AdminCategoryFormController({this.categoryId}) {
@@ -17,9 +15,9 @@ class AdminCategoryFormController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   final nameCtrl = TextEditingController();
   final sortCtrl = TextEditingController(text: '0');
+  final imageUrlCtrl = TextEditingController();
 
-  String imageUrl = '';
-  Uint8List? imageBytes;
+  String get imageUrl => imageUrlCtrl.text.trim();
   bool loading = false;
   String? errorMessage;
   CategoryEntity? _existing;
@@ -39,23 +37,11 @@ class AdminCategoryFormController extends ChangeNotifier {
         _existing = found.first;
         nameCtrl.text = _existing!.name;
         sortCtrl.text = _existing!.sortOrder.toString();
-        imageUrl = _existing!.imageUrl;
+        imageUrlCtrl.text = _existing!.imageUrl;
       }
     });
 
     loading = false;
-    notifyListeners();
-  }
-
-  Future<void> pickImage() async {
-    final picker = ImagePicker();
-    final file = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 400,
-    );
-    if (file == null) return;
-    final bytes = await file.readAsBytes();
-    imageBytes = bytes;
     notifyListeners();
   }
 
@@ -66,29 +52,10 @@ class AdminCategoryFormController extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
 
-    var finalImageUrl = imageUrl;
-    if (imageBytes != null) {
-      final fileName = 'category_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final result = await _repo.uploadImage(imageBytes!, fileName);
-      final failed = result.fold<bool>(
-        (f) {
-          errorMessage = f.message;
-          loading = false;
-          notifyListeners();
-          return true;
-        },
-        (url) {
-          finalImageUrl = url;
-          return false;
-        },
-      );
-      if (failed) return false;
-    }
-
     final category = CategoryEntity(
       id: _existing?.id ?? '',
       name: nameCtrl.text.trim(),
-      imageUrl: finalImageUrl,
+      imageUrl: imageUrl,
       sortOrder: int.tryParse(sortCtrl.text) ?? 0,
     );
 
@@ -115,6 +82,7 @@ class AdminCategoryFormController extends ChangeNotifier {
   void dispose() {
     nameCtrl.dispose();
     sortCtrl.dispose();
+    imageUrlCtrl.dispose();
     super.dispose();
   }
 }

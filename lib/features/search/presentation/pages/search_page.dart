@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,12 +14,20 @@ import 'package:harvest/features/search/presentation/widgets/search_results_view
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  const SearchPage({this.initialCategoryId, super.key});
+
+  final String? initialCategoryId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<SearchCubit>(),
+      create: (_) {
+        final cubit = sl<SearchCubit>();
+        if (initialCategoryId != null) {
+          unawaited(cubit.browseCategory(initialCategoryId!));
+        }
+        return cubit;
+      },
       child: const _SearchView(),
     );
   }

@@ -69,6 +69,10 @@ melos:
       description: Build Harvest site (landing + help center) for production.
       run: cd packages/harvest_site && flutter build web --release --no-wasm-dry-run --base-href /harvest/site/
 
+    build:apk:
+      description: Build APK release for testing.
+      run: flutter build apk --release
+
     gen:i18n:
       description: Generate i18n files with slang.
       run: dart run slang

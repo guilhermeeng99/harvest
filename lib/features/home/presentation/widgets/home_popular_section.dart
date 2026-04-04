@@ -64,18 +64,36 @@ class HomePopularSection extends StatelessWidget {
                   final product = organicProducts[index];
                   return SizedBox(
                     width: 170,
-                    child: ProductCard(
-                      name: product.name,
-                      price: product.price,
-                      unit: product.unit,
-                      imageUrl: product.imageUrl,
-                      farmName: product.farmName,
-                      isOrganic: product.isOrganic,
-                      onTap: () => context.push(
-                        AppRoutes.productDetailsPath(product.id),
-                      ),
-                      onAddToCart: () =>
-                          context.read<CartBloc>().add(CartItemAdded(product)),
+                    child: BlocBuilder<CartBloc, CartState>(
+                      buildWhen: (prev, curr) {
+                        final prevQty = prev.items
+                            .where((i) => i.product.id == product.id)
+                            .fold(0, (sum, i) => sum + i.quantity);
+                        final currQty = curr.items
+                            .where((i) => i.product.id == product.id)
+                            .fold(0, (sum, i) => sum + i.quantity);
+                        return prevQty != currQty;
+                      },
+                      builder: (context, cartState) {
+                        final cartQuantity = cartState.items
+                            .where((i) => i.product.id == product.id)
+                            .fold(0, (sum, i) => sum + i.quantity);
+                        return ProductCard(
+                          name: product.name,
+                          price: product.price,
+                          unit: product.unit,
+                          imageUrl: product.imageUrl,
+                          farmName: product.farmName,
+                          isOrganic: product.isOrganic,
+                          cartQuantity: cartQuantity,
+                          onTap: () => context.push(
+                            AppRoutes.productDetailsPath(product.id),
+                          ),
+                          onAddToCart: () => context.read<CartBloc>().add(
+                            CartItemAdded(product),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },

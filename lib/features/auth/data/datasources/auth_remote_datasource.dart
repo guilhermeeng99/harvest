@@ -19,6 +19,8 @@ abstract class AuthRemoteDataSource {
 
   Future<UserModel?> getCurrentUser();
 
+  Future<UserModel> updateProfile({required String name});
+
   Stream<UserModel?> get authStateChanges;
 }
 
@@ -126,6 +128,36 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       photoUrl: user.photoURL,
       isAdmin: isAdmin,
     );
+  }
+
+  @override
+  Future<UserModel> updateProfile({required String name}) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) throw const AuthException('User not found');
+
+      await user.updateDisplayName(name);
+
+      final updates = <String, dynamic>{
+        'name': name,
+        'email': user.email,
+      };
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .set(updates, SetOptions(merge: true));
+
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      final adminDoc = await _firestore
+          .collection('admins')
+          .doc(user.uid)
+          .get();
+      final isAdmin = adminDoc.exists;
+
+      return UserModel.fromFirestore(doc, isAdmin: isAdmin);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.message ?? 'Profile update failed');
+    }
   }
 
   @override
