@@ -6,7 +6,7 @@ enum OrderStatus {
   harvesting,
   delivering,
   delivered,
-  cancelled;
+  cancelled,
 }
 
 class OrderItemEntity extends Equatable {
@@ -49,19 +49,18 @@ class OrderEntity extends Equatable {
   final DeliveryAddress deliveryAddress;
   final DateTime createdAt;
 
-  int get itemCount =>
-      items.fold(0, (sum, item) => sum + item.quantity);
+  int get itemCount => items.fold(0, (sum, item) => sum + item.quantity);
 
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        items,
-        totalAmount,
-        status,
-        deliveryAddress,
-        createdAt,
-      ];
+    id,
+    userId,
+    items,
+    totalAmount,
+    status,
+    deliveryAddress,
+    createdAt,
+  ];
 }
 
 class DeliveryAddress extends Equatable {

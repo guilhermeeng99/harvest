@@ -11,6 +11,7 @@ import 'package:harvest/features/admin/presentation/cubit/admin_orders_cubit.dar
 import 'package:harvest/features/admin/presentation/cubit/admin_orders_state.dart';
 import 'package:harvest/features/admin/presentation/widgets/animated_list_item.dart';
 import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
+import 'package:harvest/features/orders/presentation/widgets/order_status_utils.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 import 'package:intl/intl.dart';
 
@@ -154,9 +155,10 @@ class _AdminOrderCard extends StatelessWidget {
 
     if (confirmed == true && context.mounted) {
       unawaited(
-        context
-            .read<AdminOrdersCubit>()
-            .updateOrderStatus(orderId, OrderStatus.cancelled),
+        context.read<AdminOrdersCubit>().updateOrderStatus(
+          orderId,
+          OrderStatus.cancelled,
+        ),
       );
     }
   }
@@ -192,11 +194,11 @@ class _StatusDropdown extends StatelessWidget {
                     height: 10,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _colorForStatus(status),
+                      color: status.color,
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text(_labelForStatus(status)),
+                  Text(status.label),
                 ],
               ),
             ),
@@ -205,34 +207,13 @@ class _StatusDropdown extends StatelessWidget {
       onChanged: (newStatus) {
         if (newStatus != null && newStatus != order.status) {
           unawaited(
-            context
-                .read<AdminOrdersCubit>()
-                .updateOrderStatus(order.id, newStatus),
+            context.read<AdminOrdersCubit>().updateOrderStatus(
+              order.id,
+              newStatus,
+            ),
           );
         }
       },
     );
-  }
-
-  Color _colorForStatus(OrderStatus status) {
-    return switch (status) {
-      OrderStatus.pending => AppColors.warning,
-      OrderStatus.confirmed => AppColors.primaryLight,
-      OrderStatus.harvesting => AppColors.primary,
-      OrderStatus.delivering => AppColors.secondary,
-      OrderStatus.delivered => AppColors.success,
-      OrderStatus.cancelled => AppColors.error,
-    };
-  }
-
-  String _labelForStatus(OrderStatus status) {
-    return switch (status) {
-      OrderStatus.pending => t.orders.status.pending,
-      OrderStatus.confirmed => t.orders.status.confirmed,
-      OrderStatus.harvesting => t.orders.status.harvesting,
-      OrderStatus.delivering => t.orders.status.delivering,
-      OrderStatus.delivered => t.orders.status.delivered,
-      OrderStatus.cancelled => t.orders.status.cancelled,
-    };
   }
 }

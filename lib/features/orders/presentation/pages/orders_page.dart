@@ -11,6 +11,7 @@ import 'package:harvest/app/widgets/loading_shimmer.dart';
 import 'package:harvest/core/utils/currency_formatter.dart';
 import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
 import 'package:harvest/features/orders/presentation/bloc/orders_bloc.dart';
+import 'package:harvest/features/orders/presentation/widgets/order_status_badge.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 import 'package:intl/intl.dart';
 
@@ -118,97 +119,54 @@ class _OrderCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                t.orders.orderNumber(
-                  number: order.id.substring(0, 8).toUpperCase(),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.divider),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  t.orders.orderNumber(
+                    number: order.id.substring(0, 8).toUpperCase(),
+                  ),
+                  style: AppTypography.titleMedium,
                 ),
-                style: AppTypography.titleMedium,
-              ),
-              _StatusBadge(status: order.status),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            t.orders.items(count: order.itemCount.toString()),
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.onBackgroundLight,
+                OrderStatusBadge(status: order.status),
+              ],
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            t.orders.placedOn(date: dateFormat.format(order.createdAt)),
-            style: AppTypography.bodySmall.copyWith(
-              color: AppColors.onBackgroundLight,
-            ),
-          ),
-          const Divider(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(t.cart.total, style: AppTypography.bodyMedium),
-              Text(
-                CurrencyFormatter.format(order.totalAmount),
-                style: AppTypography.priceMedium,
+            const SizedBox(height: 8),
+            Text(
+              t.orders.items(count: order.itemCount.toString()),
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppColors.onBackgroundLight,
               ),
-            ],
-          ),
-        ],
-      ),
-      ),
-    );
-  }
-}
-
-class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.status});
-
-  final OrderStatus status;
-
-  Color get _color {
-    return switch (status) {
-      OrderStatus.pending => AppColors.warning,
-      OrderStatus.confirmed => AppColors.primaryLight,
-      OrderStatus.harvesting => AppColors.primary,
-      OrderStatus.delivering => AppColors.secondary,
-      OrderStatus.delivered => AppColors.success,
-      OrderStatus.cancelled => AppColors.error,
-    };
-  }
-
-  String get _label {
-    return switch (status) {
-      OrderStatus.pending => t.orders.status.pending,
-      OrderStatus.confirmed => t.orders.status.confirmed,
-      OrderStatus.harvesting => t.orders.status.harvesting,
-      OrderStatus.delivering => t.orders.status.delivering,
-      OrderStatus.delivered => t.orders.status.delivered,
-      OrderStatus.cancelled => t.orders.status.cancelled,
-    };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: _color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        _label,
-        style: AppTypography.labelSmall.copyWith(color: _color),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              t.orders.placedOn(date: dateFormat.format(order.createdAt)),
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.onBackgroundLight,
+              ),
+            ),
+            const Divider(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(t.cart.total, style: AppTypography.bodyMedium),
+                Text(
+                  CurrencyFormatter.format(order.totalAmount),
+                  style: AppTypography.priceMedium,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
