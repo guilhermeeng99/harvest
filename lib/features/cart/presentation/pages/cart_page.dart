@@ -110,68 +110,74 @@ class _CartContent extends StatelessWidget {
                     size: 20,
                   ),
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.divider),
+                child: GestureDetector(
+                  onTap: () => context.push(
+                    AppRoutes.productDetailsPath(item.product.id),
                   ),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          imageUrl: item.product.imageUrl,
-                          width: 72,
-                          height: 72,
-                          fit: BoxFit.cover,
-                          errorWidget: (_, _, _) => Container(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.divider),
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            imageUrl: item.product.imageUrl,
                             width: 72,
                             height: 72,
-                            color: AppColors.surfaceVariant,
-                            child: const FaIcon(
-                              FontAwesomeIcons.image,
-                              size: 20,
+                            fit: BoxFit.cover,
+                            errorWidget: (_, _, _) => Container(
+                              width: 72,
+                              height: 72,
+                              color: AppColors.surfaceVariant,
+                              child: const FaIcon(
+                                FontAwesomeIcons.image,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.product.name,
-                              style: AppTypography.titleMedium,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              CurrencyFormatter.format(item.product.price),
-                              style: AppTypography.priceSmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                      QuantitySelector(
-                        quantity: item.quantity,
-                        onIncrement: () => context.read<CartBloc>().add(
-                          CartItemQuantityUpdated(
-                            productId: item.product.id,
-                            quantity: item.quantity + 1,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.product.name,
+                                style: AppTypography.titleMedium,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                CurrencyFormatter.format(item.product.price),
+                                style: AppTypography.priceSmall,
+                              ),
+                            ],
                           ),
                         ),
-                        onDecrement: () => context.read<CartBloc>().add(
-                          CartItemQuantityUpdated(
-                            productId: item.product.id,
-                            quantity: item.quantity - 1,
+                        QuantitySelector(
+                          quantity: item.quantity,
+                          min: 0,
+                          onIncrement: () => context.read<CartBloc>().add(
+                            CartItemQuantityUpdated(
+                              productId: item.product.id,
+                              quantity: item.quantity + 1,
+                            ),
+                          ),
+                          onDecrement: () => context.read<CartBloc>().add(
+                            CartItemQuantityUpdated(
+                              productId: item.product.id,
+                              quantity: item.quantity - 1,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

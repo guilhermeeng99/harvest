@@ -419,6 +419,21 @@ class TranslationsCheckoutEn {
 	/// en: 'ZIP Code'
 	String get zipCode => 'ZIP Code';
 
+	/// en: 'Change'
+	String get changeAddress => 'Change';
+
+	/// en: 'Add Address'
+	String get addAddress => 'Add Address';
+
+	/// en: 'No delivery address registered'
+	String get noAddress => 'No delivery address registered';
+
+	/// en: 'Add an address to continue with your order.'
+	String get noAddressSubtitle => 'Add an address to continue with your order.';
+
+	/// en: 'Please select a delivery address'
+	String get selectAddressError => 'Please select a delivery address';
+
 	/// en: 'Payment Method'
 	String get paymentMethod => 'Payment Method';
 
@@ -930,6 +945,11 @@ extension on Translations {
 			'checkout.street' => 'Street Address',
 			'checkout.city' => 'City',
 			'checkout.zipCode' => 'ZIP Code',
+			'checkout.changeAddress' => 'Change',
+			'checkout.addAddress' => 'Add Address',
+			'checkout.noAddress' => 'No delivery address registered',
+			'checkout.noAddressSubtitle' => 'Add an address to continue with your order.',
+			'checkout.selectAddressError' => 'Please select a delivery address',
 			'checkout.paymentMethod' => 'Payment Method',
 			'checkout.creditCard' => 'Credit Card',
 			'checkout.applePay' => 'Apple Pay',

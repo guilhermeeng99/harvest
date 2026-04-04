@@ -6,10 +6,9 @@ import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/app/widgets/harvest_button.dart';
-import 'package:harvest/app/widgets/harvest_text_field.dart';
 import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/core/utils/currency_formatter.dart';
-import 'package:harvest/core/utils/validators.dart';
+import 'package:harvest/features/address/presentation/cubit/address_cubit.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
 import 'package:harvest/features/checkout/presentation/bloc/checkout_bloc.dart';
@@ -23,30 +22,23 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _streetController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _zipController = TextEditingController();
   String _paymentMethod = 'Credit Card';
 
-  @override
-  void dispose() {
-    _streetController.dispose();
-    _cityController.dispose();
-    _zipController.dispose();
-    super.dispose();
-  }
-
   void _onPlaceOrder() {
-    if (!_formKey.currentState!.validate()) return;
+    final selectedAddress = context.read<AddressCubit>().state.selectedAddress;
+
+    if (selectedAddress == null) {
+      context.showErrorSnackBar(t.checkout.selectAddressError);
+      return;
+    }
 
     context.read<CheckoutBloc>()
       ..add(
         CheckoutAddressUpdated(
           DeliveryAddress(
-            street: _streetController.text.trim(),
-            city: _cityController.text.trim(),
-            zipCode: _zipController.text.trim(),
+            street: '${selectedAddress.street}, ${selectedAddress.number}',
+            city: selectedAddress.city,
+            zipCode: selectedAddress.zipCode,
           ),
         ),
       )
@@ -79,127 +71,200 @@ class _CheckoutPageState extends State<CheckoutPage> {
         },
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  t.checkout.deliveryAddress,
-                  style: AppTypography.titleLarge,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                t.checkout.deliveryAddress,
+                style: AppTypography.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              const _AddressSection(),
+              const SizedBox(height: 28),
+              Text(t.checkout.paymentMethod, style: AppTypography.titleLarge),
+              const SizedBox(height: 12),
+              _PaymentOption(
+                label: t.checkout.creditCard,
+                icon: const FaIcon(
+                  FontAwesomeIcons.creditCard,
+                  color: AppColors.onBackground,
                 ),
-                const SizedBox(height: 16),
-                HarvestTextField(
-                  controller: _streetController,
-                  label: t.checkout.street,
-                  prefixIcon: const FaIcon(
-                    FontAwesomeIcons.locationDot,
-                  ),
-                  textInputAction: TextInputAction.next,
-                  validator: (v) => Validators.required(v, fieldName: 'Street'),
+                isSelected: _paymentMethod == 'Credit Card',
+                onTap: () => setState(() => _paymentMethod = 'Credit Card'),
+              ),
+              const SizedBox(height: 8),
+              _PaymentOption(
+                label: t.checkout.applePay,
+                icon: const FaIcon(
+                  FontAwesomeIcons.apple,
+                  color: AppColors.onBackground,
+                ),
+                isSelected: _paymentMethod == 'Apple Pay',
+                onTap: () => setState(() => _paymentMethod = 'Apple Pay'),
+              ),
+              const SizedBox(height: 8),
+              _PaymentOption(
+                label: t.checkout.googlePay,
+                icon: const FaIcon(
+                  FontAwesomeIcons.googlePay,
+                  color: AppColors.onBackground,
+                ),
+                isSelected: _paymentMethod == 'Google Pay',
+                onTap: () => setState(() => _paymentMethod = 'Google Pay'),
+              ),
+              const SizedBox(height: 28),
+              Text(t.checkout.orderSummary, style: AppTypography.titleLarge),
+              const SizedBox(height: 12),
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, cartState) {
+                  return Column(
+                    children: [
+                      _SummaryRow(
+                        label: t.cart.subtotal,
+                        value: CurrencyFormatter.format(cartState.subtotal),
+                      ),
+                      const SizedBox(height: 4),
+                      _SummaryRow(
+                        label: t.cart.deliveryFee,
+                        value: cartState.deliveryFee == 0
+                            ? t.cart.free
+                            : CurrencyFormatter.format(cartState.deliveryFee),
+                      ),
+                      const Divider(height: 20),
+                      _SummaryRow(
+                        label: t.cart.total,
+                        value: CurrencyFormatter.format(cartState.total),
+                        isBold: true,
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+              BlocBuilder<CheckoutBloc, CheckoutState>(
+                builder: (context, state) {
+                  return HarvestButton(
+                    label: t.checkout.placeOrder,
+                    onPressed: _onPlaceOrder,
+                    isLoading: state.status == CheckoutStatus.loading,
+                    width: double.infinity,
+                  );
+                },
+              ),
+              const SizedBox(height: 32),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AddressSection extends StatelessWidget {
+  const _AddressSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddressCubit, AddressState>(
+      builder: (context, state) {
+        if (state.status == AddressStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final address = state.selectedAddress;
+
+        if (address == null) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.divider),
+            ),
+            child: Column(
+              children: [
+                const FaIcon(
+                  FontAwesomeIcons.locationDot,
+                  size: 32,
+                  color: AppColors.onBackgroundLight,
                 ),
                 const SizedBox(height: 12),
-                Row(
+                Text(
+                  t.checkout.noAddress,
+                  style: AppTypography.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  t.checkout.noAddressSubtitle,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.onBackgroundLight,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                HarvestButton(
+                  label: t.checkout.addAddress,
+                  onPressed: () => context.push(AppRoutes.addressAdd),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.divider),
+          ),
+          child: Row(
+            children: [
+              const FaIcon(
+                FontAwesomeIcons.locationDot,
+                size: 20,
+                color: AppColors.primary,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: HarvestTextField(
-                        controller: _cityController,
-                        label: t.checkout.city,
-                        textInputAction: TextInputAction.next,
-                        validator: (v) =>
-                            Validators.required(v, fieldName: 'City'),
+                    if (address.label != null)
+                      Text(
+                        address.label!,
+                        style: AppTypography.titleMedium,
                       ),
+                    Text(
+                      address.shortAddress,
+                      style: AppTypography.bodyMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: HarvestTextField(
-                        controller: _zipController,
-                        label: t.checkout.zipCode,
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.done,
-                        validator: (v) =>
-                            Validators.required(v, fieldName: 'ZIP'),
+                    Text(
+                      '${address.city}, ${address.state} - ${address.zipCode}',
+                      style: AppTypography.bodySmall.copyWith(
+                        color: AppColors.onBackgroundLight,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 28),
-                Text(t.checkout.paymentMethod, style: AppTypography.titleLarge),
-                const SizedBox(height: 12),
-                _PaymentOption(
-                  label: t.checkout.creditCard,
-                  icon: const FaIcon(
-                    FontAwesomeIcons.creditCard,
-                    color: AppColors.onBackground,
+              ),
+              TextButton(
+                onPressed: () => context.push(AppRoutes.addresses),
+                child: Text(
+                  t.checkout.changeAddress,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
                   ),
-                  isSelected: _paymentMethod == 'Credit Card',
-                  onTap: () => setState(() => _paymentMethod = 'Credit Card'),
                 ),
-                const SizedBox(height: 8),
-                _PaymentOption(
-                  label: t.checkout.applePay,
-                  icon: const FaIcon(
-                    FontAwesomeIcons.apple,
-                    color: AppColors.onBackground,
-                  ),
-                  isSelected: _paymentMethod == 'Apple Pay',
-                  onTap: () => setState(() => _paymentMethod = 'Apple Pay'),
-                ),
-                const SizedBox(height: 8),
-                _PaymentOption(
-                  label: t.checkout.googlePay,
-                  icon: const FaIcon(
-                    FontAwesomeIcons.googlePay,
-                    color: AppColors.onBackground,
-                  ),
-                  isSelected: _paymentMethod == 'Google Pay',
-                  onTap: () => setState(() => _paymentMethod = 'Google Pay'),
-                ),
-                const SizedBox(height: 28),
-                Text(t.checkout.orderSummary, style: AppTypography.titleLarge),
-                const SizedBox(height: 12),
-                BlocBuilder<CartBloc, CartState>(
-                  builder: (context, cartState) {
-                    return Column(
-                      children: [
-                        _SummaryRow(
-                          label: t.cart.subtotal,
-                          value: CurrencyFormatter.format(cartState.subtotal),
-                        ),
-                        const SizedBox(height: 4),
-                        _SummaryRow(
-                          label: t.cart.deliveryFee,
-                          value: cartState.deliveryFee == 0
-                              ? t.cart.free
-                              : CurrencyFormatter.format(cartState.deliveryFee),
-                        ),
-                        const Divider(height: 20),
-                        _SummaryRow(
-                          label: t.cart.total,
-                          value: CurrencyFormatter.format(cartState.total),
-                          isBold: true,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                BlocBuilder<CheckoutBloc, CheckoutState>(
-                  builder: (context, state) {
-                    return HarvestButton(
-                      label: t.checkout.placeOrder,
-                      onPressed: _onPlaceOrder,
-                      isLoading: state.status == CheckoutStatus.loading,
-                      width: double.infinity,
-                    );
-                  },
-                ),
-                const SizedBox(height: 32),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
