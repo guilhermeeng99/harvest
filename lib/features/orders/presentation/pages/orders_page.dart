@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
+import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/app/widgets/error_view.dart';
@@ -94,20 +96,28 @@ class _OrdersList extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       itemCount: orders.length,
       separatorBuilder: (_, _) => const SizedBox(height: 12),
-      itemBuilder: (_, index) => _OrderCard(order: orders[index]),
+      itemBuilder: (_, index) => _OrderCard(
+        order: orders[index],
+        onTap: () => context.push(
+          AppRoutes.orderDetailsPath(orders[index].id),
+        ),
+      ),
     );
   }
 }
 
 class _OrderCard extends StatelessWidget {
-  const _OrderCard({required this.order});
+  const _OrderCard({required this.order, required this.onTap});
 
   final OrderEntity order;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat.yMMMd();
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -156,6 +166,7 @@ class _OrderCard extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -172,6 +183,7 @@ class _StatusBadge extends StatelessWidget {
       OrderStatus.harvesting => AppColors.primary,
       OrderStatus.delivering => AppColors.secondary,
       OrderStatus.delivered => AppColors.success,
+      OrderStatus.cancelled => AppColors.error,
     };
   }
 
@@ -182,6 +194,7 @@ class _StatusBadge extends StatelessWidget {
       OrderStatus.harvesting => t.orders.status.harvesting,
       OrderStatus.delivering => t.orders.status.delivering,
       OrderStatus.delivered => t.orders.status.delivered,
+      OrderStatus.cancelled => t.orders.status.cancelled,
     };
   }
 

@@ -14,6 +14,7 @@ import 'package:harvest/features/admin/data/datasources/admin_remote_datasource.
 import 'package:harvest/features/admin/data/repositories/admin_repository_impl.dart';
 import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_categories_cubit.dart';
+import 'package:harvest/features/admin/presentation/cubit/admin_orders_cubit.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_products_cubit.dart';
 import 'package:harvest/features/admin/presentation/cubit/admin_users_cubit.dart';
 import 'package:harvest/features/auth/data/datasources/auth_remote_datasource.dart';
@@ -42,6 +43,7 @@ import 'package:harvest/features/notifications/presentation/cubit/notifications_
 import 'package:harvest/features/orders/data/datasources/orders_remote_datasource.dart';
 import 'package:harvest/features/orders/data/repositories/orders_repository_impl.dart';
 import 'package:harvest/features/orders/domain/repositories/orders_repository.dart';
+import 'package:harvest/features/orders/domain/usecases/cancel_order_usecase.dart';
 import 'package:harvest/features/orders/domain/usecases/get_orders_usecase.dart';
 import 'package:harvest/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:harvest/features/profile/presentation/cubit/profile_cubit.dart';
@@ -150,7 +152,13 @@ void _initOrders() {
     )
     ..registerLazySingleton<OrdersRepository>(() => OrdersRepositoryImpl(sl()))
     ..registerLazySingleton(() => GetOrdersUseCase(sl()))
-    ..registerFactory(() => OrdersBloc(getOrdersUseCase: sl()));
+    ..registerLazySingleton(() => CancelOrderUseCase(sl()))
+    ..registerFactory(
+      () => OrdersBloc(
+        getOrdersUseCase: sl(),
+        cancelOrderUseCase: sl(),
+      ),
+    );
 }
 
 void _initProfile() {
@@ -191,5 +199,6 @@ void _initAdmin() {
     ..registerLazySingleton<AdminRepository>(() => AdminRepositoryImpl(sl()))
     ..registerFactory(() => AdminProductsCubit(sl()))
     ..registerFactory(() => AdminCategoriesCubit(sl()))
+    ..registerFactory(() => AdminOrdersCubit(sl()))
     ..registerFactory(() => AdminUsersCubit(sl()));
 }

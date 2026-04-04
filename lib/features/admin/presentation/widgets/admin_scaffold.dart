@@ -29,7 +29,8 @@ class _AdminScaffoldState extends State<AdminScaffold>
   int get _selectedIndex {
     if (widget.currentPath.startsWith(AppRoutes.adminProducts)) return 0;
     if (widget.currentPath.startsWith(AppRoutes.adminCategories)) return 1;
-    if (widget.currentPath.startsWith(AppRoutes.adminUsers)) return 2;
+    if (widget.currentPath.startsWith(AppRoutes.adminOrders)) return 2;
+    if (widget.currentPath.startsWith(AppRoutes.adminUsers)) return 3;
     return 0;
   }
 
@@ -87,6 +88,8 @@ class _AdminScaffoldState extends State<AdminScaffold>
                 case 1:
                   context.go(AppRoutes.adminCategories);
                 case 2:
+                  context.go(AppRoutes.adminOrders);
+                case 3:
                   context.go(AppRoutes.adminUsers);
               }
             },
@@ -109,6 +112,14 @@ class _AdminScaffoldState extends State<AdminScaffold>
                   size: 20,
                 ),
                 label: Text(i18n.categories),
+              ),
+              NavigationRailDestination(
+                icon: const FaIcon(FontAwesomeIcons.clipboardList, size: 20),
+                selectedIcon: const FaIcon(
+                  FontAwesomeIcons.clipboardList,
+                  size: 20,
+                ),
+                label: Text(i18n.orders),
               ),
               NavigationRailDestination(
                 icon: const FaIcon(FontAwesomeIcons.users, size: 20),

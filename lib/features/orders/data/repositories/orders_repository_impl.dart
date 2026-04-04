@@ -21,4 +21,16 @@ class OrdersRepositoryImpl implements OrdersRepository {
       return Left(AuthFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> cancelOrder(String orderId) async {
+    try {
+      await _dataSource.cancelOrder(orderId);
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on AuthException catch (e) {
+      return Left(AuthFailure(e.message));
+    }
+  }
 }

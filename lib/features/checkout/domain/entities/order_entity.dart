@@ -5,7 +5,8 @@ enum OrderStatus {
   confirmed,
   harvesting,
   delivering,
-  delivered;
+  delivered,
+  cancelled;
 }
 
 class OrderItemEntity extends Equatable {

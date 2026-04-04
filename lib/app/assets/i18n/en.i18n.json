@@ -149,11 +149,19 @@
       "confirmed": "Confirmed",
       "harvesting": "Harvesting",
       "delivering": "On the way",
-      "delivered": "Delivered"
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     },
     "orderNumber": "Order #$number",
     "items": "$count item(s)",
-    "placedOn": "Placed on $date"
+    "placedOn": "Placed on $date",
+    "details": {
+      "status": "Status",
+      "items": "Items",
+      "deliveryAddress": "Delivery Address",
+      "cancelOrder": "Cancel Order",
+      "cancelConfirmation": "Are you sure you want to cancel this order? This action cannot be undone."
+    }
   },
   "profile": {
     "title": "Profile",
@@ -236,6 +244,14 @@
     "tapToSelectImage": "Tap to select image",
     "image": "Image",
     "sortLabel": "Sort: $order",
-    "stockLabel": "Stock: $count"
+    "stockLabel": "Stock: $count",
+    "orders": "Orders",
+    "noOrders": "No orders yet",
+    "changeStatus": "Change Status",
+    "cancelOrder": "Cancel Order",
+    "cancelOrderConfirmation": "Are you sure you want to cancel this order?",
+    "statusUpdated": "Order status updated",
+    "allOrders": "All Orders",
+    "customer": "Customer"
   }
 }

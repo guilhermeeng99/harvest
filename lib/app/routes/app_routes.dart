@@ -8,6 +8,7 @@ class AppRoutes {
   static const search = '/search';
   static const cart = '/cart';
   static const orders = '/orders';
+  static const orderDetails = '/orders/:id';
   static const profile = '/profile';
   static const productDetails = '/product/:id';
   static const checkout = '/checkout';
@@ -25,9 +26,11 @@ class AppRoutes {
   static const adminCategoryAdd = '/admin/categories/add';
   static const adminCategoryEdit = '/admin/categories/edit/:id';
   static const adminUsers = '/admin/users';
+  static const adminOrders = '/admin/orders';
 
   static String productDetailsPath(String id) => '/product/$id';
   static String adminProductEditPath(String id) => '/admin/products/edit/$id';
   static String adminCategoryEditPath(String id) =>
       '/admin/categories/edit/$id';
+  static String orderDetailsPath(String id) => '/orders/$id';
 }

@@ -9,6 +9,7 @@ import 'package:harvest/features/address/presentation/pages/add_address_page.dar
 import 'package:harvest/features/address/presentation/pages/address_selection_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_categories_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_category_form_page.dart';
+import 'package:harvest/features/admin/presentation/pages/admin_orders_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_product_form_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_products_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_users_page.dart';
@@ -23,6 +24,7 @@ import 'package:harvest/features/checkout/presentation/pages/order_confirmation_
 import 'package:harvest/features/home/presentation/pages/home_page.dart';
 import 'package:harvest/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:harvest/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:harvest/features/orders/presentation/pages/order_details_page.dart';
 import 'package:harvest/features/orders/presentation/pages/orders_page.dart';
 import 'package:harvest/features/product_details/presentation/pages/product_details_page.dart';
 import 'package:harvest/features/profile/presentation/pages/profile_page.dart';
@@ -94,6 +96,13 @@ GoRouter createRouter(AuthBloc authBloc) {
         builder: (_, _) => const OrderConfirmationPage(),
       ),
       GoRoute(
+        path: AppRoutes.orderDetails,
+        builder: (_, state) {
+          final id = state.pathParameters['id']!;
+          return OrderDetailsPage(orderId: id);
+        },
+      ),
+      GoRoute(
         path: AppRoutes.addresses,
         builder: (_, _) => const AddressSelectionPage(),
       ),
@@ -120,6 +129,10 @@ GoRouter createRouter(AuthBloc authBloc) {
           GoRoute(
             path: AppRoutes.adminCategories,
             builder: (_, _) => const AdminCategoriesPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.adminOrders,
+            builder: (_, _) => const AdminOrdersPage(),
           ),
           GoRoute(
             path: AppRoutes.adminUsers,

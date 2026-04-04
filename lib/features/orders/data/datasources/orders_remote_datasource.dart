@@ -5,6 +5,7 @@ import 'package:harvest/features/orders/data/models/order_model.dart';
 
 abstract class OrdersRemoteDataSource {
   Future<List<OrderModel>> getOrders();
+  Future<void> cancelOrder(String orderId);
 }
 
 class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
@@ -30,6 +31,20 @@ class OrdersRemoteDataSourceImpl implements OrdersRemoteDataSource {
           .get();
 
       return snapshot.docs.map(OrderModel.fromFirestore).toList();
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> cancelOrder(String orderId) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) throw const AuthException('User not authenticated');
+
+      await _firestore.collection('orders').doc(orderId).update({
+        'status': 'cancelled',
+      });
     } catch (e) {
       throw ServerException(e.toString());
     }

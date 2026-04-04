@@ -5,6 +5,7 @@ import 'package:harvest/core/errors/failures.dart';
 import 'package:harvest/features/admin/data/datasources/admin_remote_datasource.dart';
 import 'package:harvest/features/admin/domain/repositories/admin_repository.dart';
 import 'package:harvest/features/auth/domain/entities/user_entity.dart';
+import 'package:harvest/features/checkout/domain/entities/order_entity.dart';
 import 'package:harvest/features/home/data/models/category_model.dart';
 import 'package:harvest/features/home/data/models/product_model.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
@@ -159,4 +160,29 @@ class AdminRepositoryImpl implements AdminRepository {
     imageUrl: e.imageUrl,
     sortOrder: e.sortOrder,
   );
+
+  // ── Orders ────────────────────────────────────────────────
+
+  @override
+  Future<Either<Failure, List<OrderEntity>>> getAllOrders() async {
+    try {
+      final orders = await _dataSource.getAllOrders();
+      return Right(orders);
+    } on Exception catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateOrderStatus(
+    String orderId,
+    OrderStatus status,
+  ) async {
+    try {
+      await _dataSource.updateOrderStatus(orderId, status.name);
+      return const Right(null);
+    } on Exception catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

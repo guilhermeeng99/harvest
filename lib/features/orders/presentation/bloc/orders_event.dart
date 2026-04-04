@@ -10,3 +10,12 @@ sealed class OrdersEvent extends Equatable {
 class OrdersLoadRequested extends OrdersEvent {
   const OrdersLoadRequested();
 }
+
+class OrderCancelRequested extends OrdersEvent {
+  const OrderCancelRequested({required this.orderId});
+
+  final String orderId;
+
+  @override
+  List<Object?> get props => [orderId];
+}

@@ -482,6 +482,8 @@ class TranslationsOrdersEn {
 
 	/// en: 'Placed on $date'
 	String placedOn({required Object date}) => 'Placed on ${date}';
+
+	late final TranslationsOrdersDetailsEn details = TranslationsOrdersDetailsEn._(_root);
 }
 
 // Path: profile
@@ -743,6 +745,30 @@ class TranslationsAdminEn {
 
 	/// en: 'Stock: $count'
 	String stockLabel({required Object count}) => 'Stock: ${count}';
+
+	/// en: 'Orders'
+	String get orders => 'Orders';
+
+	/// en: 'No orders yet'
+	String get noOrders => 'No orders yet';
+
+	/// en: 'Change Status'
+	String get changeStatus => 'Change Status';
+
+	/// en: 'Cancel Order'
+	String get cancelOrder => 'Cancel Order';
+
+	/// en: 'Are you sure you want to cancel this order?'
+	String get cancelOrderConfirmation => 'Are you sure you want to cancel this order?';
+
+	/// en: 'Order status updated'
+	String get statusUpdated => 'Order status updated';
+
+	/// en: 'All Orders'
+	String get allOrders => 'All Orders';
+
+	/// en: 'Customer'
+	String get customer => 'Customer';
 }
 
 // Path: onboarding.step1
@@ -839,6 +865,33 @@ class TranslationsOrdersStatusEn {
 
 	/// en: 'Delivered'
 	String get delivered => 'Delivered';
+
+	/// en: 'Cancelled'
+	String get cancelled => 'Cancelled';
+}
+
+// Path: orders.details
+class TranslationsOrdersDetailsEn {
+	TranslationsOrdersDetailsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Status'
+	String get status => 'Status';
+
+	/// en: 'Items'
+	String get items => 'Items';
+
+	/// en: 'Delivery Address'
+	String get deliveryAddress => 'Delivery Address';
+
+	/// en: 'Cancel Order'
+	String get cancelOrder => 'Cancel Order';
+
+	/// en: 'Are you sure you want to cancel this order? This action cannot be undone.'
+	String get cancelConfirmation => 'Are you sure you want to cancel this order? This action cannot be undone.';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -970,9 +1023,15 @@ extension on Translations {
 			'orders.status.harvesting' => 'Harvesting',
 			'orders.status.delivering' => 'On the way',
 			'orders.status.delivered' => 'Delivered',
+			'orders.status.cancelled' => 'Cancelled',
 			'orders.orderNumber' => ({required Object number}) => 'Order #${number}',
 			'orders.items' => ({required Object count}) => '${count} item(s)',
 			'orders.placedOn' => ({required Object date}) => 'Placed on ${date}',
+			'orders.details.status' => 'Status',
+			'orders.details.items' => 'Items',
+			'orders.details.deliveryAddress' => 'Delivery Address',
+			'orders.details.cancelOrder' => 'Cancel Order',
+			'orders.details.cancelConfirmation' => 'Are you sure you want to cancel this order? This action cannot be undone.',
 			'profile.title' => 'Profile',
 			'profile.editProfile' => 'Edit Profile',
 			'profile.myOrders' => 'My Orders',
@@ -1048,6 +1107,14 @@ extension on Translations {
 			'admin.image' => 'Image',
 			'admin.sortLabel' => ({required Object order}) => 'Sort: ${order}',
 			'admin.stockLabel' => ({required Object count}) => 'Stock: ${count}',
+			'admin.orders' => 'Orders',
+			'admin.noOrders' => 'No orders yet',
+			'admin.changeStatus' => 'Change Status',
+			'admin.cancelOrder' => 'Cancel Order',
+			'admin.cancelOrderConfirmation' => 'Are you sure you want to cancel this order?',
+			'admin.statusUpdated' => 'Order status updated',
+			'admin.allOrders' => 'All Orders',
+			'admin.customer' => 'Customer',
 			_ => null,
 		};
 	}

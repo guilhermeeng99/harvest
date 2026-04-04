@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:harvest/features/auth/data/models/user_model.dart';
 import 'package:harvest/features/home/data/models/category_model.dart';
 import 'package:harvest/features/home/data/models/product_model.dart';
+import 'package:harvest/features/orders/data/models/order_model.dart';
 
 abstract interface class AdminRemoteDataSource {
   Future<List<ProductModel>> getProducts();
@@ -19,6 +20,9 @@ abstract interface class AdminRemoteDataSource {
 
   Future<List<UserModel>> getUsers();
   Future<void> deleteUser(String id);
+
+  Future<List<OrderModel>> getAllOrders();
+  Future<void> updateOrderStatus(String orderId, String status);
 
   Future<String> uploadImage(Uint8List bytes, String fileName);
 }
@@ -108,5 +112,23 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     final ref = _storage.ref('images/$fileName');
     await ref.putData(bytes);
     return ref.getDownloadURL();
+  }
+
+  // ── Orders ────────────────────────────────────────────────
+
+  @override
+  Future<List<OrderModel>> getAllOrders() async {
+    final snap = await _firestore
+        .collection('orders')
+        .orderBy('createdAt', descending: true)
+        .get();
+    return snap.docs.map(OrderModel.fromFirestore).toList();
+  }
+
+  @override
+  Future<void> updateOrderStatus(String orderId, String status) async {
+    await _firestore.collection('orders').doc(orderId).update({
+      'status': status,
+    });
   }
 }
