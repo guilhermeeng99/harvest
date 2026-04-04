@@ -27,6 +27,7 @@ class AppRoutes {
   static const adminCategoryEdit = '/admin/categories/edit/:id';
   static const adminUsers = '/admin/users';
   static const adminOrders = '/admin/orders';
+  static const webView = '/web-view';
 
   static String productDetailsPath(String id) => '/product/$id';
   static String adminProductEditPath(String id) => '/admin/products/edit/$id';

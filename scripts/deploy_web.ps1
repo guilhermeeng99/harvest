@@ -9,9 +9,13 @@ $reset = "$([char]27)[0m"
 Write-Host "${cyan}=== Generating i18n ===${reset}"
 dart run slang
 
+# ─── Clean ─────────────────────────────────────────────
+Write-Host "${cyan}=== Cleaning build cache ===${reset}"
+flutter clean
+
 # ─── Build ─────────────────────────────────────────────
 Write-Host "${cyan}=== Building Flutter Web ===${reset}"
-flutter build web --release --base-href /harvest/
+flutter build web --release --no-wasm-dry-run --base-href /harvest/
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "${red}Build failed! Aborting.${reset}"
@@ -22,9 +26,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "${cyan}=== Deploying to GitHub Pages ===${reset}"
 Push-Location "build\web"
 
-git init -b gh-pages
-git add .
-git commit -m "deploy: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+git init -b gh-pages 2>$null
+git add . 2>$null
+git commit -m "deploy: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
 git remote remove origin 2>$null
 git remote add origin https://github.com/guilhermeeng99/harvest.git
 git push -f origin gh-pages

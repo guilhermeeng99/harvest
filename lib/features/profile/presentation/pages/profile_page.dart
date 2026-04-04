@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
+import 'package:harvest/core/constants/site_urls.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:harvest/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:harvest/features/profile/presentation/widgets/profile_menu_item.dart';
 import 'package:harvest/features/profile/presentation/widgets/profile_user_card.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -91,7 +93,13 @@ class _ProfileView extends StatelessWidget {
                   color: AppColors.onBackground,
                 ),
                 label: t.profile.helpCenter,
-                onTap: () {},
+                onTap: () => context.push(
+                  AppRoutes.webView,
+                  extra: <String, String>{
+                    'url': SiteUrls.helpCenter,
+                    'title': t.profile.helpCenter,
+                  },
+                ),
               ),
               ProfileMenuItem(
                 icon: const FaIcon(
@@ -100,7 +108,10 @@ class _ProfileView extends StatelessWidget {
                   color: AppColors.onBackground,
                 ),
                 label: t.profile.about,
-                onTap: () {},
+                onTap: () => launchUrl(
+                  Uri.parse(SiteUrls.about),
+                  mode: LaunchMode.externalApplication,
+                ),
               ),
               const SizedBox(height: 24),
               if (state.user?.isAdmin == true)

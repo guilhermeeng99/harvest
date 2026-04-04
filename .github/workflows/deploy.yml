@@ -17,15 +17,28 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
+      # ── Main app (web) ──
       - run: flutter pub get
-
       - run: dart run slang
+      - run: flutter build web --release --no-wasm-dry-run --base-href /harvest/
 
-      - run: flutter build web --release --base-href /harvest/
+      # ── Harvest site (landing + help center) ──
+      - run: flutter pub get
+        working-directory: packages/harvest_site
+      - run: flutter build web --release --no-wasm-dry-run --base-href /harvest/site/
+        working-directory: packages/harvest_site
+
+      # ── Merge both builds into a single output ──
+      - name: Prepare deploy folder
+        run: |
+          cp -r build/web deploy
+          mkdir -p deploy/site
+          cp -r packages/harvest_site/build/web/* deploy/site/
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+          publish_dir: deploy

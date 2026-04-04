@@ -27,6 +27,7 @@ import 'package:harvest/features/orders/presentation/pages/order_details_page.da
 import 'package:harvest/features/orders/presentation/pages/orders_page.dart';
 import 'package:harvest/features/product_details/presentation/pages/product_details_page.dart';
 import 'package:harvest/features/profile/presentation/pages/profile_page.dart';
+import 'package:harvest/features/profile/presentation/pages/web_view_page.dart';
 import 'package:harvest/features/search/presentation/pages/search_page.dart';
 
 GoRouter createRouter(AuthBloc authBloc) {
@@ -159,6 +160,13 @@ GoRouter createRouter(AuthBloc authBloc) {
         builder: (_, state) {
           final id = state.pathParameters['id']!;
           return AdminCategoryFormPage(categoryId: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.webView,
+        builder: (_, state) {
+          final extra = state.extra! as Map<String, String>;
+          return WebViewPage(url: extra['url']!, title: extra['title']!);
         },
       ),
     ],

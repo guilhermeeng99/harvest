@@ -45,6 +45,8 @@ dependencies:
   file_picker: ^10.3.10
   image_picker: ^1.1.2
   font_awesome_flutter: ^11.0.0
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
 
 dev_dependencies:
   flutter_test:
@@ -60,12 +62,12 @@ melos:
   useRootAsPackage: true
   scripts:
     build:web:
-      description: Build Flutter web for production.
-      run: flutter build web --release --base-href /harvest/
+      description: Build Flutter web (main app) for production.
+      run: flutter build web --release --no-wasm-dry-run --base-href /harvest/
 
-    deploy:web:
-      description: Build and deploy Flutter web to GitHub Pages.
-      run: powershell -ExecutionPolicy Bypass -File scripts/deploy_web.ps1
+    build:site:
+      description: Build Harvest site (landing + help center) for production.
+      run: cd packages/harvest_site && flutter build web --release --no-wasm-dry-run --base-href /harvest/site/
 
     gen:i18n:
       description: Generate i18n files with slang.
