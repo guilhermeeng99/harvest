@@ -15,6 +15,7 @@ import 'package:harvest/features/checkout/presentation/bloc/checkout_bloc.dart';
 import 'package:harvest/features/checkout/presentation/widgets/checkout_address_section.dart';
 import 'package:harvest/features/checkout/presentation/widgets/checkout_payment_option.dart';
 import 'package:harvest/features/checkout/presentation/widgets/checkout_summary_row.dart';
+import 'package:harvest/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -65,6 +66,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         listener: (context, state) {
           if (state.status == CheckoutStatus.success) {
             context.read<CartBloc>().add(const CartCleared());
+            context.read<OrdersBloc>().add(const OrdersRefreshRequested());
             context.go(AppRoutes.orderConfirmation);
           }
           if (state.status == CheckoutStatus.error &&

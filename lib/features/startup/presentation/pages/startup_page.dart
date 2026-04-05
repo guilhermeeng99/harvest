@@ -10,6 +10,7 @@ import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/features/startup/presentation/cubit/startup_cubit.dart';
 import 'package:harvest/features/startup/presentation/cubit/startup_state.dart';
 import 'package:harvest/features/startup/presentation/widgets/startup_widgets.dart';
+import 'package:harvest/gen/assets.gen.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
 
 class StartupPage extends StatelessWidget {
@@ -89,7 +90,7 @@ class _LoadingContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(flex: 2),
-        Image.asset('lib/app/assets/images/logo.png', height: 100),
+        Image.asset(Assets.lib.app.assets.images.logo.path, height: 100),
         const SizedBox(height: 16),
         Text(
           t.app.name,

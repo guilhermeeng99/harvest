@@ -8,11 +8,13 @@ import 'package:harvest/gen/i18n/strings.g.dart';
 class EditProfileDialog extends StatefulWidget {
   const EditProfileDialog({
     required this.currentName,
+    required this.onSave,
     this.currentPhotoUrl,
     super.key,
   });
 
   final String currentName;
+  final Future<bool> Function(String name) onSave;
   final String? currentPhotoUrl;
 
   @override
@@ -21,6 +23,7 @@ class EditProfileDialog extends StatefulWidget {
 
 class _EditProfileDialogState extends State<EditProfileDialog> {
   late final TextEditingController _nameController;
+  bool _isSaving = false;
 
   @override
   void initState() {
@@ -34,10 +37,21 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final name = _nameController.text.trim();
-    if (name.isEmpty) return;
-    Navigator.pop<String>(context, name);
+    if (name.isEmpty || _isSaving) return;
+
+    setState(() => _isSaving = true);
+
+    final success = await widget.onSave(name);
+
+    if (!mounted) return;
+
+    if (success) {
+      Navigator.pop(context);
+    } else {
+      setState(() => _isSaving = false);
+    }
   }
 
   @override
@@ -89,6 +103,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 Expanded(
                   child: HarvestButton(
                     label: t.general.save,
+                    isLoading: _isSaving,
                     onPressed: _submit,
                   ),
                 ),

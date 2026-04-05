@@ -32,19 +32,16 @@ class _ProfileView extends StatelessWidget {
     BuildContext context,
     ProfileState state,
   ) async {
-    final result = await showDialog<String>(
+    final cubit = context.read<ProfileCubit>();
+    await showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (_) => EditProfileDialog(
         currentName: state.user?.name ?? '',
         currentPhotoUrl: state.user?.photoUrl,
+        onSave: (name) => cubit.updateProfile(name: name),
       ),
     );
-    if (result == null || !context.mounted) return;
-    final cubit = context.read<ProfileCubit>();
-    final success = await cubit.updateProfile(name: result);
-    if (success && context.mounted) {
-      unawaited(cubit.loadProfile());
-    }
   }
 
   @override

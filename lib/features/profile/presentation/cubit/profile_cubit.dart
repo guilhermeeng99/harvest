@@ -45,8 +45,6 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<bool> updateProfile({
     required String name,
   }) async {
-    emit(state.copyWith(status: ProfileStatus.loading));
-
     final result = await _updateProfileUseCase(name: name);
 
     return result.fold(

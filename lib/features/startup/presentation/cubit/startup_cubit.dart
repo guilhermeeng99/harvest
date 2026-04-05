@@ -46,7 +46,6 @@ class StartupCubit extends Cubit<StartupState> {
 
   Future<void> initialize() async {
     try {
-      // Step 1: Wait for auth to resolve
       emit(const StartupLoading(step: 'profile', progress: 0));
       final isAuthenticated = await _waitForAuth();
       if (!isAuthenticated) {
@@ -54,12 +53,10 @@ class StartupCubit extends Cubit<StartupState> {
         return;
       }
 
-      // Step 2: Load categories
       emit(const StartupLoading(step: 'categories', progress: 0.2));
       final categoriesResult = await _getCategoriesUseCase();
       final categoriesFailed = categoriesResult.isLeft();
 
-      // Step 3: Load products in parallel
       emit(const StartupLoading(step: 'products', progress: 0.4));
       final results = await Future.wait([
         _getAllProductsUseCase(),
@@ -72,19 +69,16 @@ class StartupCubit extends Cubit<StartupState> {
         return;
       }
 
-      // Step 4: Load orders
       emit(const StartupLoading(step: 'orders', progress: 0.7));
       await _getOrdersUseCase();
 
-      // Step 5: Load cart from local storage
       emit(const StartupLoading(step: 'cart', progress: 0.85));
       _cartBloc.add(const CartLoadRequested());
 
-      // Step 6: Populate singleton blocs
       emit(const StartupLoading(step: 'finishing', progress: 0.95));
       _homeBloc.add(const HomeLoadRequested());
       _ordersBloc.add(const OrdersLoadRequested());
-      await _profileCubit.loadProfile();
+      await _profileCubit.refreshProfile();
 
       emit(const StartupComplete());
     } on Exception {
@@ -93,11 +87,9 @@ class StartupCubit extends Cubit<StartupState> {
   }
 
   Future<bool> _waitForAuth() async {
-    // If auth already resolved, return immediately.
     if (_authBloc.state.status == AuthStatus.authenticated) return true;
     if (_authBloc.state.status == AuthStatus.unauthenticated) return false;
 
-    // Otherwise wait for the AuthBloc to settle.
     final completer = Completer<bool>();
     final subscription = _authBloc.stream.listen((state) {
       if (state.status == AuthStatus.authenticated) {
