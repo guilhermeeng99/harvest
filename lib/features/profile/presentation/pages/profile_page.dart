@@ -48,7 +48,11 @@ class _ProfileView extends StatelessWidget {
       ),
     );
     if (result == null || !context.mounted) return;
-    await context.read<ProfileCubit>().updateProfile(name: result);
+    final cubit = context.read<ProfileCubit>();
+    final success = await cubit.updateProfile(name: result);
+    if (success && context.mounted) {
+      unawaited(cubit.loadProfile());
+    }
   }
 
   @override

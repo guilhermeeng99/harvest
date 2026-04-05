@@ -44,6 +44,7 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
                 quantity: e.quantity,
                 price: e.product.price,
                 unit: e.product.unit,
+                imageUrl: e.product.imageUrl,
               ),
             )
             .toList(),

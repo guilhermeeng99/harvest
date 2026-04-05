@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:harvest/app/theme/app_typography.dart';
+import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/features/home/domain/entities/category_entity.dart';
 import 'package:harvest/features/search/presentation/cubit/search_cubit.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
@@ -57,8 +58,12 @@ class SearchCategoriesGrid extends StatelessWidget {
               },
               childCount: categories.length,
             ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: context.isMobile
+                  ? 2
+                  : context.isTablet
+                  ? 3
+                  : 6,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               childAspectRatio: 1.65,

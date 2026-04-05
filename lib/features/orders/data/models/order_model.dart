@@ -27,6 +27,7 @@ class OrderModel extends OrderEntity {
               quantity: e['quantity'] as int,
               price: (e['price'] as num).toDouble(),
               unit: e['unit'] as String? ?? 'kg',
+              imageUrl: e['imageUrl'] as String?,
             ),
           )
           .toList(),
@@ -50,25 +51,26 @@ class OrderModel extends OrderEntity {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'userId': userId,
-        'items': items
-            .map(
-              (e) => {
-                'productId': e.productId,
-                'name': e.name,
-                'quantity': e.quantity,
-                'price': e.price,
-                'unit': e.unit,
-              },
-            )
-            .toList(),
-        'totalAmount': totalAmount,
-        'status': status.name,
-        'deliveryAddress': {
-          'street': deliveryAddress.street,
-          'city': deliveryAddress.city,
-          'zipCode': deliveryAddress.zipCode,
-        },
-        'createdAt': FieldValue.serverTimestamp(),
-      };
+    'userId': userId,
+    'items': items
+        .map(
+          (e) => {
+            'productId': e.productId,
+            'name': e.name,
+            'quantity': e.quantity,
+            'price': e.price,
+            'unit': e.unit,
+            if (e.imageUrl != null) 'imageUrl': e.imageUrl,
+          },
+        )
+        .toList(),
+    'totalAmount': totalAmount,
+    'status': status.name,
+    'deliveryAddress': {
+      'street': deliveryAddress.street,
+      'city': deliveryAddress.city,
+      'zipCode': deliveryAddress.zipCode,
+    },
+    'createdAt': FieldValue.serverTimestamp(),
+  };
 }

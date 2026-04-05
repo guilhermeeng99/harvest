@@ -16,6 +16,7 @@ class OrderItemEntity extends Equatable {
     required this.quantity,
     required this.price,
     required this.unit,
+    this.imageUrl,
   });
 
   final String productId;
@@ -23,11 +24,12 @@ class OrderItemEntity extends Equatable {
   final int quantity;
   final double price;
   final String unit;
+  final String? imageUrl;
 
   double get totalPrice => price * quantity;
 
   @override
-  List<Object?> get props => [productId, name, quantity, price, unit];
+  List<Object?> get props => [productId, name, quantity, price, unit, imageUrl];
 }
 
 class OrderEntity extends Equatable {

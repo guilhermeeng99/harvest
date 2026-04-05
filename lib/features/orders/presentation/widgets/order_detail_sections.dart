@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -91,21 +92,7 @@ class OrderItemsSection extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Center(
-              child: FaIcon(
-                FontAwesomeIcons.leaf,
-                size: 16,
-                color: AppColors.primaryLight,
-              ),
-            ),
-          ),
+          _OrderItemsSectionImage(item: item),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -127,6 +114,62 @@ class OrderItemsSection extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _OrderItemsSectionImage extends StatelessWidget {
+  const _OrderItemsSectionImage({required this.item});
+
+  final OrderItemEntity item;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: item.imageUrl != null && item.imageUrl!.isNotEmpty
+          ? CachedNetworkImage(
+              imageUrl: item.imageUrl!,
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
+              placeholder: (_, _) => Container(
+                width: 40,
+                height: 40,
+                color: AppColors.surfaceVariant,
+                child: const Center(
+                  child: FaIcon(
+                    FontAwesomeIcons.leaf,
+                    size: 16,
+                    color: AppColors.primaryLight,
+                  ),
+                ),
+              ),
+              errorWidget: (_, _, _) => Container(
+                width: 40,
+                height: 40,
+                color: AppColors.surfaceVariant,
+                child: const Center(
+                  child: FaIcon(
+                    FontAwesomeIcons.leaf,
+                    size: 16,
+                    color: AppColors.primaryLight,
+                  ),
+                ),
+              ),
+            )
+          : Container(
+              width: 40,
+              height: 40,
+              color: AppColors.surfaceVariant,
+              child: const Center(
+                child: FaIcon(
+                  FontAwesomeIcons.leaf,
+                  size: 16,
+                  color: AppColors.primaryLight,
+                ),
+              ),
+            ),
     );
   }
 }

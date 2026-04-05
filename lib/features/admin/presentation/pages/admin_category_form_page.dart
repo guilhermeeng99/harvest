@@ -38,7 +38,7 @@ class _AdminCategoryFormPageState extends State<AdminCategoryFormPage> {
 
   Future<void> _onSubmit() async {
     final success = await _ctrl.submit();
-    if (success && mounted) context.pop();
+    if (success && mounted) context.pop(true);
   }
 
   @override

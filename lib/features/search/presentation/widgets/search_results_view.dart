@@ -5,6 +5,7 @@ import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/app/widgets/product_card.dart';
+import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/search/presentation/cubit/search_cubit.dart';
 import 'package:harvest/gen/i18n/strings.g.dart';
@@ -78,8 +79,12 @@ class SearchResultsView extends StatelessWidget {
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: context.isMobile
+                  ? 2
+                  : context.isTablet
+                  ? 3
+                  : 6,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               childAspectRatio: 0.72,

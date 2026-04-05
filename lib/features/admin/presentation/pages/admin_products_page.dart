@@ -82,9 +82,18 @@ class _AdminProductsView extends StatelessWidget {
                             FontAwesomeIcons.penToSquare,
                             size: 18,
                           ),
-                          onPressed: () => context.push(
-                            AppRoutes.adminProductEditPath(product.id),
-                          ),
+                          onPressed: () async {
+                            final result = await context.push<bool>(
+                              AppRoutes.adminProductEditPath(product.id),
+                            );
+                            if (result == true && context.mounted) {
+                              unawaited(
+                                context
+                                    .read<AdminProductsCubit>()
+                                    .loadProducts(),
+                              );
+                            }
+                          },
                         ),
                         IconButton(
                           icon: const FaIcon(
@@ -104,7 +113,14 @@ class _AdminProductsView extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.adminProductAdd),
+        onPressed: () async {
+          final result = await context.push<bool>(AppRoutes.adminProductAdd);
+          if (result == true && context.mounted) {
+            unawaited(
+              context.read<AdminProductsCubit>().loadProducts(),
+            );
+          }
+        },
         child: const FaIcon(
           FontAwesomeIcons.plus,
           size: 20,
@@ -114,21 +130,22 @@ class _AdminProductsView extends StatelessWidget {
   }
 
   void _confirmDelete(BuildContext context, String id, String name) {
+    final cubit = context.read<AdminProductsCubit>();
     unawaited(
       showDialog<void>(
         context: context,
-        builder: (_) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: Text(t.admin.confirmDelete),
           content: Text(name),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: Text(t.general.cancel),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                unawaited(context.read<AdminProductsCubit>().deleteProduct(id));
+                Navigator.pop(dialogContext);
+                unawaited(cubit.deleteProduct(id));
               },
               child: Text(
                 t.general.delete,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/widgets/product_card.dart';
+import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/home/presentation/bloc/home_bloc.dart';
 import 'package:harvest/features/home/presentation/widgets/section_header.dart';
@@ -29,10 +30,16 @@ class HomeAllProductsGrid extends StatelessWidget {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
 
+        final crossAxisCount = context.isMobile
+            ? 2
+            : context.isTablet
+            ? 3
+            : 6;
+
         return SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           sliver: SliverGrid.count(
-            crossAxisCount: 2,
+            crossAxisCount: crossAxisCount,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             childAspectRatio: 0.72,

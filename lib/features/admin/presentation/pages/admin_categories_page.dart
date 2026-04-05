@@ -79,9 +79,18 @@ class _AdminCategoriesView extends StatelessWidget {
                             FontAwesomeIcons.penToSquare,
                             size: 18,
                           ),
-                          onPressed: () => context.push(
-                            AppRoutes.adminCategoryEditPath(category.id),
-                          ),
+                          onPressed: () async {
+                            final result = await context.push<bool>(
+                              AppRoutes.adminCategoryEditPath(category.id),
+                            );
+                            if (result == true && context.mounted) {
+                              unawaited(
+                                context
+                                    .read<AdminCategoriesCubit>()
+                                    .loadCategories(),
+                              );
+                            }
+                          },
                         ),
                         IconButton(
                           icon: const FaIcon(
@@ -104,7 +113,14 @@ class _AdminCategoriesView extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.adminCategoryAdd),
+        onPressed: () async {
+          final result = await context.push<bool>(AppRoutes.adminCategoryAdd);
+          if (result == true && context.mounted) {
+            unawaited(
+              context.read<AdminCategoriesCubit>().loadCategories(),
+            );
+          }
+        },
         child: const FaIcon(
           FontAwesomeIcons.plus,
           size: 20,
@@ -114,23 +130,22 @@ class _AdminCategoriesView extends StatelessWidget {
   }
 
   void _confirmDelete(BuildContext context, String id, String name) {
+    final cubit = context.read<AdminCategoriesCubit>();
     unawaited(
       showDialog<void>(
         context: context,
-        builder: (_) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: Text(t.admin.confirmDelete),
           content: Text(name),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: Text(t.general.cancel),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                unawaited(
-                  context.read<AdminCategoriesCubit>().deleteCategory(id),
-                );
+                Navigator.pop(dialogContext);
+                unawaited(cubit.deleteCategory(id));
               },
               child: Text(
                 t.general.delete,

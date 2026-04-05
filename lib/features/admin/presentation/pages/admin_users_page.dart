@@ -92,21 +92,22 @@ class _AdminUsersView extends StatelessWidget {
   }
 
   void _confirmDelete(BuildContext context, String id, String name) {
+    final cubit = context.read<AdminUsersCubit>();
     unawaited(
       showDialog<void>(
         context: context,
-        builder: (_) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: Text(t.admin.confirmDelete),
           content: Text(name),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: Text(t.general.cancel),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                unawaited(context.read<AdminUsersCubit>().deleteUser(id));
+                Navigator.pop(dialogContext);
+                unawaited(cubit.deleteUser(id));
               },
               child: Text(
                 t.general.delete,
