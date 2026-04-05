@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harvest_site/theme/site_colors.dart';
 import 'package:harvest_site/theme/site_typography.dart';
 import 'package:harvest_site/widgets/site_action_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CtaSection extends StatelessWidget {
   const CtaSection({super.key});
@@ -27,7 +28,10 @@ class CtaSection extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 36),
-          const SiteActionButton(label: 'Get Started Today'),
+          SiteActionButton(
+            label: 'Download APK',
+            onPressed: () => launchUrl(Uri.parse('harvest.apk')),
+          ),
         ],
       ),
     );

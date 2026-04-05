@@ -3,6 +3,7 @@ import 'package:harvest_site/theme/site_colors.dart';
 import 'package:harvest_site/theme/site_typography.dart';
 import 'package:harvest_site/widgets/section_container.dart';
 import 'package:harvest_site/widgets/site_action_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
@@ -70,7 +71,10 @@ class _HeroText extends StatelessWidget {
           style: SiteTypography.bodyLarge.copyWith(color: Colors.white70),
         ),
         const SizedBox(height: 36),
-        const SiteActionButton(label: 'Download the App'),
+        SiteActionButton(
+          label: 'Download the App',
+          onPressed: () => launchUrl(Uri.parse('harvest.apk')),
+        ),
       ],
     );
   }
