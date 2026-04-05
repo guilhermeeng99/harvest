@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/widgets/error_view.dart';
 import 'package:harvest/features/home/presentation/bloc/home_bloc.dart';
@@ -18,10 +17,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<HomeBloc>()..add(const HomeLoadRequested()),
-      child: const _HomeView(),
-    );
+    return const _HomeView();
   }
 }
 
@@ -61,7 +57,7 @@ class _LoadedView extends StatelessWidget {
     return RefreshIndicator(
       color: AppColors.primary,
       onRefresh: () async {
-        context.read<HomeBloc>().add(const HomeLoadRequested());
+        context.read<HomeBloc>().add(const HomeRefreshRequested());
         await context.read<HomeBloc>().stream.firstWhere(
           (state) => state.status != HomeStatus.loading,
         );

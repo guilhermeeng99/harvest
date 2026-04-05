@@ -18,6 +18,15 @@ class ProfileCubit extends Cubit<ProfileState> {
   final UpdateProfileUseCase _updateProfileUseCase;
 
   Future<void> loadProfile() async {
+    if (state.status == ProfileStatus.loaded) return;
+    await _fetchProfile();
+  }
+
+  Future<void> refreshProfile() async {
+    await _fetchProfile();
+  }
+
+  Future<void> _fetchProfile() async {
     emit(state.copyWith(status: ProfileStatus.loading));
 
     final result = await _getCurrentUserUseCase();

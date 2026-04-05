@@ -8,6 +8,7 @@ class GetFeaturedProductsUseCase {
 
   final HomeRepository _repository;
 
-  Future<Either<Failure, List<ProductEntity>>> call() =>
-      _repository.getFeaturedProducts();
+  Future<Either<Failure, List<ProductEntity>>> call({
+    bool forceRefresh = false,
+  }) => _repository.getFeaturedProducts(forceRefresh: forceRefresh);
 }

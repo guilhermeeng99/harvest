@@ -22,6 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
        _getProductsByCategoryUseCase = getProductsByCategoryUseCase,
        super(const HomeState()) {
     on<HomeLoadRequested>(_onLoadRequested);
+    on<HomeRefreshRequested>(_onRefreshRequested);
     on<HomeCategorySelected>(_onCategorySelected);
   }
 
@@ -34,11 +35,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeLoadRequested event,
     Emitter<HomeState> emit,
   ) async {
+    if (state.status == HomeStatus.loaded) return;
+    await _fetchHomeData(emit: emit);
+  }
+
+  Future<void> _onRefreshRequested(
+    HomeRefreshRequested event,
+    Emitter<HomeState> emit,
+  ) async {
+    await _fetchHomeData(emit: emit, forceRefresh: true);
+  }
+
+  Future<void> _fetchHomeData({
+    required Emitter<HomeState> emit,
+    bool forceRefresh = false,
+  }) async {
     emit(state.copyWith(status: HomeStatus.loading));
 
-    final categoriesResult = await _getCategoriesUseCase();
-    final featuredResult = await _getFeaturedProductsUseCase();
-    final allProductsResult = await _getAllProductsUseCase();
+    final categoriesResult = await _getCategoriesUseCase(
+      forceRefresh: forceRefresh,
+    );
+    final featuredResult = await _getFeaturedProductsUseCase(
+      forceRefresh: forceRefresh,
+    );
+    final allProductsResult = await _getAllProductsUseCase(
+      forceRefresh: forceRefresh,
+    );
 
     final categories = categoriesResult.getOrElse(() => []);
     final featured = featuredResult.getOrElse(() => []);

@@ -16,7 +16,9 @@ class SearchCubit extends Cubit<SearchState> {
   }) : _searchProductsUseCase = searchProductsUseCase,
        _getCategoriesUseCase = getCategoriesUseCase,
        super(const SearchState()) {
-    unawaited(_loadCategories());
+    if (state.categories.isEmpty) {
+      unawaited(_loadCategories());
+    }
   }
 
   final SearchProductsUseCase _searchProductsUseCase;

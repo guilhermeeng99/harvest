@@ -15,6 +15,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
        _cancelOrderUseCase = cancelOrderUseCase,
        super(const OrdersState()) {
     on<OrdersLoadRequested>(_onLoadRequested);
+    on<OrdersRefreshRequested>(_onRefreshRequested);
     on<OrderCancelRequested>(_onCancelRequested);
   }
 
@@ -25,9 +26,24 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     OrdersLoadRequested event,
     Emitter<OrdersState> emit,
   ) async {
+    if (state.status == OrdersStatus.loaded) return;
+    await _fetchOrders(emit: emit);
+  }
+
+  Future<void> _onRefreshRequested(
+    OrdersRefreshRequested event,
+    Emitter<OrdersState> emit,
+  ) async {
+    await _fetchOrders(emit: emit, forceRefresh: true);
+  }
+
+  Future<void> _fetchOrders({
+    required Emitter<OrdersState> emit,
+    bool forceRefresh = false,
+  }) async {
     emit(state.copyWith(status: OrdersStatus.loading));
 
-    final result = await _getOrdersUseCase();
+    final result = await _getOrdersUseCase(forceRefresh: forceRefresh);
 
     result.fold(
       (failure) => emit(

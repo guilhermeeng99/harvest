@@ -253,5 +253,13 @@
     "statusUpdated": "Order status updated",
     "allOrders": "All Orders",
     "customer": "Customer"
+  },
+  "startup": {
+    "authenticating": "Authenticating...",
+    "loadingCategories": "Loading categories...",
+    "loadingProducts": "Loading products...",
+    "loadingOrders": "Loading orders...",
+    "loadingCart": "Loading cart...",
+    "finishing": "Almost ready..."
   }
 }

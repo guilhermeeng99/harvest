@@ -13,7 +13,7 @@ Future<void> main() async {
   );
 
   await LocaleSettings.useDeviceLocale();
-  initDependencies();
+  await initDependencies();
 
   runApp(const HarvestApp());
 }

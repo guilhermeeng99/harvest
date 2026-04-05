@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/widgets/shell_scaffold.dart';
+import 'package:harvest/core/cache/app_data_cache.dart';
 import 'package:harvest/features/address/presentation/pages/add_address_page.dart';
 import 'package:harvest/features/address/presentation/pages/address_selection_page.dart';
 import 'package:harvest/features/admin/presentation/pages/admin_categories_page.dart';
@@ -25,28 +26,39 @@ import 'package:harvest/features/checkout/presentation/pages/order_confirmation_
 import 'package:harvest/features/home/presentation/pages/home_page.dart';
 import 'package:harvest/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:harvest/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:harvest/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:harvest/features/orders/presentation/pages/order_details_page.dart';
 import 'package:harvest/features/orders/presentation/pages/orders_page.dart';
 import 'package:harvest/features/product_details/presentation/pages/product_details_page.dart';
 import 'package:harvest/features/profile/presentation/pages/profile_page.dart';
 import 'package:harvest/features/profile/presentation/pages/web_view_page.dart';
 import 'package:harvest/features/search/presentation/pages/search_page.dart';
+import 'package:harvest/features/startup/presentation/pages/startup_page.dart';
 
 GoRouter createRouter(AuthBloc authBloc) {
+  final cache = sl<AppDataCache>();
   return GoRouter(
-    initialLocation: AppRoutes.onboarding,
+    initialLocation: AppRoutes.startup,
     redirect: (context, state) {
       final authState = authBloc.state;
       final isAuth = authState.status == AuthStatus.authenticated;
+      final isStartup = state.matchedLocation == AppRoutes.startup;
       final isAuthRoute =
           state.matchedLocation == AppRoutes.signIn ||
           state.matchedLocation == AppRoutes.signUp ||
           state.matchedLocation == AppRoutes.onboarding;
       final isAdminRoute = state.matchedLocation.startsWith(AppRoutes.admin);
 
+      // Startup is always accessible — it handles its own auth flow.
+      if (isStartup) return null;
+
       if (!isAuth && !isAuthRoute) return AppRoutes.signIn;
-      if (isAuth && isAuthRoute) return AppRoutes.home;
+      if (isAuth && isAuthRoute) {
+        if (!cache.isFullyLoaded) return AppRoutes.startup;
+        return AppRoutes.home;
+      }
+      if (isAuth && !cache.isFullyLoaded) {
+        return AppRoutes.startup;
+      }
       if (isAdminRoute && authState.user?.isAdmin != true) {
         return AppRoutes.home;
       }
@@ -60,6 +72,10 @@ GoRouter createRouter(AuthBloc authBloc) {
       ),
       GoRoute(path: AppRoutes.signIn, builder: (_, _) => const SignInPage()),
       GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpPage()),
+      GoRoute(
+        path: AppRoutes.startup,
+        builder: (_, _) => const StartupPage(),
+      ),
       ShellRoute(
         builder: (_, state, child) =>
             ShellScaffold(currentPath: state.matchedLocation, child: child),
@@ -105,10 +121,7 @@ GoRouter createRouter(AuthBloc authBloc) {
         path: AppRoutes.orderDetails,
         builder: (_, state) {
           final id = state.pathParameters['id']!;
-          return BlocProvider(
-            create: (_) => sl<OrdersBloc>()..add(const OrdersLoadRequested()),
-            child: OrderDetailsPage(orderId: id),
-          );
+          return OrderDetailsPage(orderId: id);
         },
       ),
       GoRoute(

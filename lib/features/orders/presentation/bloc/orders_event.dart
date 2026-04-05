@@ -11,6 +11,10 @@ class OrdersLoadRequested extends OrdersEvent {
   const OrdersLoadRequested();
 }
 
+class OrdersRefreshRequested extends OrdersEvent {
+  const OrdersRefreshRequested();
+}
+
 class OrderCancelRequested extends OrdersEvent {
   const OrderCancelRequested({required this.orderId});
 

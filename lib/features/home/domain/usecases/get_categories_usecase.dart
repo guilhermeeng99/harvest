@@ -8,6 +8,7 @@ class GetCategoriesUseCase {
 
   final HomeRepository _repository;
 
-  Future<Either<Failure, List<CategoryEntity>>> call() =>
-      _repository.getCategories();
+  Future<Either<Failure, List<CategoryEntity>>> call({
+    bool forceRefresh = false,
+  }) => _repository.getCategories(forceRefresh: forceRefresh);
 }

@@ -11,6 +11,10 @@ class HomeLoadRequested extends HomeEvent {
   const HomeLoadRequested();
 }
 
+class HomeRefreshRequested extends HomeEvent {
+  const HomeRefreshRequested();
+}
+
 class HomeCategorySelected extends HomeEvent {
   const HomeCategorySelected(this.categoryId);
 

@@ -55,6 +55,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsAddressEn address = TranslationsAddressEn._(_root);
 	late final TranslationsNotificationsEn notifications = TranslationsNotificationsEn._(_root);
 	late final TranslationsAdminEn admin = TranslationsAdminEn._(_root);
+	late final TranslationsStartupEn startup = TranslationsStartupEn._(_root);
 }
 
 // Path: app
@@ -771,6 +772,33 @@ class TranslationsAdminEn {
 	String get customer => 'Customer';
 }
 
+// Path: startup
+class TranslationsStartupEn {
+	TranslationsStartupEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Authenticating...'
+	String get authenticating => 'Authenticating...';
+
+	/// en: 'Loading categories...'
+	String get loadingCategories => 'Loading categories...';
+
+	/// en: 'Loading products...'
+	String get loadingProducts => 'Loading products...';
+
+	/// en: 'Loading orders...'
+	String get loadingOrders => 'Loading orders...';
+
+	/// en: 'Loading cart...'
+	String get loadingCart => 'Loading cart...';
+
+	/// en: 'Almost ready...'
+	String get finishing => 'Almost ready...';
+}
+
 // Path: onboarding.step1
 class TranslationsOnboardingStep1En {
 	TranslationsOnboardingStep1En._(this._root);
@@ -1115,6 +1143,12 @@ extension on Translations {
 			'admin.statusUpdated' => 'Order status updated',
 			'admin.allOrders' => 'All Orders',
 			'admin.customer' => 'Customer',
+			'startup.authenticating' => 'Authenticating...',
+			'startup.loadingCategories' => 'Loading categories...',
+			'startup.loadingProducts' => 'Loading products...',
+			'startup.loadingOrders' => 'Loading orders...',
+			'startup.loadingCart' => 'Loading cart...',
+			'startup.finishing' => 'Almost ready...',
 			_ => null,
 		};
 	}

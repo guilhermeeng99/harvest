@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harvest/features/cart/data/datasources/cart_local_datasource.dart';
 import 'package:harvest/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:harvest/features/home/domain/entities/product_entity.dart';
 
@@ -7,11 +10,21 @@ part 'cart_event.dart';
 part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc() : super(const CartState()) {
+  CartBloc({required CartLocalDataSource localDataSource})
+    : _localDataSource = localDataSource,
+      super(const CartState()) {
+    on<CartLoadRequested>(_onLoadRequested);
     on<CartItemAdded>(_onItemAdded);
     on<CartItemRemoved>(_onItemRemoved);
     on<CartItemQuantityUpdated>(_onQuantityUpdated);
     on<CartCleared>(_onCleared);
+  }
+
+  final CartLocalDataSource _localDataSource;
+
+  void _onLoadRequested(CartLoadRequested event, Emitter<CartState> emit) {
+    final items = _localDataSource.loadCart();
+    emit(state.copyWith(items: items));
   }
 
   void _onItemAdded(CartItemAdded event, Emitter<CartState> emit) {
@@ -31,6 +44,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
 
     emit(state.copyWith(items: updatedItems));
+    unawaited(_localDataSource.saveCart(updatedItems));
   }
 
   void _onItemRemoved(CartItemRemoved event, Emitter<CartState> emit) {
@@ -38,6 +52,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         .where((item) => item.product.id != event.productId)
         .toList();
     emit(state.copyWith(items: updatedItems));
+    unawaited(_localDataSource.saveCart(updatedItems));
   }
 
   void _onQuantityUpdated(
@@ -57,9 +72,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }).toList();
 
     emit(state.copyWith(items: updatedItems));
+    unawaited(_localDataSource.saveCart(updatedItems));
   }
 
   void _onCleared(CartCleared event, Emitter<CartState> emit) {
     emit(const CartState());
+    unawaited(_localDataSource.saveCart(const []));
   }
 }

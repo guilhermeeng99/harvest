@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:harvest/core/cache/app_data_cache.dart';
 import 'package:harvest/features/auth/domain/entities/user_entity.dart';
 import 'package:harvest/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_in_usecase.dart';
@@ -17,10 +18,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SignUpUseCase signUpUseCase,
     required SignOutUseCase signOutUseCase,
     required GetCurrentUserUseCase getCurrentUserUseCase,
+    required AppDataCache cache,
   }) : _signInUseCase = signInUseCase,
        _signUpUseCase = signUpUseCase,
        _signOutUseCase = signOutUseCase,
        _getCurrentUserUseCase = getCurrentUserUseCase,
+       _cache = cache,
        super(const AuthState()) {
     on<AuthCheckRequested>(_onCheckRequested);
     on<AuthSignInRequested>(_onSignInRequested);
@@ -37,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUseCase _signUpUseCase;
   final SignOutUseCase _signOutUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final AppDataCache _cache;
   StreamSubscription<UserEntity?>? _authSubscription;
 
   Future<void> _onCheckRequested(
@@ -99,6 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     await _signOutUseCase();
+    _cache.clear();
     emit(const AuthState(status: AuthStatus.unauthenticated));
   }
 

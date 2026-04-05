@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:harvest/core/cache/app_data_cache.dart';
 import 'package:harvest/features/address/data/datasources/address_remote_datasource.dart';
 import 'package:harvest/features/address/data/repositories/address_repository_impl.dart';
 import 'package:harvest/features/address/domain/repositories/address_repository.dart';
@@ -25,6 +26,7 @@ import 'package:harvest/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/update_profile_usecase.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:harvest/features/cart/data/datasources/cart_local_datasource.dart';
 import 'package:harvest/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:harvest/features/checkout/data/repositories/checkout_repository_impl.dart';
 import 'package:harvest/features/checkout/domain/repositories/checkout_repository.dart';
@@ -52,11 +54,14 @@ import 'package:harvest/features/search/data/repositories/search_repository_impl
 import 'package:harvest/features/search/domain/repositories/search_repository.dart';
 import 'package:harvest/features/search/domain/usecases/search_products_usecase.dart';
 import 'package:harvest/features/search/presentation/cubit/search_cubit.dart';
+import 'package:harvest/features/startup/presentation/cubit/startup_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt sl = GetIt.instance;
 
-void initDependencies() {
+Future<void> initDependencies() async {
   _initFirebase();
+  _initCache();
   _initAuth();
   _initHome();
   _initSearch();
@@ -67,6 +72,8 @@ void initDependencies() {
   _initAddress();
   _initNotifications();
   _initAdmin();
+  _initStartup();
+  await sl.allReady();
 }
 
 void _initFirebase() {
@@ -74,6 +81,14 @@ void _initFirebase() {
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
     ..registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
+    );
+}
+
+void _initCache() {
+  sl
+    ..registerLazySingleton(AppDataCache.new)
+    ..registerSingletonAsync<SharedPreferences>(
+      SharedPreferences.getInstance,
     );
 }
 
@@ -91,12 +106,13 @@ void _initAuth() {
     ..registerLazySingleton(() => SignOutUseCase(sl()))
     ..registerLazySingleton(() => GetCurrentUserUseCase(sl()))
     ..registerLazySingleton(() => UpdateProfileUseCase(sl()))
-    ..registerFactory(
+    ..registerLazySingleton(
       () => AuthBloc(
         signInUseCase: sl(),
         signUpUseCase: sl(),
         signOutUseCase: sl(),
         getCurrentUserUseCase: sl(),
+        cache: sl(),
       ),
     );
 }
@@ -106,13 +122,15 @@ void _initHome() {
     ..registerLazySingleton<HomeRemoteDataSource>(
       () => HomeRemoteDataSourceImpl(firestore: sl()),
     )
-    ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
+    ..registerLazySingleton<HomeRepository>(
+      () => HomeRepositoryImpl(sl(), sl<AppDataCache>()),
+    )
     ..registerLazySingleton(() => GetAllProductsUseCase(sl()))
     ..registerLazySingleton(() => GetCategoriesUseCase(sl()))
     ..registerLazySingleton(() => GetFeaturedProductsUseCase(sl()))
     ..registerLazySingleton(() => GetProductsByCategoryUseCase(sl()))
     ..registerLazySingleton(() => GetProductByIdUseCase(sl()))
-    ..registerFactory(
+    ..registerLazySingleton(
       () => HomeBloc(
         getAllProductsUseCase: sl(),
         getCategoriesUseCase: sl(),
@@ -127,9 +145,11 @@ void _initSearch() {
     ..registerLazySingleton<SearchRemoteDataSource>(
       () => SearchRemoteDataSourceImpl(firestore: sl()),
     )
-    ..registerLazySingleton<SearchRepository>(() => SearchRepositoryImpl(sl()))
+    ..registerLazySingleton<SearchRepository>(
+      () => SearchRepositoryImpl(sl(), sl<AppDataCache>()),
+    )
     ..registerLazySingleton(() => SearchProductsUseCase(sl()))
-    ..registerFactory(
+    ..registerLazySingleton(
       () => SearchCubit(
         searchProductsUseCase: sl(),
         getCategoriesUseCase: sl(),
@@ -138,7 +158,11 @@ void _initSearch() {
 }
 
 void _initCart() {
-  sl.registerFactory(CartBloc.new);
+  sl
+    ..registerLazySingleton<CartLocalDataSource>(
+      () => CartLocalDataSourceImpl(sl<SharedPreferences>()),
+    )
+    ..registerLazySingleton(() => CartBloc(localDataSource: sl()));
 }
 
 void _initCheckout() {
@@ -155,10 +179,12 @@ void _initOrders() {
     ..registerLazySingleton<OrdersRemoteDataSource>(
       () => OrdersRemoteDataSourceImpl(firestore: sl(), firebaseAuth: sl()),
     )
-    ..registerLazySingleton<OrdersRepository>(() => OrdersRepositoryImpl(sl()))
+    ..registerLazySingleton<OrdersRepository>(
+      () => OrdersRepositoryImpl(sl(), sl<AppDataCache>()),
+    )
     ..registerLazySingleton(() => GetOrdersUseCase(sl()))
     ..registerLazySingleton(() => CancelOrderUseCase(sl()))
-    ..registerFactory(
+    ..registerLazySingleton(
       () => OrdersBloc(
         getOrdersUseCase: sl(),
         cancelOrderUseCase: sl(),
@@ -167,7 +193,7 @@ void _initOrders() {
 }
 
 void _initProfile() {
-  sl.registerFactory(
+  sl.registerLazySingleton(
     () => ProfileCubit(
       getCurrentUserUseCase: sl(),
       updateProfileUseCase: sl(),
@@ -211,4 +237,20 @@ void _initAdmin() {
     ..registerFactory(() => AdminCategoriesCubit(sl()))
     ..registerFactory(() => AdminOrdersCubit(sl()))
     ..registerFactory(() => AdminUsersCubit(sl()));
+}
+
+void _initStartup() {
+  sl.registerFactory(
+    () => StartupCubit(
+      getCategoriesUseCase: sl(),
+      getAllProductsUseCase: sl(),
+      getFeaturedProductsUseCase: sl(),
+      getOrdersUseCase: sl(),
+      authBloc: sl(),
+      homeBloc: sl(),
+      ordersBloc: sl(),
+      profileCubit: sl(),
+      cartBloc: sl(),
+    ),
+  );
 }

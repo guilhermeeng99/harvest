@@ -8,6 +8,7 @@ class GetAllProductsUseCase {
 
   final HomeRepository _repository;
 
-  Future<Either<Failure, List<ProductEntity>>> call() =>
-      _repository.getAllProducts();
+  Future<Either<Failure, List<ProductEntity>>> call({
+    bool forceRefresh = false,
+  }) => _repository.getAllProducts(forceRefresh: forceRefresh);
 }

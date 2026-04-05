@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/widgets/error_view.dart';
+import 'package:harvest/core/cache/app_data_cache.dart';
 import 'package:harvest/features/home/domain/entities/product_entity.dart';
 import 'package:harvest/features/home/domain/usecases/get_product_by_id_usecase.dart';
 import 'package:harvest/features/product_details/presentation/widgets/product_content.dart';
@@ -35,6 +36,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       _loading = true;
       _error = null;
     });
+
+    // Try cache first
+    final cache = sl<AppDataCache>();
+    if (cache.hasAllProducts) {
+      final matches = cache.allProducts!.where(
+        (p) => p.id == widget.productId,
+      );
+      if (matches.isNotEmpty) {
+        setState(() {
+          _loading = false;
+          _product = matches.first;
+        });
+        return;
+      }
+    }
 
     final result = await sl<GetProductByIdUseCase>()(widget.productId);
     if (!mounted) return;

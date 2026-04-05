@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/app/theme/app_typography.dart';
@@ -20,10 +19,7 @@ class OrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<OrdersBloc>()..add(const OrdersLoadRequested()),
-      child: const _OrdersView(),
-    );
+    return const _OrdersView();
   }
 }
 
@@ -93,14 +89,23 @@ class _OrdersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(20),
-      itemCount: orders.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
-      itemBuilder: (_, index) => _OrderCard(
-        order: orders[index],
-        onTap: () => context.push(
-          AppRoutes.orderDetailsPath(orders[index].id),
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: () async {
+        context.read<OrdersBloc>().add(const OrdersRefreshRequested());
+        await context.read<OrdersBloc>().stream.firstWhere(
+          (state) => state.status != OrdersStatus.loading,
+        );
+      },
+      child: ListView.separated(
+        padding: const EdgeInsets.all(20),
+        itemCount: orders.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 12),
+        itemBuilder: (_, index) => _OrderCard(
+          order: orders[index],
+          onTap: () => context.push(
+            AppRoutes.orderDetailsPath(orders[index].id),
+          ),
         ),
       ),
     );

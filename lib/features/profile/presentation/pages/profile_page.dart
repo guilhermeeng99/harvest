@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:harvest/app/di/injection_container.dart';
 import 'package:harvest/app/routes/app_routes.dart';
 import 'package:harvest/app/theme/app_colors.dart';
 import 'package:harvest/core/constants/site_urls.dart';
@@ -22,14 +21,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) {
-        final cubit = sl<ProfileCubit>();
-        unawaited(cubit.loadProfile());
-        return cubit;
-      },
-      child: const _ProfileView(),
-    );
+    return const _ProfileView();
   }
 }
 

@@ -8,5 +8,7 @@ class GetOrdersUseCase {
 
   final OrdersRepository _repository;
 
-  Future<Either<Failure, List<OrderEntity>>> call() => _repository.getOrders();
+  Future<Either<Failure, List<OrderEntity>>> call({
+    bool forceRefresh = false,
+  }) => _repository.getOrders(forceRefresh: forceRefresh);
 }
