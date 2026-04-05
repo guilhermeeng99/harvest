@@ -14,7 +14,6 @@ class AdminCategoryFormController extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
   final nameCtrl = TextEditingController();
-  final sortCtrl = TextEditingController(text: '0');
   final imageUrlCtrl = TextEditingController();
 
   String get imageUrl => imageUrlCtrl.text.trim();
@@ -36,7 +35,6 @@ class AdminCategoryFormController extends ChangeNotifier {
       if (found.isNotEmpty) {
         _existing = found.first;
         nameCtrl.text = _existing!.name;
-        sortCtrl.text = _existing!.sortOrder.toString();
         imageUrlCtrl.text = _existing!.imageUrl;
       }
     });
@@ -56,7 +54,6 @@ class AdminCategoryFormController extends ChangeNotifier {
       id: _existing?.id ?? '',
       name: nameCtrl.text.trim(),
       imageUrl: imageUrl,
-      sortOrder: int.tryParse(sortCtrl.text) ?? 0,
     );
 
     final result = isEditing
@@ -81,7 +78,6 @@ class AdminCategoryFormController extends ChangeNotifier {
   @override
   void dispose() {
     nameCtrl.dispose();
-    sortCtrl.dispose();
     imageUrlCtrl.dispose();
     super.dispose();
   }

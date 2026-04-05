@@ -233,7 +233,7 @@
     "productOrganic": "Organic",
     "selectCategory": "Please select a category",
     "categoryName": "Name",
-    "categorySortOrder": "Sort Order",
+
     "nutritionFacts": "Nutrition Facts",
     "calories": "Calories",
     "protein": "Protein",
@@ -243,7 +243,7 @@
     "adminPanel": "Admin Panel",
     "tapToSelectImage": "Tap to select image",
     "image": "Image",
-    "sortLabel": "Sort: $order",
+
     "stockLabel": "Stock: $count",
     "orders": "Orders",
     "noOrders": "No orders yet",

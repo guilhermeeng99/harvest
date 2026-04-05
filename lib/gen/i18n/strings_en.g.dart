@@ -711,9 +711,6 @@ class TranslationsAdminEn {
 	/// en: 'Name'
 	String get categoryName => 'Name';
 
-	/// en: 'Sort Order'
-	String get categorySortOrder => 'Sort Order';
-
 	/// en: 'Nutrition Facts'
 	String get nutritionFacts => 'Nutrition Facts';
 
@@ -740,9 +737,6 @@ class TranslationsAdminEn {
 
 	/// en: 'Image'
 	String get image => 'Image';
-
-	/// en: 'Sort: $order'
-	String sortLabel({required Object order}) => 'Sort: ${order}';
 
 	/// en: 'Stock: $count'
 	String stockLabel({required Object count}) => 'Stock: ${count}';
@@ -1123,7 +1117,6 @@ extension on Translations {
 			'admin.productOrganic' => 'Organic',
 			'admin.selectCategory' => 'Please select a category',
 			'admin.categoryName' => 'Name',
-			'admin.categorySortOrder' => 'Sort Order',
 			'admin.nutritionFacts' => 'Nutrition Facts',
 			'admin.calories' => 'Calories',
 			'admin.protein' => 'Protein',
@@ -1133,7 +1126,6 @@ extension on Translations {
 			'admin.adminPanel' => 'Admin Panel',
 			'admin.tapToSelectImage' => 'Tap to select image',
 			'admin.image' => 'Image',
-			'admin.sortLabel' => ({required Object order}) => 'Sort: ${order}',
 			'admin.stockLabel' => ({required Object count}) => 'Stock: ${count}',
 			'admin.orders' => 'Orders',
 			'admin.noOrders' => 'No orders yet',

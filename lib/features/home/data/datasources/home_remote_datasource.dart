@@ -22,7 +22,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     try {
       final snapshot = await _firestore
           .collection('categories')
-          .orderBy('sortOrder')
+          .orderBy('name')
           .get();
       return snapshot.docs.map(CategoryModel.fromFirestore).toList();
     } catch (e) {

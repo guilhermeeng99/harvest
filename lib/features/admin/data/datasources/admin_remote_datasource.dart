@@ -39,8 +39,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
 
   final FirebaseFirestore _firestore;
 
-  // ── Products ──────────────────────────────────────────────
-
   @override
   Future<List<ProductModel>> getProducts() async {
     final snap = await _firestore.collection('products').get();
@@ -65,13 +63,11 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     await _firestore.collection('products').doc(id).delete();
   }
 
-  // ── Categories ────────────────────────────────────────────
-
   @override
   Future<List<CategoryModel>> getCategories() async {
     final snap = await _firestore
         .collection('categories')
-        .orderBy('sortOrder')
+        .orderBy('name')
         .get();
     return snap.docs.map(CategoryModel.fromFirestore).toList();
   }
@@ -94,8 +90,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
     await _firestore.collection('categories').doc(id).delete();
   }
 
-  // ── Users ─────────────────────────────────────────────────
-
   @override
   Future<List<UserModel>> getUsers() async {
     final snap = await _firestore.collection('users').get();
@@ -106,10 +100,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   Future<void> deleteUser(String id) async {
     await _firestore.collection('users').doc(id).delete();
   }
-
-  // ── Image Upload ──────────────────────────────────────────
-
-  // ── User Profile ─────────────────────────────────────────
 
   @override
   Future<void> updateUserProfile({
@@ -124,8 +114,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       await _firestore.collection('users').doc(userId).update(updates);
     }
   }
-
-  // ── Orders ────────────────────────────────────────────────
 
   @override
   Future<List<OrderModel>> getAllOrders() async {
@@ -142,8 +130,6 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
       'status': status,
     });
   }
-
-  // ── User Detail ──────────────────────────────────────────
 
   @override
   Future<List<AddressModel>> getUserAddresses(String userId) async {

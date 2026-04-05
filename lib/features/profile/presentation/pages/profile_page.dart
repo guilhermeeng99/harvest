@@ -63,7 +63,7 @@ class _ProfileView extends StatelessWidget {
               const SizedBox(height: 24),
               ProfileMenuItem(
                 icon: const FaIcon(
-                  FontAwesomeIcons.receipt,
+                  FontAwesomeIcons.rectangleList,
                   size: 20,
                   color: AppColors.onBackground,
                 ),
@@ -72,7 +72,7 @@ class _ProfileView extends StatelessWidget {
               ),
               ProfileMenuItem(
                 icon: const FaIcon(
-                  FontAwesomeIcons.locationDot,
+                  FontAwesomeIcons.map,
                   size: 20,
                   color: AppColors.onBackground,
                 ),
@@ -81,7 +81,7 @@ class _ProfileView extends StatelessWidget {
               ),
               ProfileMenuItem(
                 icon: const FaIcon(
-                  FontAwesomeIcons.wallet,
+                  FontAwesomeIcons.creditCard,
                   size: 20,
                   color: AppColors.onBackground,
                 ),
@@ -128,7 +128,7 @@ class _ProfileView extends StatelessWidget {
               ),
               ProfileMenuItem(
                 icon: const FaIcon(
-                  FontAwesomeIcons.circleInfo,
+                  FontAwesomeIcons.newspaper,
                   size: 20,
                   color: AppColors.onBackground,
                 ),
@@ -142,7 +142,7 @@ class _ProfileView extends StatelessWidget {
               if (state.user?.isAdmin == true)
                 ProfileMenuItem(
                   icon: const FaIcon(
-                    FontAwesomeIcons.screwdriverWrench,
+                    FontAwesomeIcons.penToSquare,
                     size: 20,
                     color: AppColors.onBackground,
                   ),
@@ -151,7 +151,7 @@ class _ProfileView extends StatelessWidget {
                 ),
               ProfileMenuItem(
                 icon: const FaIcon(
-                  FontAwesomeIcons.rightFromBracket,
+                  FontAwesomeIcons.shareFromSquare,
                   size: 20,
                   color: AppColors.error,
                 ),

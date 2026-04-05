@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harvest/features/admin/presentation/controllers/admin_category_form_controller.dart';
@@ -108,17 +107,6 @@ class _AdminCategoryFormPageState extends State<AdminCategoryFormPage> {
                                 validator: (v) => v == null || v.isEmpty
                                     ? t.general.required
                                     : null,
-                              ),
-                              const SizedBox(height: 12),
-                              TextFormField(
-                                controller: _ctrl.sortCtrl,
-                                decoration: InputDecoration(
-                                  labelText: i18n.categorySortOrder,
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                ],
                               ),
                             ],
                           ),

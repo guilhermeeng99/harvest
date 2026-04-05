@@ -22,5 +22,7 @@ abstract class AuthRepository {
     required String name,
   });
 
+  Future<Either<Failure, UserEntity>> signInWithGoogle();
+
   Stream<UserEntity?> get authStateChanges;
 }

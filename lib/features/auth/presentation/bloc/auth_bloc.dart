@@ -6,6 +6,7 @@ import 'package:harvest/core/cache/app_data_cache.dart';
 import 'package:harvest/features/auth/domain/entities/user_entity.dart';
 import 'package:harvest/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_in_usecase.dart';
+import 'package:harvest/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_up_usecase.dart';
 
@@ -18,17 +19,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SignUpUseCase signUpUseCase,
     required SignOutUseCase signOutUseCase,
     required GetCurrentUserUseCase getCurrentUserUseCase,
+    required SignInWithGoogleUseCase signInWithGoogleUseCase,
     required AppDataCache cache,
   }) : _signInUseCase = signInUseCase,
        _signUpUseCase = signUpUseCase,
        _signOutUseCase = signOutUseCase,
        _getCurrentUserUseCase = getCurrentUserUseCase,
+       _signInWithGoogleUseCase = signInWithGoogleUseCase,
        _cache = cache,
        super(const AuthState()) {
     on<AuthCheckRequested>(_onCheckRequested);
     on<AuthSignInRequested>(_onSignInRequested);
     on<AuthSignUpRequested>(_onSignUpRequested);
     on<AuthSignOutRequested>(_onSignOutRequested);
+    on<AuthGoogleSignInRequested>(_onGoogleSignInRequested);
     on<AuthUserChanged>(_onUserChanged);
 
     _authSubscription = _getCurrentUserUseCase.authStateChanges.listen(
@@ -40,6 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUseCase _signUpUseCase;
   final SignOutUseCase _signOutUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
   final AppDataCache _cache;
   StreamSubscription<UserEntity?>? _authSubscription;
 
@@ -105,6 +110,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _signOutUseCase();
     _cache.clear();
     emit(const AuthState(status: AuthStatus.unauthenticated));
+  }
+
+  Future<void> _onGoogleSignInRequested(
+    AuthGoogleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+    final result = await _signInWithGoogleUseCase();
+    result.fold(
+      (failure) => emit(
+        state.copyWith(status: AuthStatus.error, errorMessage: failure.message),
+      ),
+      (user) =>
+          emit(state.copyWith(status: AuthStatus.authenticated, user: user)),
+    );
   }
 
   void _onUserChanged(AuthUserChanged event, Emitter<AuthState> emit) {

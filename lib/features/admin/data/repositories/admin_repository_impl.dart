@@ -15,8 +15,6 @@ class AdminRepositoryImpl implements AdminRepository {
 
   final AdminRemoteDataSource _dataSource;
 
-  // ── Products ──────────────────────────────────────────────
-
   @override
   Future<Either<Failure, List<ProductEntity>>> getProducts() async {
     try {
@@ -56,8 +54,6 @@ class AdminRepositoryImpl implements AdminRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
-
-  // ── Categories ────────────────────────────────────────────
 
   @override
   Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
@@ -99,8 +95,6 @@ class AdminRepositoryImpl implements AdminRepository {
     }
   }
 
-  // ── Users ─────────────────────────────────────────────────
-
   @override
   Future<Either<Failure, List<UserEntity>>> getUsers() async {
     try {
@@ -121,8 +115,6 @@ class AdminRepositoryImpl implements AdminRepository {
     }
   }
 
-  // ── Helpers ───────────────────────────────────────────────
-
   ProductModel _toProductModel(ProductEntity e) => ProductModel(
     id: e.id,
     name: e.name,
@@ -142,10 +134,7 @@ class AdminRepositoryImpl implements AdminRepository {
     id: e.id,
     name: e.name,
     imageUrl: e.imageUrl,
-    sortOrder: e.sortOrder,
   );
-
-  // ── Orders ────────────────────────────────────────────────
 
   @override
   Future<Either<Failure, List<OrderEntity>>> getAllOrders() async {
@@ -169,8 +158,6 @@ class AdminRepositoryImpl implements AdminRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
-
-  // ── User Detail ───────────────────────────────────────────
 
   @override
   Future<Either<Failure, List<AddressEntity>>> getUserAddresses(

@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:577785883032:android:9a04bb229ccb27bba623ed",
+        "mobilesdk_app_id": "1:577785883032:android:5787412c6d3f78dba623ed",
         "android_client_info": {
-          "package_name": "com.harvest.harvest"
+          "package_name": "com.example.harvest"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "577785883032-2ba0geve2jgk29c1m0hf166q5ct955ck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAluALoopcFwEN1H3lMZ65gwGnQ4dq54pQ"
@@ -20,7 +25,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577785883032-2ba0geve2jgk29c1m0hf166q5ct955ck.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "577785883032-81rfvro4rjvo1mmaoroqf3mlpune8avn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.harvest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577785883032:android:9a04bb229ccb27bba623ed",
+        "android_client_info": {
+          "package_name": "com.harvest.harvest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577785883032-8h5d40jo9omg2j33281h4qqdo2ve85ub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harvest.harvest",
+            "certificate_hash": "d74aeb65775418e7717728af505bad6b63f4fbd4"
+          }
+        },
+        {
+          "client_id": "577785883032-2ba0geve2jgk29c1m0hf166q5ct955ck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAluALoopcFwEN1H3lMZ65gwGnQ4dq54pQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577785883032-2ba0geve2jgk29c1m0hf166q5ct955ck.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "577785883032-81rfvro4rjvo1mmaoroqf3mlpune8avn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.harvest"
+              }
+            }
+          ]
         }
       }
     }

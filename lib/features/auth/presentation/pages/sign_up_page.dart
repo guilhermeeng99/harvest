@@ -88,6 +88,9 @@ class _SignUpPageState extends State<SignUpPage> {
       ],
       buttonLabel: t.auth.signUp,
       onSubmit: _onSignUp,
+      onGoogleSignIn: () => context.read<AuthBloc>().add(
+        const AuthGoogleSignInRequested(),
+      ),
       bottomText: t.auth.hasAccount,
       bottomActionLabel: t.auth.signIn,
       onBottomAction: () => context.go(AppRoutes.signIn),

@@ -91,22 +91,8 @@ class _CategoryItem extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: category.imageUrl,
                   fit: BoxFit.cover,
-                  placeholder: (_, _) => const ColoredBox(
-                    color: AppColors.surfaceVariant,
-                    child: FaIcon(
-                      FontAwesomeIcons.leaf,
-                      color: AppColors.primaryLight,
-                      size: 24,
-                    ),
-                  ),
-                  errorWidget: (_, _, _) => const ColoredBox(
-                    color: AppColors.surfaceVariant,
-                    child: FaIcon(
-                      FontAwesomeIcons.leaf,
-                      color: AppColors.primaryLight,
-                      size: 24,
-                    ),
-                  ),
+                  placeholder: (_, _) => const _LeafIcon(),
+                  errorWidget: (_, _, _) => const _LeafIcon(),
                 ),
               ),
             ),
@@ -124,6 +110,23 @@ class _CategoryItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _LeafIcon extends StatelessWidget {
+  const _LeafIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      color: AppColors.surfaceVariant,
+      child: const FaIcon(
+        FontAwesomeIcons.leaf,
+        color: AppColors.primaryLight,
+        size: 24,
       ),
     );
   }

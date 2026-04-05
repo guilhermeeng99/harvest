@@ -6,6 +6,7 @@ import 'package:harvest/app/theme/app_typography.dart';
 import 'package:harvest/app/widgets/harvest_button.dart';
 import 'package:harvest/core/extensions/context_extensions.dart';
 import 'package:harvest/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:harvest/gen/i18n/strings.g.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({
@@ -18,6 +19,7 @@ class AuthLayout extends StatelessWidget {
     required this.bottomText,
     required this.bottomActionLabel,
     required this.onBottomAction,
+    this.onGoogleSignIn,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class AuthLayout extends StatelessWidget {
   final String bottomText;
   final String bottomActionLabel;
   final VoidCallback onBottomAction;
+  final VoidCallback? onGoogleSignIn;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +92,50 @@ class AuthLayout extends StatelessWidget {
                           );
                         },
                       ),
+                      if (onGoogleSignIn != null) ...[
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            const Expanded(child: Divider()),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Text(
+                                t.general.or,
+                                style: AppTypography.bodySmall.copyWith(
+                                  color: AppColors.onBackgroundLight,
+                                ),
+                              ),
+                            ),
+                            const Expanded(child: Divider()),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            return OutlinedButton.icon(
+                              onPressed: state.status == AuthStatus.loading
+                                  ? null
+                                  : onGoogleSignIn,
+                              icon: const FaIcon(
+                                FontAwesomeIcons.google,
+                                size: 18,
+                              ),
+                              label: Text(t.auth.signInWithGoogle),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                                side: const BorderSide(
+                                  color: AppColors.surfaceVariant,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                       const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

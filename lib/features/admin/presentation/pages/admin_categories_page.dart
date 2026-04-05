@@ -68,9 +68,6 @@ class _AdminCategoriesView extends StatelessWidget {
                           )
                         : const Icon(Icons.category),
                     title: Text(category.name),
-                    subtitle: Text(
-                      t.admin.sortLabel(order: category.sortOrder.toString()),
-                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

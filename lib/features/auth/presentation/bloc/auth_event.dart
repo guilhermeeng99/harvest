@@ -40,6 +40,10 @@ class AuthSignOutRequested extends AuthEvent {
   const AuthSignOutRequested();
 }
 
+class AuthGoogleSignInRequested extends AuthEvent {
+  const AuthGoogleSignInRequested();
+}
+
 class AuthUserChanged extends AuthEvent {
   const AuthUserChanged(this.user);
 

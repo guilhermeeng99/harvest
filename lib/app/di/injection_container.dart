@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:harvest/core/cache/app_data_cache.dart';
+import 'package:harvest/core/constants/app_keys.dart';
 import 'package:harvest/features/address/data/datasources/address_remote_datasource.dart';
 import 'package:harvest/features/address/data/repositories/address_repository_impl.dart';
 import 'package:harvest/features/address/domain/repositories/address_repository.dart';
@@ -22,6 +24,7 @@ import 'package:harvest/features/auth/data/repositories/auth_repository_impl.dar
 import 'package:harvest/features/auth/domain/repositories/auth_repository.dart';
 import 'package:harvest/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_in_usecase.dart';
+import 'package:harvest/features/auth/domain/usecases/sign_in_with_google_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:harvest/features/auth/domain/usecases/update_profile_usecase.dart';
@@ -41,6 +44,7 @@ import 'package:harvest/features/home/domain/usecases/get_featured_products_usec
 import 'package:harvest/features/home/domain/usecases/get_product_by_id_usecase.dart';
 import 'package:harvest/features/home/domain/usecases/get_products_by_category_usecase.dart';
 import 'package:harvest/features/home/presentation/bloc/home_bloc.dart';
+import 'package:harvest/features/notifications/data/datasources/notifications_local_datasource.dart';
 import 'package:harvest/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:harvest/features/orders/data/datasources/orders_remote_datasource.dart';
 import 'package:harvest/features/orders/data/repositories/orders_repository_impl.dart';
@@ -61,6 +65,9 @@ final GetIt sl = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initFirebase();
+  await GoogleSignIn.instance.initialize(
+    serverClientId: AppKeys.googleServerClientId,
+  );
   _initCache();
   _initAuth();
   _initHome();
@@ -81,7 +88,8 @@ void _initFirebase() {
     ..registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance)
     ..registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
-    );
+    )
+    ..registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
 }
 
 void _initCache() {
@@ -98,6 +106,7 @@ void _initAuth() {
       () => AuthRemoteDataSourceImpl(
         firebaseAuth: sl(),
         firestore: sl(),
+        googleSignIn: sl(),
       ),
     )
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
@@ -106,12 +115,14 @@ void _initAuth() {
     ..registerLazySingleton(() => SignOutUseCase(sl()))
     ..registerLazySingleton(() => GetCurrentUserUseCase(sl()))
     ..registerLazySingleton(() => UpdateProfileUseCase(sl()))
+    ..registerLazySingleton(() => SignInWithGoogleUseCase(sl()))
     ..registerLazySingleton(
       () => AuthBloc(
         signInUseCase: sl(),
         signUpUseCase: sl(),
         signOutUseCase: sl(),
         getCurrentUserUseCase: sl(),
+        signInWithGoogleUseCase: sl(),
         cache: sl(),
       ),
     );
@@ -224,7 +235,13 @@ void _initAddress() {
 }
 
 void _initNotifications() {
-  sl.registerFactory(NotificationsCubit.new);
+  sl
+    ..registerLazySingleton<NotificationsLocalDataSource>(
+      () => NotificationsLocalDataSourceImpl(sl<SharedPreferences>()),
+    )
+    ..registerFactory(
+      () => NotificationsCubit(localDataSource: sl()),
+    );
 }
 
 void _initAdmin() {

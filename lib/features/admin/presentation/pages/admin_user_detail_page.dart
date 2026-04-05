@@ -185,7 +185,9 @@ class _AddressesSection extends StatelessWidget {
                 ),
                 subtitle: Text(
                   '${address.street}, ${address.number}'
-                  '${address.complement != null ? ' - ${address.complement}' : ''}\n'
+                  '${address.complement != null
+                      ? ' - ${address.complement}'
+                      : ''}\n'
                   '${address.neighborhood} - '
                   '${address.city}/${address.state}\n'
                   'CEP: ${address.zipCode}',

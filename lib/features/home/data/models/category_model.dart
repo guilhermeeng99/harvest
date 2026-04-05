@@ -6,7 +6,6 @@ class CategoryModel extends CategoryEntity {
     required super.id,
     required super.name,
     required super.imageUrl,
-    required super.sortOrder,
   });
 
   factory CategoryModel.fromFirestore(
@@ -17,13 +16,11 @@ class CategoryModel extends CategoryEntity {
       id: doc.id,
       name: data['name'] as String,
       imageUrl: data['imageUrl'] as String,
-      sortOrder: data['sortOrder'] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toFirestore() => {
-        'name': name,
-        'imageUrl': imageUrl,
-        'sortOrder': sortOrder,
-      };
+    'name': name,
+    'imageUrl': imageUrl,
+  };
 }
