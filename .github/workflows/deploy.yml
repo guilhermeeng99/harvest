@@ -22,12 +22,14 @@ jobs:
       # ── Main app (web) ──
       - run: flutter pub get
       - run: dart run slang
-      - run: flutter build web --release --no-wasm-dry-run --base-href /harvest/
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build web --release --no-tree-shake-icons --no-wasm-dry-run --base-href /harvest/
 
       # ── Harvest site (landing + help center) ──
       - run: flutter pub get
         working-directory: packages/harvest_site
-      - run: flutter build web --release --no-wasm-dry-run --base-href /harvest/site/
+      - run: flutter build web --release --no-tree-shake-icons --no-wasm-dry-run --base-href /harvest/site/
         working-directory: packages/harvest_site
 
       # ── Merge both builds into a single output ──

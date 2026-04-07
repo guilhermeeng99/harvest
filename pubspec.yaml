@@ -63,11 +63,11 @@ melos:
   scripts:
     build:web:
       description: Build Flutter web (main app) for production.
-      run: flutter build web --release --no-wasm-dry-run --base-href /harvest/
+      run: flutter build web --release --no-tree-shake-icons --no-wasm-dry-run --base-href /harvest/
 
     build:site:
       description: Build Harvest site (landing + help center) for production.
-      run: cd packages/harvest_site && flutter build web --release --no-wasm-dry-run --base-href /harvest/site/
+      run: cd packages/harvest_site && flutter build web --release --no-tree-shake-icons --no-wasm-dry-run --base-href /harvest/site/
 
     build:apk:
       description: Build APK release for testing.

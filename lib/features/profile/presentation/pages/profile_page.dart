@@ -138,6 +138,21 @@ class _ProfileView extends StatelessWidget {
                   mode: LaunchMode.externalApplication,
                 ),
               ),
+              if (kIsWeb)
+                ProfileMenuItem(
+                  icon: const FaIcon(
+                    FontAwesomeIcons.download,
+                    size: 20,
+                    color: AppColors.onBackground,
+                  ),
+                  label: t.profile.downloadApp,
+                  onTap: () => unawaited(
+                    launchUrl(
+                      Uri.parse(SiteUrls.downloadApp),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                  ),
+                ),
               const SizedBox(height: 24),
               if (state.user?.isAdmin == true)
                 ProfileMenuItem(

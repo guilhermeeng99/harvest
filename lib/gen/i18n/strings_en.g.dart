@@ -519,6 +519,9 @@ class TranslationsProfileEn {
 	/// en: 'About Harvest'
 	String get about => 'About Harvest';
 
+	/// en: 'Download App'
+	String get downloadApp => 'Download App';
+
 	/// en: 'Version $version'
 	String version({required Object version}) => 'Version ${version}';
 }
@@ -1062,6 +1065,7 @@ extension on Translations {
 			'profile.notifications' => 'Notifications',
 			'profile.helpCenter' => 'Help Center',
 			'profile.about' => 'About Harvest',
+			'profile.downloadApp' => 'Download App',
 			'profile.version' => ({required Object version}) => 'Version ${version}',
 			'address.title' => 'Delivery Addresses',
 			'address.addTitle' => 'Add Address',
