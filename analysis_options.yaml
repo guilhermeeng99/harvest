@@ -4,6 +4,7 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "lib/gen/**"
+    - "packages/**"
 
 linter:
   rules:

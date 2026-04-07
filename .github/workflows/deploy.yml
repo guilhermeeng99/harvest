@@ -29,6 +29,8 @@ jobs:
       # ── Harvest site (landing + help center) ──
       - run: flutter pub get
         working-directory: packages/harvest_site
+      - run: flutter analyze
+        working-directory: packages/harvest_site
       - run: flutter build web --release --no-tree-shake-icons --no-wasm-dry-run --base-href /harvest/site/
         working-directory: packages/harvest_site
 
