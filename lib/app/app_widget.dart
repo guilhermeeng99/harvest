@@ -26,18 +26,24 @@ class _HarvestAppState extends State<HarvestApp> {
   late final AuthBloc _authBloc;
   late final AddressCubit _addressCubit;
   late final NotificationsCubit _notificationsCubit;
+  late final StreamSubscription<AuthState> _authSubscription;
 
   @override
   void initState() {
     super.initState();
     _authBloc = sl<AuthBloc>()..add(const AuthCheckRequested());
     _addressCubit = sl<AddressCubit>();
-    unawaited(_addressCubit.loadAddresses());
     _notificationsCubit = sl<NotificationsCubit>()..loadNotifications();
+    _authSubscription = _authBloc.stream.listen((state) {
+      if (state.status == AuthStatus.authenticated) {
+        unawaited(_addressCubit.loadAddresses());
+      }
+    });
   }
 
   @override
   void dispose() {
+    unawaited(_authSubscription.cancel());
     unawaited(_addressCubit.close());
     unawaited(_notificationsCubit.close());
     super.dispose();
